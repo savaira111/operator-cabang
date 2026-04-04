@@ -52,6 +52,10 @@
                     <i data-lucide="shield-alert" class="w-5 h-5 mr-3"></i>
                     <span class="text-sm font-medium">Management Resiko</span>
                 </a>
+                <a href="{{ route('tahanans.index') }}" class="sidebar-link flex items-center px-4 py-3 text-slate-400 rounded-xl transition-all duration-200 hover:bg-slate-800/50 hover:text-white {{ request()->routeIs('tahanans.*') ? 'active' : '' }}">
+                    <i data-lucide="user-minus" class="w-5 h-5 mr-3"></i>
+                    <span class="text-sm font-medium">Data Tahanan</span>
+                </a>
             </nav>
             <div class="p-4 border-t border-slate-800/50 mb-4 space-y-3">
                 <a href="{{ route('profile') }}" class="flex items-center p-3 bg-slate-800/30 rounded-2xl border border-slate-700/30 hover:bg-slate-800/60 transition-all duration-300 group">

@@ -45,6 +45,7 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Role Akses</label>
                     <select name="role" required class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
+                        <option value="" selected disabled hidden>-- Pilih Role Akses --</option>
                         <option value="operator admin" class="bg-[#111827]">Operator Admin</option>
                         <option value="operator kanwil" class="bg-[#111827]">Operator Kanwil</option>
                         <option value="operator cabang" class="bg-[#111827]">Operator Cabang</option>
@@ -53,7 +54,7 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Penempatan</label>
                     <select name="cabang_id" class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
-                        <option value="" class="bg-[#111827]">-- Tanpa Cabang (Pusat/Kanwil) --</option>
+                        <option value="" selected disabled hidden>-- Pilih Lokasi Penempatan --</option>
                         @foreach($cabangs as $cabang)
                             <option value="{{ $cabang->id }}" class="bg-[#111827]">{{ $cabang->name }}</option>
                         @endforeach

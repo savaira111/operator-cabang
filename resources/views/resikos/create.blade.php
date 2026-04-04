@@ -28,6 +28,7 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Tingkat Status</label>
                     <select name="status" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                        <option value="" selected disabled hidden>-- Pilih Tingkat Resiko --</option>
                         <option value="low">Low (Rendah)</option>
                         <option value="medium">Medium (Sedang)</option>
                         <option value="high">High (Tinggi)</option>
@@ -36,7 +37,7 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Cabang Terdampak</label>
                     <select name="cabang_id" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
-                        <option value="">-- Pilih Cabang --</option>
+                        <option value="" selected disabled hidden>-- Pilih Cabang --</option>
                         @foreach($cabangs as $cabang)
                             <option value="{{ $cabang->id }}">{{ $cabang->name }}</option>
                         @endforeach

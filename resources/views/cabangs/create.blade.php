@@ -33,7 +33,7 @@
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Wilayah Operasional</label>
                 <select name="location" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
-                    <option value="">-- Pilih Wilayah --</option>
+                    <option value="" selected disabled hidden>-- Pilih Wilayah Operasional --</option>
                     <option value="Jakarta">Jakarta</option>
                     <option value="Bandung">Bandung</option>
                     <option value="Surabaya">Surabaya</option>
