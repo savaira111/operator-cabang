@@ -14,7 +14,7 @@
             <span class="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10 uppercase tracking-widest">+12%</span>
         </div>
         <h3 class="text-slate-500 text-xs font-black uppercase tracking-[0.2em] mb-2">Total Users</h3>
-        <p class="text-4xl font-black text-white tracking-tighter">1,284</p>
+        <p class="text-4xl font-black text-white tracking-tighter">{{ number_format($userCount) }}</p>
     </div>
 
     <!-- Stat Card 2 -->
@@ -26,7 +26,7 @@
             <span class="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10 uppercase tracking-widest">+5%</span>
         </div>
         <h3 class="text-slate-500 text-xs font-black uppercase tracking-[0.2em] mb-2">Active Branches</h3>
-        <p class="text-4xl font-black text-white tracking-tighter">42</p>
+        <p class="text-4xl font-black text-white tracking-tighter">{{ number_format($cabangCount) }}</p>
     </div>
 
     <!-- Stat Card 3 -->
@@ -38,7 +38,7 @@
             <span class="text-[10px] font-black text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/10 uppercase tracking-widest">-3%</span>
         </div>
         <h3 class="text-slate-500 text-xs font-black uppercase tracking-[0.2em] mb-2">Active Risks</h3>
-        <p class="text-4xl font-black text-white tracking-tighter">18</p>
+        <p class="text-4xl font-black text-white tracking-tighter">{{ number_format($resikoCount) }}</p>
     </div>
 </div>
 

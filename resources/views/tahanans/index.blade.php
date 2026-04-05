@@ -136,7 +136,10 @@
                                 <i data-lucide="download-cloud" class="w-4 h-4"></i>
                             </a>
                             @endif
-                            <a href="{{ route('tahanans.edit', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all">
+                            <a href="{{ route('tahanans.show', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-indigo-400 hover:bg-indigo-400/10 rounded-2xl transition-all" title="Detail Laporan">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </a>
+                            <a href="{{ route('tahanans.edit', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all" title="Edit Laporan">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
                             <form action="{{ route('tahanans.destroy', $tahanan) }}" method="POST" class="inline">

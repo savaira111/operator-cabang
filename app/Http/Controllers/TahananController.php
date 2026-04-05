@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tahanan;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class TahananController extends Controller
 {
@@ -60,7 +61,38 @@ class TahananController extends Controller
 
     public function show(Tahanan $tahanan)
     {
-        //
+        $tahanan->load('cabang');
+        
+        $excelData = [];
+        if ($tahanan->file_path && file_exists(public_path($tahanan->file_path))) {
+            try {
+                $spreadsheet = IOFactory::load(public_path($tahanan->file_path));
+                $sheet = $spreadsheet->getActiveSheet();
+                $allData = $sheet->toArray(null, true, true, true);
+                
+                // Find the first row that actually looks like a header (contains non-empty values)
+                $headerRowIndex = null;
+                foreach ($allData as $index => $row) {
+                    $filledCells = array_filter($row);
+                    if (count($filledCells) >= 3) { // Assume a header has at least 3 columns
+                        $headerRowIndex = $index;
+                        break;
+                    }
+                }
+
+                if ($headerRowIndex !== null) {
+                    // Skip rows before the header
+                    $excelData = array_slice($allData, array_search($headerRowIndex, array_keys($allData)));
+                } else {
+                    $excelData = $allData;
+                }
+            } catch (\Exception $e) {
+                // If parsing fails, just show metadata
+                \Log::error('Error parsing excel: ' . $e->getMessage());
+            }
+        }
+
+        return view('tahanans.show', compact('tahanan', 'excelData'));
     }
 
     public function edit(Tahanan $tahanan)
@@ -75,8 +107,22 @@ class TahananController extends Controller
             'cabang_id' => 'required|exists:cabangs,id',
             'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
+            'excel_file' => 'nullable|file|mimes:xlsx,xls,csv|max:5120',
             'keterangan' => 'nullable|string',
         ]);
+
+        // Handle File Update
+        if ($request->hasFile('excel_file')) {
+            // Delete old file if exists
+            if ($tahanan->file_path && file_exists(public_path($tahanan->file_path))) {
+                @unlink(public_path($tahanan->file_path));
+            }
+
+            $file = $request->file('excel_file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/tahanans'), $fileName);
+            $validated['file_path'] = 'uploads/tahanans/' . $fileName;
+        }
 
         $tahanan->update($validated);
         return redirect()->route('tahanans.index')->with('success', 'Data laporan tahanan berhasil diperbarui');
@@ -85,6 +131,6 @@ class TahananController extends Controller
     public function destroy(Tahanan $tahanan)
     {
         $tahanan->delete();
-        return redirect()->route('tahanans.index')->with('success', 'Data tahanan berhasil dihapus');
+        return redirect()->route('tahanans.index')->with('success', 'Data laporan tahanan berhasil dihapus');
     }
 }

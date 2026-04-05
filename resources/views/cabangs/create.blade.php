@@ -22,7 +22,7 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Cabang</label>
-                    <input type="text" name="name" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: Cabang Jakarta Pusat">
+                    <input type="text" name="name" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: Cabang Bandung Raya">
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kepala Cabang</label>
@@ -32,14 +32,18 @@
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Wilayah Operasional</label>
-                <select name="location" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
-                    <option value="" selected disabled hidden>-- Pilih Wilayah Operasional --</option>
-                    <option value="Jakarta">Jakarta</option>
-                    <option value="Bandung">Bandung</option>
-                    <option value="Surabaya">Surabaya</option>
-                    <option value="Medan">Medan</option>
-                    <option value="Makassar">Makassar</option>
-                </select>
+                <div class="relative group mt-2">
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-indigo-500"></i>
+                    </div>
+                    <input type="text" name="location" value="Jawa Barat" readonly 
+                        class="w-full pl-12 pr-5 py-4 bg-slate-800/30 rounded-2xl border border-slate-700/50 text-slate-400 font-bold focus:outline-none cursor-not-allowed transition-all"
+                        placeholder="Wilayah Operasional">
+                    <div class="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none">
+                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest">Fixed</span>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-600 mt-2 ml-1 italic">* Wilayah operasional saat ini terbatas hanya untuk area Jawa Barat.</p>
             </div>
 
             <div>

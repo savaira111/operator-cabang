@@ -8,6 +8,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $userCount = \App\Models\User::count();
+        $cabangCount = \App\Models\Cabang::count();
+        $resikoCount = \App\Models\Resiko::count();
+        $tahananCount = \App\Models\Tahanan::count();
+
+        return view('dashboard', compact('userCount', 'cabangCount', 'resikoCount', 'tahananCount'));
     }
 }

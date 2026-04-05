@@ -49,15 +49,16 @@ class UserController extends Controller
             'cabang_id' => $validated['cabang_id'],
             'password' => bcrypt($validated['password']),
         ]);
-        return redirect()->route('users.index')->with('success', 'User added successfully');
+        return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(\App\Models\User $user)
     {
-        //
+        $user->load('cabang');
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -102,7 +103,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil diperbarui');
     }
 
     /**
@@ -111,6 +112,6 @@ class UserController extends Controller
     public function destroy(\App\Models\User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil dihapus');
     }
 }

@@ -113,8 +113,8 @@
                 popup: 'bg-[#111827] border border-slate-800 rounded-[2rem] text-slate-300 shadow-2xl',
                 title: 'text-white font-black tracking-tight',
                 htmlContainer: 'text-slate-400 font-medium',
-                confirmButton: 'px-8 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95 outline-none focus:ring-0',
-                cancelButton: 'px-8 py-3 bg-slate-800 text-slate-400 font-bold rounded-2xl hover:bg-slate-700 hover:text-white transition-all outline-none focus:ring-0'
+                confirmButton: 'mx-2 px-8 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95 outline-none focus:ring-0',
+                cancelButton: 'mx-2 px-8 py-3 bg-slate-800 text-slate-400 font-bold rounded-2xl hover:bg-slate-700 hover:text-white transition-all outline-none focus:ring-0'
             },
             buttonsStyling: false
         });

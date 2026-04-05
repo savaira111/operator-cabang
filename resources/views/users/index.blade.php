@@ -82,6 +82,9 @@ function filterTable() {
                     </td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center justify-end space-x-2 transition-all">
+                            <a href="{{ route('users.show', $user) }}" class="p-2.5 text-slate-500 hover:text-indigo-400 hover:bg-indigo-400/10 rounded-2xl transition-all">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </a>
                             <a href="{{ route('users.edit', $user) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>

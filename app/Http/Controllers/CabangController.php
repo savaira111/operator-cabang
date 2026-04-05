@@ -20,17 +20,22 @@ class CabangController extends Controller
         return view('cabangs.create');
     }
 
+    public function show(\App\Models\Cabang $cabang)
+    {
+        return view('cabangs.show', compact('cabang'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'kepala_cabang' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'description' => 'nullable|string',
         ]);
+        $validated['location'] = 'Jawa Barat';
         \App\Models\Cabang::create($validated);
-        return redirect()->route('cabangs.index')->with('success', 'Cabang created successfully');
+        return redirect()->route('cabangs.index')->with('success', 'Data kantor cabang berhasil ditambahkan');
     }
 
     public function edit(\App\Models\Cabang $cabang)
@@ -43,17 +48,17 @@ class CabangController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'kepala_cabang' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'description' => 'nullable|string',
         ]);
+        $validated['location'] = 'Jawa Barat';
         $cabang->update($validated);
-        return redirect()->route('cabangs.index')->with('success', 'Cabang updated successfully');
+        return redirect()->route('cabangs.index')->with('success', 'Data kantor cabang berhasil diperbarui');
     }
 
     public function destroy(\App\Models\Cabang $cabang)
     {
         $cabang->delete();
-        return redirect()->route('cabangs.index')->with('success', 'Cabang deleted successfully');
+        return redirect()->route('cabangs.index')->with('success', 'Data kantor cabang berhasil dihapus');
     }
 }

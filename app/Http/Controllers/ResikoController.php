@@ -21,6 +21,12 @@ class ResikoController extends Controller
         return view('resikos.create', compact('cabangs'));
     }
 
+    public function show(\App\Models\Resiko $resiko)
+    {
+        $resiko->load('cabang');
+        return view('resikos.show', compact('resiko'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -30,7 +36,7 @@ class ResikoController extends Controller
             'cabang_id' => 'required|exists:cabangs,id',
         ]);
         \App\Models\Resiko::create($validated);
-        return redirect()->route('resikos.index')->with('success', 'Risk identified successfully');
+        return redirect()->route('resikos.index')->with('success', 'Data identifikasi resiko berhasil disimpan');
     }
 
     public function edit(\App\Models\Resiko $resiko)
@@ -48,12 +54,12 @@ class ResikoController extends Controller
             'cabang_id' => 'required|exists:cabangs,id',
         ]);
         $resiko->update($validated);
-        return redirect()->route('resikos.index')->with('success', 'Risk updated successfully');
+        return redirect()->route('resikos.index')->with('success', 'Data identifikasi resiko berhasil diperbarui');
     }
 
     public function destroy(\App\Models\Resiko $resiko)
     {
         $resiko->delete();
-        return redirect()->route('resikos.index')->with('success', 'Risk removed successfully');
+        return redirect()->route('resikos.index')->with('success', 'Data identifikasi resiko berhasil dihapus');
     }
 }
