@@ -46,7 +46,7 @@ function filterTable() {
         <table class="w-full text-left">
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">ID</th>
+                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">No</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Nama Cabang</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Kepala Cabang</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Wilayah</th>
@@ -59,7 +59,7 @@ function filterTable() {
                 <tr class="hover:bg-slate-800/30 transition-all group">
                     <td class="px-8 py-5">
                         <span class="text-xs font-mono font-bold text-slate-600 group-hover:text-indigo-400">
-                            {{ str_pad($cabang->id, 3, '0', STR_PAD_LEFT) }}
+                            {{ $loop->iteration }}
                         </span>
                     </td>
                     <td class="px-8 py-5">

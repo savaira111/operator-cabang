@@ -46,6 +46,7 @@ function filterTable() {
         <table class="w-full text-left">
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
+                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">No</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Nama Resiko</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Status Tingkat</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Cabang Terkait</th>
@@ -55,6 +56,7 @@ function filterTable() {
             <tbody class="divide-y divide-slate-800/40">
                 @foreach($resikos as $resiko)
                 <tr class="hover:bg-slate-800/30 transition-all group">
+                    <td class="px-8 py-5 text-xs font-bold text-slate-500">{{ $loop->iteration }}</td>
                     <td class="px-8 py-5">
                         <span class="font-bold text-white tracking-tight group-hover:text-rose-400 transition-colors uppercase text-sm">
                             {{ $resiko->name }}
