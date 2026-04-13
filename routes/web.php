@@ -7,7 +7,11 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ResikoController;
 use App\Http\Controllers\TahananController;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', function () {
+    return view('welcome');
+})->name('landing');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('users', UserController::class);
 Route::resource('cabangs', CabangController::class);
 Route::resource('resikos', ResikoController::class);

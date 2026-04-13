@@ -30,15 +30,12 @@
             <div class="space-y-3">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">ID Cabang (Lokasi)</label>
                 <div class="relative group">
-                    <select name="cabang_id" required class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
+                    <select id="cabangSelect" name="cabang_id" required class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none">
                         <option value="" selected disabled hidden>-- Pilih Cabang --</option>
                         @foreach($cabangs as $cabang)
-                            <option value="{{ $cabang->id }}">{{ $cabang->name }}</option>
+                            <option value="{{ $cabang->id }}">{{ $cabang->kode_cabang ?? 'UPT-?' }} - {{ $cabang->name }}</option>
                         @endforeach
                     </select>
-                    <div class="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-slate-500">
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                    </div>
                 </div>
             </div>
             <!-- Periode Input (Bulan) -->
@@ -193,5 +190,64 @@ function filterTable() {
         }
     });
 }
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<style>
+/* Custom Dark Theme for TomSelect */
+.ts-wrapper {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+.ts-control {
+    background-color: #1d2333 !important;
+    border: 1px solid #334155 !important;
+    color: white !important;
+    border-radius: 1rem !important;
+    padding: 1rem 1.25rem !important;
+    font-family: inherit !important;
+    font-size: 14px;
+    box-shadow: none !important;
+}
+.ts-wrapper.focus .ts-control {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+}
+.ts-dropdown {
+    background-color: #1d2333 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 1rem !important;
+    color: white !important;
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.7) !important;
+    margin-top: 0.5rem !important;
+    overflow: hidden !important;
+}
+.ts-dropdown .option {
+    padding: 0.75rem 1.25rem !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+}
+.ts-dropdown .option:hover, .ts-dropdown .option.active {
+    background-color: rgba(99, 102, 241, 0.2) !important;
+    color: #818cf8 !important;
+}
+.ts-control > input {
+    color: white !important;
+    font-size: 14px !important;
+}
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new TomSelect("#cabangSelect", {
+            create: false,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            placeholder: '-- Pilih Cabang Terdaftar --'
+        });
+    });
 </script>
 @endsection

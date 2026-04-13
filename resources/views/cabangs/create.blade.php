@@ -4,7 +4,7 @@
 @section('page_title', 'Tambah Cabang Baru')
 
 @section('content')
-<div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
+<div class="w-full bg-[#111827] border border-slate-800 rounded-2xl p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
             <h3 class="text-2xl font-black text-white tracking-tight">Tambah Cabang Baru</h3>
@@ -19,7 +19,11 @@
     <form action="{{ route('cabangs.store') }}" method="POST">
         @csrf
         <div class="space-y-8">
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode Cabang</label>
+                    <input type="text" name="kode_cabang" value="{{ $nextCode }}" readonly required class="w-full px-5 py-4 bg-slate-800/30 rounded-2xl border border-slate-700/50 text-slate-400 font-bold focus:outline-none cursor-not-allowed transition-all">
+                </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Cabang</label>
                     <input type="text" name="name" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: Cabang Bandung Raya">

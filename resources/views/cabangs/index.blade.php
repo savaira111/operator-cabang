@@ -41,58 +41,64 @@ function filterTable() {
 }
 </script>
 
-<div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
+<div class="bg-[#111827] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">No</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Nama Cabang</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Kepala Cabang</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Wilayah</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Alamat</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Aksi</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">No</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">Kode</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Nama Cabang</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Kepala Cabang</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest hidden md:table-cell">Wilayah</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest hidden lg:table-cell">Alamat</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right whitespace-nowrap">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-800/40">
                 @foreach($cabangs as $cabang)
                 <tr class="hover:bg-slate-800/30 transition-all group">
-                    <td class="px-8 py-5">
-                        <span class="text-xs font-mono font-bold text-slate-600 group-hover:text-indigo-400">
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-[11px] font-mono font-bold text-slate-600 group-hover:text-indigo-400">
                             {{ $loop->iteration }}
                         </span>
                     </td>
-                    <td class="px-8 py-5">
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-xs font-mono font-bold text-indigo-400">
+                            {{ $cabang->kode_cabang ?? '-' }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4">
                         <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mr-4 border border-blue-500/10">
-                                <i data-lucide="building-2" class="w-5 h-5"></i>
+                            <div class="w-8 h-8 rounded-xl flex-shrink-0 bg-blue-500/10 flex items-center justify-center text-blue-400 mr-3 border border-blue-500/10">
+                                <i data-lucide="building-2" class="w-4 h-4"></i>
                             </div>
-                            <span class="font-bold text-white tracking-tight">{{ $cabang->name }}</span>
+                            <span class="font-bold text-[13px] text-white tracking-tight leading-snug">{{ $cabang->name }}</span>
                         </div>
                     </td>
-                    <td class="px-8 py-5">
+                    <td class="px-4 py-4">
                         <div class="flex items-center">
-                            <span class="text-sm font-bold text-slate-300">{{ $cabang->kepala_cabang ?? '-' }}</span>
+                            <span class="text-[13px] font-bold text-slate-300">{{ $cabang->kepala_cabang ?? '-' }}</span>
                         </div>
                     </td>
-                    <td class="px-8 py-5">
-                        <span class="text-sm font-semibold text-slate-400">{{ $cabang->location }}</span>
+                    <td class="px-4 py-4 hidden md:table-cell">
+                        <span class="text-[13px] font-semibold text-slate-400">{{ $cabang->location }}</span>
                     </td>
-                    <td class="px-8 py-5">
-                        <span class="text-sm text-slate-500 truncate max-w-xs block">{{ $cabang->alamat ?? '-' }}</span>
+                    <td class="px-4 py-4 hidden lg:table-cell">
+                        <span class="text-[12px] text-slate-500 truncate max-w-[150px] block">{{ $cabang->alamat ?? '-' }}</span>
                     </td>
-                    <td class="px-8 py-5 text-right">
-                        <div class="flex items-center justify-end space-x-2 transition-all">
-                            <a href="{{ route('cabangs.show', $cabang) }}" class="p-2.5 text-slate-500 hover:text-indigo-400 hover:bg-indigo-400/10 rounded-2xl transition-all">
+                    <td class="px-4 py-4 text-right whitespace-nowrap">
+                        <div class="flex items-center justify-end space-x-1.5 transition-all">
+                            <a href="{{ route('cabangs.show', $cabang) }}" class="p-2 text-slate-500 hover:text-indigo-400 hover:bg-indigo-400/10 rounded-xl transition-all">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
                             </a>
-                            <a href="{{ route('cabangs.edit', $cabang) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all">
+                            <a href="{{ route('cabangs.edit', $cabang) }}" class="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-xl transition-all">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
                             <form action="{{ route('cabangs.destroy', $cabang) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="p-2.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-2xl transition-all" onclick="confirmDelete(event, this.form)">
+                                <button type="submit" class="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-xl transition-all" onclick="confirmDelete(event, this.form)">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>

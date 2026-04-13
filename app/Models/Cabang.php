@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cabang extends Model
 {
-    protected $fillable = ['name', 'kepala_cabang', 'location', 'alamat', 'description'];
+    protected $fillable = ['kode_cabang', 'name', 'kepala_cabang', 'location', 'alamat', 'description'];
 
     public function resikos()
     {
