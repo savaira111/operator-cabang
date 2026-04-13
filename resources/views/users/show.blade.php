@@ -23,7 +23,7 @@
             <div class="flex items-center space-x-4">
                 <a href="{{ route('users.edit', $user) }}" class="flex items-center px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
                     <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
-                    <span class="text-xs uppercase tracking-widest">Edit Akun</span>
+                    <span class="text-xs uppercase tracking-widest">Ubah Akun</span>
                 </a>
                 <a href="{{ route('users.index') }}" class="flex items-center px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95">
                     <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
@@ -100,7 +100,7 @@
                         <p class="text-xs font-black text-white uppercase tracking-widest mb-1">{{ $user->name }}</p>
                         <p class="text-[10px] text-slate-500 font-mono mb-4 uppercase tracking-tighter">{{ $user->role }}</p>
                         <hr class="w-1/2 border-slate-700/50 mb-4">
-                        <p class="text-[9px] text-slate-600 italic">User ID: {{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</p>
+                        <p class="text-[9px] text-slate-600 italic">ID Pengguna: {{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</p>
                     </div>
                 </div>
 
@@ -109,10 +109,10 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-bold text-slate-500 uppercase">Password</span>
-                            <span class="text-[10px] px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-black">ACTIVE</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-black">AKTIF</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase">Last Update</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Terakhir Diperbarui</span>
                             <span class="text-[10px] font-mono text-slate-600">{{ $user->updated_at->format('d/m/y') }}</span>
                         </div>
                     </div>

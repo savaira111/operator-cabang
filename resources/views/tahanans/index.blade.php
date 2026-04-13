@@ -14,7 +14,7 @@
     <form action="{{ route('tahanans.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="grid grid-cols-2 gap-8">
-            <!-- Impor Data Excel (New Field) -->
+            <!-- Impor Data Excel (Baru Field) -->
             <div class="space-y-3">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Impor Data Excel</label>
                 <div class="relative group">
@@ -63,7 +63,7 @@
                 <input type="number" name="periode_tahun" value="{{ date('Y') }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="2026">
             </div>
 
-            <!-- Submit Action -->
+            <!-- Kirim Action -->
             <div class="pt-6 col-span-2">
                 <button type="submit" class="w-full py-5 bg-indigo-500 hover:bg-indigo-600 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95 uppercase tracking-widest text-xs flex items-center justify-center">
                     <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i>
@@ -138,13 +138,13 @@
                             <a href="{{ route('tahanans.show', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-indigo-400 hover:bg-indigo-400/10 rounded-2xl transition-all" title="Detail Laporan">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
                             </a>
-                            <a href="{{ route('tahanans.edit', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all" title="Edit Laporan">
+                            <a href="{{ route('tahanans.edit', $tahanan) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-2xl transition-all" title="Ubah Laporan">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
                             <form action="{{ route('tahanans.destroy', $tahanan) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="p-2.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-2xl transition-all" onclick="confirmDelete(event, this.form)">
+                                <button type="submit" class="p-2.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-2xl transition-all" onclick="confirmHapus(event, this.form)">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>

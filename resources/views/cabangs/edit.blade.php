@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Cabang')
-@section('page_title', 'Edit Data Cabang')
+@section('title', 'Ubah Cabang')
+@section('page_title', 'Ubah Data Cabang')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-2xl p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-2xl font-black text-white tracking-tight">Edit Cabang</h3>
+            <h3 class="text-2xl font-black text-white tracking-tight">Ubah Cabang</h3>
             <p class="text-slate-500 text-sm mt-1">Perbarui informasi operasional kantor cabang.</p>
         </div>
         <div class="flex items-center space-x-4">
@@ -69,7 +69,7 @@
             
             <div class="pt-6 flex space-x-4">
                 <button type="submit" class="px-10 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
-                    Update Cabang
+                    Perbarui Cabang
                 </button>
             </div>
         </div>

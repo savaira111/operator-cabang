@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Laporan Tahanan')
-@section('page_title', 'Update Laporan Tahanan')
+@section('title', 'Ubah Laporan Tahanan')
+@section('page_title', 'Perbarui Laporan Tahanan')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-2xl font-black text-white tracking-tight">Edit Metadata Laporan</h3>
+            <h3 class="text-2xl font-black text-white tracking-tight">Ubah Metadata Laporan</h3>
             <p class="text-slate-500 text-sm mt-1">Perbarui periode atau lampiran data excel laporan.</p>
         </div>
         <div class="flex items-center space-x-4">

@@ -23,7 +23,7 @@
             <div class="flex items-center space-x-4">
                 <a href="{{ route('tahanans.edit', $tahanan) }}" class="flex items-center px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
                     <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
-                    <span class="text-xs uppercase tracking-widest">Edit Data</span>
+                    <span class="text-xs uppercase tracking-widest">Ubah Data</span>
                 </a>
                 <a href="{{ route('tahanans.index') }}" class="flex items-center px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95">
                     <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>

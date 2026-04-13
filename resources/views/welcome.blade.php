@@ -55,7 +55,7 @@
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-    <!-- Ambient Background Glow -->
+    <!-- Ambient Kembaliground Glow -->
     <div class="glow-effect"></div>
 
     <!-- Navigation Bar -->

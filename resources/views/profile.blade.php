@@ -68,7 +68,7 @@
                     <p class="text-sm text-slate-400 mb-8 italic italic italic italic italic italic italic italic">Secure your account by enabling multi-factor authentication and updating your security keys.</p>
                 </div>
                 <button class="w-full py-4 bg-[#D2A039] hover:bg-[#b88a2e] text-[#061B30] font-black rounded-2xl transition-all shadow-xl shadow-[#D2A039]/20 active:scale-95 text-xs uppercase tracking-widest">
-                    Update Security
+                    Perbarui Security
                 </button>
             </div>
         </div>

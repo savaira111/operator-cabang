@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Pengguna')
-@section('page_title', 'Update Pengguna')
+@section('title', 'Ubah Pengguna')
+@section('page_title', 'Perbarui Pengguna')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-2xl font-black text-white tracking-tight">Update Pengguna</h3>
+            <h3 class="text-2xl font-black text-white tracking-tight">Perbarui Pengguna</h3>
             <p class="text-slate-500 text-sm mt-1">Modifikasi hak akses dan informasi akun.</p>
         </div>
         <div class="flex items-center space-x-4">

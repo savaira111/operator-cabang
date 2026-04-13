@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Update Resiko')
-@section('page_title', 'Update Analisis Resiko')
+@section('title', 'Perbarui Resiko')
+@section('page_title', 'Perbarui Analisis Resiko')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-2xl font-black text-white tracking-tight">Update Resiko</h3>
+            <h3 class="text-2xl font-black text-white tracking-tight">Perbarui Resiko</h3>
             <p class="text-slate-500 text-sm mt-1">Perbarui analisis dan status mitigasi resiko operasional.</p>
         </div>
         <div class="flex items-center space-x-4">
@@ -58,7 +58,7 @@
             
             <div class="pt-6 flex space-x-4">
                 <button type="submit" class="px-10 py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-rose-500/20 active:scale-95">
-                    Update Resiko
+                    Perbarui Resiko
                 </button>
             </div>
         </div>

@@ -23,5 +23,5 @@ Route::get('/profile', function() {
 
 Route::get('/logout', function() {
     // Logic logout normally goes here
-    return redirect()->route('dashboard')->with('success', 'You have been logged out');
+    return redirect()->route('dashboard')->with('success', 'Anda berhasil keluar dari sistem');
 })->name('logout');

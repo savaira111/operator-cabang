@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
-@section('page_title', 'Overview Dashboard')
+@section('page_title', 'Ringkasan Dashboard')
 
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -13,7 +13,7 @@
             </div>
             <span class="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/10 uppercase tracking-widest">+12%</span>
         </div>
-        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total Users</h3>
+        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total Pengguna</h3>
         <p class="text-2xl font-black text-white tracking-tighter">{{ number_format($userCount) }}</p>
     </div>
 
@@ -25,7 +25,7 @@
             </div>
             <span class="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/10 uppercase tracking-widest">+5%</span>
         </div>
-        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Active Branches</h3>
+        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Cabang Aktif</h3>
         <p class="text-2xl font-black text-white tracking-tighter">{{ number_format($cabangCount) }}</p>
     </div>
 
@@ -37,7 +37,7 @@
             </div>
             <span class="text-[9px] font-black text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/10 uppercase tracking-widest">-3%</span>
         </div>
-        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Active Risks</h3>
+        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Resiko Aktif</h3>
         <p class="text-2xl font-black text-white tracking-tighter">{{ number_format($resikoCount) }}</p>
     </div>
 </div>
@@ -46,16 +46,16 @@
     <!-- Recent Activity -->
     <div class="bg-[#031121] border border-[#D2A039]/20 rounded-[1.5rem] p-5 overflow-hidden shadow-xl">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recent Activity</h3>
-            <button class="text-[10px] font-black text-[#D2A039] hover:text-[#f9d77e] uppercase tracking-widest">Explore All</button>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Aktivitas Terbaru</h3>
+            <button class="text-[10px] font-black text-[#D2A039] hover:text-[#f9d77e] uppercase tracking-widest">Lihat Semua</button>
         </div>
         <div class="space-y-3">
-            @foreach(['Updated Risk Level #2', 'New Branch Added: Bandung', 'Risk Resolved: Server #4'] as $activity)
+            @foreach(['Tingkat Resiko Diperbarui #2', 'Cabang Baru Ditambahkan: Bandung', 'Resiko Diselesaikan: Server #4'] as $activity)
             <div class="flex items-start group">
                 <div class="w-1.5 h-1.5 mt-1.5 rounded-full bg-[#D2A039] mr-3 group-hover:scale-150 transition-all shadow-[0_0_6px_rgba(210,160,57,0.6)]"></div>
                 <div>
                     <p class="text-xs font-bold text-slate-200 group-hover:text-white transition-colors">{{ $activity }}</p>
-                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mt-0.5">2 hours ago</p>
+                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mt-0.5">2 jam yang lalu</p>
                 </div>
             </div>
             @endforeach
@@ -65,7 +65,7 @@
     <!-- Quick Stats Visualization -->
     <div class="bg-[#031121] border border-[#D2A039]/20 rounded-[1.5rem] p-5 shadow-xl">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Analytics Matrix</h3>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Matriks Analitik</h3>
             <i data-lucide="trending-up" class="w-4 h-4 text-[#D2A039]"></i>
         </div>
         <div class="h-24 flex items-end justify-between space-x-2 px-1">
@@ -78,13 +78,13 @@
             @endfor
         </div>
         <div class="flex justify-between mt-3 px-1 text-[9px] font-black text-slate-600 uppercase tracking-[0.15em]">
-            <span>Mon</span>
-            <span>Tue</span>
-            <span>Wed</span>
-            <span>Thu</span>
-            <span>Fri</span>
-            <span>Sat</span>
-            <span>Sun</span>
+            <span>Sen</span>
+            <span>Sel</span>
+            <span>Rab</span>
+            <span>Kam</span>
+            <span>Jum</span>
+            <span>Sab</span>
+            <span>Min</span>
         </div>
     </div>
 </div>
