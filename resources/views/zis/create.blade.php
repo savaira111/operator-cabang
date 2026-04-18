@@ -1,0 +1,91 @@
+@extends('layouts.app')
+
+@section('title', 'Tambah Progres ZI')
+@section('page_title', 'Input Progres ZI')
+
+@section('content')
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h3 class="text-3xl font-black text-white tracking-tighter uppercase">TAMBAH PROGRES ZI</h3>
+            <p class="text-slate-500 text-sm mt-1">Input data pencapaian Zona Integritas baru.</p>
+        </div>
+        <a href="{{ route('zis.index') }}" class="p-3 bg-slate-800/50 text-slate-400 hover:text-white rounded-2xl border border-slate-700 hover:border-slate-500 transition-all">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+    </div>
+
+    <div class="bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-[#D2A039]/5 rounded-full blur-3xl"></div>
+        
+        <form action="{{ route('zis.store') }}" method="POST" class="relative z-10">
+            @csrf
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="cabang_id">Pilih Kantor Cabang / Satker</label>
+                    <select name="cabang_id" id="cabang_id" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4 shadow-inner">
+                        <option value="">Pilih Cabang</option>
+                        @foreach($cabangs as $cabang)
+                            <option value="{{ $cabang->id }}" {{ old('cabang_id') == $cabang->id ? 'selected' : '' }}>{{ $cabang->kode_cabang }} - {{ $cabang->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('cabang_id') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="predikat">Predikat / Capaian</label>
+                        <select name="predikat" id="predikat" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4">
+                            <option value="WBK" {{ old('predikat') == 'WBK' ? 'selected' : '' }}>WBK</option>
+                            <option value="WBBM" {{ old('predikat') == 'WBBM' ? 'selected' : '' }}>WBBM</option>
+                            <option value="Menuju WBK" {{ old('predikat') == 'Menuju WBK' ? 'selected' : '' }}>Menuju WBK</option>
+                            <option value="Menuju WBBM" {{ old('predikat') == 'Menuju WBBM' ? 'selected' : '' }}>Menuju WBBM</option>
+                        </select>
+                        @error('predikat') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="tahun">Tahun Perolehan</label>
+                        <input type="number" name="tahun" id="tahun" value="{{ old('tahun', date('Y')) }}" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4" placeholder="2024">
+                        @error('tahun') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="status">Status Progres</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="relative flex items-center p-4 rounded-2xl border border-slate-800 bg-[#061B30] cursor-pointer hover:border-[#D2A039]/50 transition-all has-[:checked]:border-[#D2A039] has-[:checked]:bg-[#D2A039]/5">
+                            <input type="radio" name="status" value="Aktif" class="hidden" checked>
+                            <div class="flex items-center">
+                                <span class="w-4 h-4 rounded-full border-2 border-[#D2A039] mr-3 flex items-center justify-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#D2A039]"></span>
+                                </span>
+                                <span class="text-xs font-bold text-slate-300">AKTIF</span>
+                            </div>
+                        </label>
+                        <label class="relative flex items-center p-4 rounded-2xl border border-slate-800 bg-[#061B30] cursor-pointer hover:border-emerald-500/50 transition-all has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-500/5">
+                            <input type="radio" name="status" value="Selesai" class="hidden">
+                            <div class="flex items-center">
+                                <span class="w-4 h-4 rounded-full border-2 border-slate-700 mr-3"></span>
+                                <span class="text-xs font-bold text-slate-300">SELESAI</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="keterangan">Keterangan / Catatan</label>
+                    <textarea name="keterangan" id="keterangan" rows="4" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4 shadow-inner" placeholder="Tambahkan informasi tambahan jika diperlukan...">{{ old('keterangan') }}</textarea>
+                    @error('keterangan') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="pt-6">
+                    <button type="submit" class="w-full py-5 bg-[#D2A039] hover:bg-[#b88a2e] text-[#061B30] font-black rounded-2xl transition-all shadow-xl shadow-[#D2A039]/20 active:scale-95 uppercase text-xs tracking-widest flex items-center justify-center">
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                        Simpan Data ZI
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

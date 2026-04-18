@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ResikoController;
 use App\Http\Controllers\TahananController;
+use App\Http\Controllers\ZiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +17,7 @@ Route::resource('users', UserController::class);
 Route::resource('cabangs', CabangController::class);
 Route::resource('resikos', ResikoController::class);
 Route::resource('tahanans', TahananController::class);
+Route::resource('zis', ZiController::class);
 
 Route::get('/profile', function() {
     return view('profile');

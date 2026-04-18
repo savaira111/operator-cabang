@@ -7,12 +7,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #061B30; /* Logo Dark Blue */
+            background-image: linear-gradient(rgba(6, 27, 48, 0.88), rgba(6, 27, 48, 0.95)), url('{{ asset('Background.png') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #ffffff;
         }
         .heading-serif {
@@ -51,6 +54,51 @@
             transform: translateX(-50%);
             z-index: -1;
             pointer-events: none;
+        }
+        .proximity-letter {
+            display: inline-block;
+            font-variation-settings: 'wght' 700;
+            will-change: font-variation-settings;
+        }
+
+        /* Border Glow Component Styles */
+        .border-glow-card {
+            position: relative;
+            background: #031121;
+            border-radius: 40px;
+            border: none;
+            --cursor-angle: 45deg;
+            --edge-proximity: 0;
+            --glow-opacity: 0;
+        }
+
+        .border-glow-border {
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            border: 2px solid transparent;
+            mask-image: conic-gradient(from var(--cursor-angle) at center, transparent 0%, black 5%, black 20%, transparent 25%);
+            -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, transparent 0%, black 5%, black 20%, transparent 25%);
+            background: radial-gradient(circle at center, #D2A039 0%, #f9d77e 50%, transparent 100%) border-box;
+            background-size: 200% 200%;
+            opacity: var(--glow-opacity);
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .border-glow-outer {
+            position: absolute;
+            inset: -40px;
+            border-radius: inherit;
+            mask-image: conic-gradient(from var(--cursor-angle) at center, black 5%, transparent 20%, transparent 80%, black 95%);
+            -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black 5%, transparent 20%, transparent 80%, black 95%);
+            background: radial-gradient(circle at center, rgba(210, 160, 57, 0.3) 0%, transparent 70%);
+            opacity: var(--glow-opacity);
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(20px);
         }
     </style>
 </head>
@@ -96,12 +144,12 @@
                         <span class="text-[9px] font-bold text-gold uppercase tracking-[0.2em]">Pusat Data Terpadu v2.0</span>
                     </div>
 
-                    <h2 class="heading-serif text-3xl lg:text-5xl font-bold leading-[1.1] mb-4 text-white">
-                        Sistem Pengendalian <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-[#f9d77e]">
+                    <h2 id="proximity-title" class="heading-serif text-3xl lg:text-5xl font-bold leading-[1.1] mb-4 text-white">
+                        <span class="proximity-item block">Sistem Pengendalian</span>
+                        <span class="proximity-item block text-gold">
                             Internal Terpadu
-                        </span> <br>
-                        <span class="text-2xl lg:text-4xl text-slate-300">Jawa Barat</span>
+                        </span>
+                        <span class="proximity-item block text-2xl lg:text-4xl text-slate-300">Jawa Barat</span>
                     </h2>
 
                     <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-md font-medium border-l-4 border-gold/50 pl-4">
@@ -119,48 +167,12 @@
                     </div>
                 </div>
 
-                <!-- Visual Element -->
+                <!-- Visual Element with Border Glow -->
                 <div class="relative hidden lg:block animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
-                    <div class="relative w-full h-[380px] lg:h-[420px] flex items-center justify-center scale-[0.85] lg:scale-90 origin-right">
-                        <!-- Dashboard Mockup Abstract -->
-                        <div class="absolute inset-0 bg-gradient-to-tr from-gold/10 to-transparent rounded-[2.5rem] border border-gold/20 transform rotate-3"></div>
-                        <div class="absolute inset-0 bg-[#0a2342] border border-gold/30 rounded-[2.5rem] shadow-2xl glass-panel p-6 transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                            <!-- Fake UI -->
-                            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                                <div class="w-20 h-2 bg-white/20 rounded-full"></div>
-                                <div class="flex space-x-2">
-                                    <div class="w-2 h-2 rounded-full bg-rose-500"></div>
-                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4 mb-5">
-                                <div class="h-24 bg-[#061B30]/80 rounded-2xl border border-white/5 p-4 flex flex-col justify-end">
-                                    <div class="w-7 h-7 rounded-full bg-gold/20 mb-auto flex items-center justify-center">
-                                        <i data-lucide="users" class="w-3.5 h-3.5 text-gold"></i>
-                                    </div>
-                                    <div class="w-10 h-2 bg-white/20 rounded-full mb-2"></div>
-                                    <div class="w-16 h-4 bg-white/40 rounded-full"></div>
-                                </div>
-                                <div class="h-24 bg-[#061B30]/80 rounded-2xl border border-white/5 p-4 flex flex-col justify-end">
-                                    <div class="w-7 h-7 rounded-full bg-indigo-500/20 mb-auto flex items-center justify-center">
-                                        <i data-lucide="building" class="w-3.5 h-3.5 text-indigo-400"></i>
-                                    </div>
-                                    <div class="w-10 h-2 bg-white/20 rounded-full mb-2"></div>
-                                    <div class="w-16 h-4 bg-white/40 rounded-full"></div>
-                                </div>
-                            </div>
-
-                            <div class="h-32 bg-[#061B30]/80 rounded-2xl border border-white/5 p-4">
-                                <div class="w-full h-full border-b border-l border-white/10 relative flex items-end px-3 space-x-3">
-                                    <div class="w-1/4 bg-gradient-to-t from-gold/80 to-gold/20 h-[40%] rounded-t-md"></div>
-                                    <div class="w-1/4 bg-gradient-to-t from-gold/80 to-gold/20 h-[70%] rounded-t-md"></div>
-                                    <div class="w-1/4 bg-gradient-to-t from-gold/80 to-gold/20 h-[50%] rounded-t-md"></div>
-                                    <div class="w-1/4 bg-gradient-to-t from-gold/80 to-gold/20 h-[90%] rounded-t-md"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="border-glow-target" class="border-glow-card relative inline-flex items-center justify-center p-1 shadow-2xl scale-[0.8] lg:scale-85 origin-right ml-auto translate-x-12">
+                        <div class="border-glow-border"></div>
+                        <div class="border-glow-outer"></div>
+                        <img src="{{ asset('Logo_2.png') }}" alt="Sipinter Jabar" class="max-w-[300px] lg:max-w-[350px] h-auto rounded-[38px] drop-shadow-[0_0_15px_rgba(210,160,57,0.15)] z-20">
                     </div>
                 </div>
             </div>
@@ -183,6 +195,105 @@
 
     <script>
         lucide.createIcons();
+
+        // Variable Proximity Animation Logic
+        const container = document.querySelector('main');
+        const title = document.querySelector('#proximity-title');
+        const items = document.querySelectorAll('.proximity-item');
+        
+        // Wrap letters
+        items.forEach(item => {
+            const text = item.textContent.trim();
+            item.innerHTML = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.className = char === ' ' ? 'inline-block' : 'proximity-letter';
+                item.appendChild(span);
+            });
+        });
+
+        const letters = document.querySelectorAll('.proximity-letter');
+        const radius = 180;
+        const fromWght = 400;
+        const toWght = 900;
+
+        let mouseX = -1000;
+        let mouseY = -1000;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animate() {
+            letters.forEach(letter => {
+                const rect = letter.getBoundingClientRect();
+                const letterX = rect.left + rect.width / 2;
+                const letterY = rect.top + rect.height / 2;
+
+                const dist = Math.sqrt(Math.pow(mouseX - letterX, 2) + Math.pow(mouseY - letterY, 2));
+                
+                if (dist < radius) {
+                    const norm = 1 - (dist / radius);
+                    const falloff = Math.pow(norm, 2); // Exponential falloff for snappier feel
+                    const wght = fromWght + (toWght - fromWght) * falloff;
+                    
+                    letter.style.fontVariationSettings = `'wght' ${wght}`;
+                    
+                    // Add glow effect
+                    const glowIntensity = falloff * 15;
+                    const glowColor = letter.parentElement.classList.contains('text-gold') || letter.parentElement.classList.contains('from-gold') 
+                        ? 'rgba(210, 160, 57, ' + (norm * 0.8) + ')' 
+                        : 'rgba(255, 255, 255, ' + (norm * 0.6) + ')';
+                    
+                    letter.style.textShadow = `0 0 ${glowIntensity}px ${glowColor}`;
+                    letter.style.opacity = 1;
+                } else {
+                    letter.style.fontVariationSettings = `'wght' ${fromWght}`;
+                    letter.style.textShadow = 'none';
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        // Border Glow Logic
+        const card = document.querySelector('#border-glow-target');
+        if (card) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                
+                const dx = x - cx;
+                const dy = y - cy;
+                
+                const radians = Math.atan2(dy, dx);
+                let degrees = radians * (180 / Math.PI) + 90;
+                if (degrees < 0) degrees += 360;
+                
+                // Edge proximity logic simplified
+                const distToCenter = Math.sqrt(dx*dx + dy*dy);
+                const maxDist = Math.sqrt(cx*cx + cy*cy);
+                const proximity = Math.min(distToCenter / (maxDist * 0.7), 1);
+                
+                card.style.setProperty('--cursor-angle', `${degrees}deg`);
+                card.style.setProperty('--glow-opacity', proximity);
+            });
+            
+            card.addEventListener('mouseenter', () => {
+                card.style.setProperty('--glow-opacity', '1');
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.setProperty('--glow-opacity', '0');
+            });
+        }
     </script>
 </body>
 </html>
