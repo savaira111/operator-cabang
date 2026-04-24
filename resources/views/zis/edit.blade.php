@@ -32,7 +32,7 @@
                     @error('cabang_id') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="predikat">Predikat / Capaian</label>
                         <select name="predikat" id="predikat" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4">
@@ -44,9 +44,19 @@
                         @error('predikat') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="tahun">Tahun Perolehan</label>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="tahun">Tahun</label>
                         <input type="number" name="tahun" id="tahun" value="{{ old('tahun', $zi->tahun) }}" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4">
                         @error('tahun') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3" for="bulan">Bulan</label>
+                        <select name="bulan" id="bulan" class="w-full bg-[#061B30] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039] block p-4">
+                            <option value="B03" {{ old('bulan', $zi->bulan) == 'B03' ? 'selected' : '' }}>B03 (Maret)</option>
+                            <option value="B06" {{ old('bulan', $zi->bulan) == 'B06' ? 'selected' : '' }}>B06 (Juni)</option>
+                            <option value="B09" {{ old('bulan', $zi->bulan) == 'B09' ? 'selected' : '' }}>B09 (September)</option>
+                            <option value="B12" {{ old('bulan', $zi->bulan) == 'B12' ? 'selected' : '' }}>B12 (Desember)</option>
+                        </select>
+                        @error('bulan') <p class="text-rose-500 text-[10px] mt-2 font-bold uppercase tracking-tight">{{ $message }}</p> @enderror
                     </div>
                 </div>
 

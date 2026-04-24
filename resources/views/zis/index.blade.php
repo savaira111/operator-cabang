@@ -81,6 +81,11 @@ function filterTable() {
                     <td class="px-6 py-5">
                         <div class="flex items-center">
                             <span class="text-[13px] font-bold text-slate-300">{{ $zi->tahun }}</span>
+                            @if($zi->bulan)
+                            <span class="ml-2 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-slate-800 text-slate-400">
+                                {{ $zi->bulan }}
+                            </span>
+                            @endif
                         </div>
                     </td>
                     <td class="px-6 py-5">
@@ -91,13 +96,16 @@ function filterTable() {
                     </td>
                     <td class="px-6 py-5 text-right whitespace-nowrap">
                         <div class="flex items-center justify-end space-x-2 transition-all opacity-0 group-hover:opacity-100">
-                            <a href="{{ route('zis.edit', $zi) }}" class="p-2.5 text-slate-500 hover:text-[#D2A039] hover:bg-[#D2A039]/10 rounded-xl transition-all border border-transparent hover:border-[#D2A039]/20">
+                            <a href="{{ route('zis.show', $zi) }}" class="p-2.5 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-xl transition-all border border-transparent hover:border-blue-400/20" title="Kelola LKE Soal">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </a>
+                            <a href="{{ route('zis.edit', $zi) }}" class="p-2.5 text-slate-500 hover:text-[#D2A039] hover:bg-[#D2A039]/10 rounded-xl transition-all border border-transparent hover:border-[#D2A039]/20" title="Edit ZI">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </a>
                             <form action="{{ route('zis.destroy', $zi) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="p-2.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-xl transition-all border border-transparent hover:border-rose-400/20" onclick="confirmHapus(event, this.form)">
+                                <button type="submit" class="p-2.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-xl transition-all border border-transparent hover:border-rose-400/20" onclick="confirmHapus(event, this.form)" title="Hapus ZI">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>

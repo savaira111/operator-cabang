@@ -26,6 +26,7 @@ class ZiController extends Controller
             'cabang_id' => 'required|exists:cabangs,id',
             'predikat' => 'required|string|max:255',
             'tahun' => 'required|numeric|digits:4',
+            'bulan' => 'nullable|string|in:B03,B06,B09,B12',
             'keterangan' => 'nullable|string',
             'status' => 'required|string',
         ]);
@@ -51,6 +52,7 @@ class ZiController extends Controller
             'cabang_id' => 'required|exists:cabangs,id',
             'predikat' => 'required|string|max:255',
             'tahun' => 'required|numeric|digits:4',
+            'bulan' => 'nullable|string|in:B03,B06,B09,B12',
             'keterangan' => 'nullable|string',
             'status' => 'required|string',
         ]);
