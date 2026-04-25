@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Management Resiko')
-@section('page_title', 'Management Resiko')
+@section('title', 'Laporan Pengendalian Internal')
+@section('page_title', 'Laporan Pengendalian Internal')
 
 @section('content')
 <div class="flex items-center justify-between mb-8">
     <div>
-        <h3 class="text-3xl font-black text-white tracking-tighter">Daftar Resiko</h3>
-        <p class="text-slate-500 text-sm mt-1">Kelola dan pantau tingkat resiko operasional di tiap cabang.</p>
+        <h3 class="text-3xl font-black text-white tracking-tighter">Daftar Pengendalian Internal</h3>
+        <p class="text-slate-500 text-sm mt-1">Kelola dan pantau tingkat pengendalian internal operasional di tiap cabang.</p>
     </div>
     <a href="{{ route('resikos.create') }}" class="px-6 py-3 bg-rose-500 text-white font-bold rounded-2xl flex items-center hover:bg-rose-600 transition-all duration-300 shadow-xl shadow-rose-500/30 active:scale-95">
         <i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i>
-        Identifikasi Resiko
+        Identifikasi Pengendalian
     </a>
 </div>
 
@@ -19,7 +19,7 @@
     <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
         <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
     </div>
-    <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 block pl-14 p-4 transition-all" placeholder="Cari resiko atau cabang...">
+    <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 block pl-14 p-4 transition-all" placeholder="Cari laporan atau cabang...">
 </div>
 
 <script>
@@ -47,7 +47,7 @@ function filterTable() {
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">No</th>
-                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Nama Resiko</th>
+                    <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Nama Laporan</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Status Tingkat</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Cabang Terkait</th>
                     <th class="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Aksi</th>

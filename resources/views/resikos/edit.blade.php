@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Perbarui Resiko')
-@section('page_title', 'Perbarui Analisis Resiko')
+@section('title', 'Perbarui Laporan Pengendalian')
+@section('page_title', 'Perbarui Analisis Pengendalian')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-2xl font-black text-white tracking-tight">Perbarui Resiko</h3>
-            <p class="text-slate-500 text-sm mt-1">Perbarui analisis dan status mitigasi resiko operasional.</p>
+            <h3 class="text-2xl font-black text-white tracking-tight">Perbarui Laporan Pengendalian</h3>
+            <p class="text-slate-500 text-sm mt-1">Perbarui analisis dan status pengendalian internal operasional.</p>
         </div>
         <div class="flex items-center space-x-4">
             <div class="flex items-center px-4 py-3 bg-slate-800/80 rounded-2xl border border-slate-700/50">
@@ -27,7 +27,7 @@
         @method('PUT')
         <div class="space-y-8">
             <div>
-                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Resiko / Isu</label>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Laporan / Isu</label>
                 <input type="text" name="name" value="{{ $resiko->name }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: Kebocoran Data Sesi">
             </div>
 
@@ -52,13 +52,13 @@
             </div>
 
             <div>
-                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Analisis / Detail Resiko</label>
-                <textarea name="description" rows="4" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Jelaskan dampak dan mitigasi resiko ini...">{{ $resiko->description }}</textarea>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Analisis / Detail Laporan</label>
+                <textarea name="description" rows="4" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Jelaskan dampak dan mitigasi pengendalian ini...">{{ $resiko->description }}</textarea>
             </div>
             
             <div class="pt-6 flex space-x-4">
                 <button type="submit" class="px-10 py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-rose-500/20 active:scale-95">
-                    Perbarui Resiko
+                    Perbarui Laporan Pengendalian
                 </button>
             </div>
         </div>

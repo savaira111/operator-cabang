@@ -128,13 +128,23 @@
                 </a>
 
                 <!-- Section Label -->
-                <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data & Risiko</p>
+                <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Monitoring & Laporan</p>
+
+                <a href="{{ route('laporan.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">Rekap Pengendalian</span>
+                </a>
+
+                <!-- Section Label -->
+                <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
 
                 <a href="{{ route('resikos.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('resikos.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
                     </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Manajemen Resiko</span>
+                    <span class="text-[13px] font-semibold tracking-wide">Laporan Pengendalian Internal</span>
                 </a>
 
                 <a href="{{ route('tahanans.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') ? 'active' : '' }}">

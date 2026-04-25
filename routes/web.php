@@ -8,12 +8,14 @@ use App\Http\Controllers\ResikoController;
 use App\Http\Controllers\TahananController;
 use App\Http\Controllers\ZiController;
 use App\Http\Controllers\BelanjaSatkerController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('landing');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 use App\Http\Controllers\ZiSoalController;
 
 Route::resource('users', UserController::class);

@@ -37,7 +37,7 @@
             </div>
             <span class="text-[9px] font-black text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/10 uppercase tracking-widest">-3%</span>
         </div>
-        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Resiko Aktif</h3>
+        <h3 class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Pengendalian Aktif</h3>
         <p class="text-2xl font-black text-white tracking-tighter">{{ number_format($resikoCount) }}</p>
     </div>
 </div>
@@ -50,7 +50,7 @@
             <button class="text-[10px] font-black text-[#D2A039] hover:text-[#f9d77e] uppercase tracking-widest">Lihat Semua</button>
         </div>
         <div class="space-y-3">
-            @foreach(['Tingkat Resiko Diperbarui #2', 'Cabang Baru Ditambahkan: Bandung', 'Resiko Diselesaikan: Server #4'] as $activity)
+            @foreach(['Tingkat Pengendalian Diperbarui #2', 'Cabang Baru Ditambahkan: Bandung', 'Laporan Diselesaikan: Server #4'] as $activity)
             <div class="flex items-start group">
                 <div class="w-1.5 h-1.5 mt-1.5 rounded-full bg-[#D2A039] mr-3 group-hover:scale-150 transition-all shadow-[0_0_6px_rgba(210,160,57,0.6)]"></div>
                 <div>

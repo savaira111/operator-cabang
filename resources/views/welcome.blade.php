@@ -122,17 +122,13 @@
                         <p class="text-[7px] lg:text-[8px] text-slate-400 font-bold tracking-[0.1em] mt-1 uppercase">Sistem Pengendalian Internal Terpadu Jawa Barat</p>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <a href="{{ route('dashboard') }}" class="px-6 py-3 bg-transparent border-2 border-gold text-gold font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-gold hover:text-[#061B30] transition-all duration-300 shadow-[0_0_20px_rgba(210,160,57,0.15)] hover:shadow-[0_0_25px_rgba(210,160,57,0.4)]">
-                        Akses Dashboard
-                    </a>
-                </div>
+                <!-- Navbar actions removed -->
             </div>
         </div>
     </nav>
 
     <!-- Main Hero Section -->
-    <main class="flex-grow flex items-center pt-24 pb-16 relative z-10">
+    <main class="flex-grow flex items-center pt-40 pb-16 relative z-10">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <!-- Text Content -->
@@ -153,16 +149,13 @@
                     </h2>
 
                     <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-md font-medium border-l-4 border-gold/50 pl-4">
-                        Platform sentralisasi data operasional untuk mengelola, memantau, dan melaporkan aktivitas cabang, resiko, serta pusat pendataan secara *real-time* dan terstruktur.
+                        Platform sentralisasi data operasional untuk mengelola, memantau, dan melaporkan aktivitas cabang, pengendalian internal, serta pusat pendataan secara *real-time* dan terstruktur.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                        <a href="{{ route('dashboard') }}" class="px-6 py-3 bg-gold hover-bg-gold text-[#061B30] font-black text-[11px] uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(210,160,57,0.6)] hover:-translate-y-1 flex items-center justify-center group">
-                            Masuk Portal
-                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-2 group-hover:translate-x-2 transition-transform"></i>
-                        </a>
-                        <a href="#features" class="px-6 py-3 bg-transparent border border-white/20 text-white hover:border-white/50 hover:bg-white/5 font-bold text-[11px] uppercase tracking-widest rounded-2xl transition-all duration-300 flex items-center justify-center">
-                            Pelajari Fitur
+                    <div class="flex flex-col sm:flex-row">
+                        <a href="{{ route('dashboard') }}" class="px-8 py-4 bg-gold hover-bg-gold text-[#061B30] font-black text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(210,160,57,0.6)] hover:-translate-y-1 flex items-center justify-center group">
+                            Menuju Dashboard
+                            <i data-lucide="layout-dashboard" class="w-4 h-4 ml-3 group-hover:rotate-12 transition-transform"></i>
                         </a>
                     </div>
                 </div>

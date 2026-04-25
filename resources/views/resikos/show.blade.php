@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Resiko')
-@section('page_title', 'Informasi Detail Resiko')
+@section('title', 'Detail Laporan Pengendalian')
+@section('page_title', 'Informasi Detail Laporan Pengendalian')
 
 @section('content')
 <div class="w-full">
@@ -17,13 +17,13 @@
                 </div>
                 <div>
                     <h3 class="text-2xl font-black text-white tracking-tight">{{ $resiko->name }}</h3>
-                    <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Identitas Resiko Terdeteksi #{{ str_pad($resiko->id, 3, '0', STR_PAD_LEFT) }}</p>
+                    <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Identitas Laporan Terdeteksi #{{ str_pad($resiko->id, 3, '0', STR_PAD_LEFT) }}</p>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
                 <a href="{{ route('resikos.edit', $resiko) }}" class="flex items-center px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
                     <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
-                    <span class="text-xs uppercase tracking-widest">Ubah Resiko</span>
+                    <span class="text-xs uppercase tracking-widest">Ubah Laporan</span>
                 </a>
                 <a href="{{ route('resikos.index') }}" class="flex items-center px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95">
                     <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
@@ -38,12 +38,12 @@
                 <div class="bg-slate-800/20 border border-slate-800/50 rounded-3xl p-8">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-8 flex items-center">
                         <i data-lucide="alert-triangle" class="w-3 h-3 mr-2 text-rose-400"></i>
-                        Klasifikasi & Tingkat Resiko
+                        Klasifikasi & Tingkat Pengendalian
                     </h4>
                     
                     <div class="grid grid-cols-2 gap-y-8">
                         <div>
-                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Nama Identitas Resiko</p>
+                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Nama Identitas Laporan</p>
                             <p class="text-lg font-bold text-white tracking-tight">{{ $resiko->name }}</p>
                         </div>
                         <div>
@@ -57,7 +57,7 @@
                                 };
                             @endphp
                             <span class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border mt-1 {{ $badgeColor }}">
-                                {{ $resiko->status }} Risk
+                                {{ $resiko->status }}
                             </span>
                         </div>
                         <div>
@@ -77,10 +77,10 @@
                 <div class="bg-slate-800/20 border border-slate-800/50 rounded-3xl p-8">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center">
                         <i data-lucide="align-left" class="w-3 h-3 mr-2 text-rose-400"></i>
-                        Deskripsi & Analisa Singkat
+                        Deskripsi & Analisa Laporan
                     </h4>
                     <p class="text-slate-400 text-sm leading-relaxed whitespace-pre-line">
-                        {{ $resiko->description ?? 'Tidak ada deskripsi detail atau analisa tambahan mengenai resiko ini.' }}
+                        {{ $resiko->description ?? 'Tidak ada deskripsi detail atau analisa tambahan mengenai laporan ini.' }}
                     </p>
                 </div>
             </div>
@@ -102,12 +102,12 @@
                         @elseif($resiko->status == 'medium')
                         <div class="p-4 bg-amber-500/20 border border-amber-500/30 rounded-2xl">
                             <p class="text-[10px] font-black text-amber-400 uppercase mb-2">Pantau Berkala</p>
-                            <p class="text-[9px] text-slate-400">Lakukan pemantauan setiap minggu untuk memastikan resiko tidak naik.</p>
+                            <p class="text-[9px] text-slate-400">Lakukan pemantauan setiap minggu untuk memastikan tingkat pengendalian terjaga.</p>
                         </div>
                         @else
                         <div class="p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-2xl">
                             <p class="text-[10px] font-black text-emerald-400 uppercase mb-2">Operasi Normal</p>
-                            <p class="text-[9px] text-slate-400">Resiko rendah, cukup lakukan pencatatan dalam laporan bulanan.</p>
+                            <p class="text-[9px] text-slate-400">Tingkat rendah, cukup lakukan pencatatan dalam laporan bulanan.</p>
                         </div>
                         @endif
                     </div>
