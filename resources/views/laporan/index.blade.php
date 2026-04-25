@@ -13,8 +13,8 @@
                 FILTER LAPORAN
             </h3>
             <button type="button" onclick="openPrintModal()" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl transition-all shadow-xl shadow-emerald-500/20 active:scale-95 flex items-center justify-center uppercase tracking-widest text-[10px]">
-                <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
-                Cetak PDF
+                <i data-lucide="download" class="w-4 h-4 mr-2"></i>
+                Download PDF
             </button>
         </div>
         
@@ -186,50 +186,44 @@
     </div>
 
     <!-- Print Layout (Hidden on screen, shown on print) -->
-    <div id="printableArea" class="hidden print:block font-serif text-black p-4">
+    <div id="printableArea" class="hidden print:block p-10" style="color: #000000; background-color: #ffffff; font-family: 'Times New Roman', Times, serif;">
         @foreach($reportData as $data)
         <div class="mb-20 last:mb-0 page-break-after-always">
-            <!-- KOP -->
-            <div class="text-center border-b-2 border-black pb-4 mb-6">
-                <h1 class="text-xl font-bold uppercase">Kantor Wilayah Kemenkumham Jawa Barat</h1>
-                <p class="text-sm italic">Jl. Jakarta No. 27, Bandung, Jawa Barat</p>
+            <!-- Header Title -->
+            <div class="text-center mb-10">
+                <h1 class="text-2xl font-bold uppercase tracking-widest underline" style="color: #000000;">LAPORAN PENGENDALIAN INTERNAL</h1>
             </div>
 
-            <!-- Title -->
-            <div class="text-center mb-8">
-                <h2 class="text-lg font-bold underline uppercase">LAPORAN PENGENDALIAN INTERNAL</h2>
-            </div>
-
-            <!-- Info Section -->
-            <div class="mb-6 space-y-1 text-sm">
+            <!-- Info Section (Rata Kiri) -->
+            <div class="mb-8 space-y-2 text-base ml-2" style="color: #000000;">
                 <div class="flex">
-                    <span class="w-32">Nama Cabang</span>
-                    <span class="mr-2">:</span>
-                    <span class="font-bold">{{ $data['cabang'] }}</span>
+                    <span class="w-40 font-bold">Nama Cabang</span>
+                    <span class="mr-4">:</span>
+                    <span class="uppercase">{{ $data['cabang'] }}</span>
                 </div>
                 <div class="flex">
-                    <span class="w-32">Periode</span>
-                    <span class="mr-2">:</span>
-                    <span>{{ $data['periode'] }} / {{ $data['tahun'] }}</span>
+                    <span class="w-40 font-bold">Periode</span>
+                    <span class="mr-4">:</span>
+                    <span>{{ $data['periode'] }} / {{ $data['tahun'] }} (Bulan / Tahun)</span>
                 </div>
                 <div class="flex">
-                    <span class="w-32">Data</span>
-                    <span class="mr-2">:</span>
+                    <span class="w-40 font-bold">Data</span>
+                    <span class="mr-4">:</span>
                     <span>{{ $selectedJenis == 'all' ? 'All' : strtoupper($selectedJenis) }}</span>
                 </div>
             </div>
 
             <!-- Table -->
-            <table class="w-full border-collapse border border-black text-sm mb-12">
+            <table class="w-full border-collapse text-sm mb-12" style="border: 2px solid #000000; color: #000000;">
                 <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border border-black px-3 py-2 w-12 text-center">No</th>
-                        <th class="border border-black px-3 py-2 text-left">Data</th>
-                        <th class="border border-black px-3 py-2 text-center w-48">Kelengkapan Data</th>
-                        <th class="border border-black px-3 py-2 text-left">Keterangan</th>
+                    <tr style="background-color: #f3f4f6;">
+                        <th class="px-4 py-3 w-16 text-center uppercase font-bold" style="border: 2px solid #000000; color: #000000;">No</th>
+                        <th class="px-4 py-3 text-left uppercase font-bold" style="border: 2px solid #000000; color: #000000;">Data</th>
+                        <th class="px-4 py-3 text-center w-64 uppercase font-bold" style="border: 2px solid #000000; color: #000000;">Kelengkapan Data</th>
+                        <th class="px-4 py-3 text-left uppercase font-bold" style="border: 2px solid #000000; color: #000000;">Keterangan</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="color: #000000;">
                     @php $no = 1; @endphp
                     @foreach($data['modules'] as $module => $scores)
                         @php
@@ -241,15 +235,12 @@
                         @endphp
                         @if($shouldShow)
                         <tr>
-                            <td class="border border-black px-3 py-4 text-center">{{ $no++ }}</td>
-                            <td class="border border-black px-3 py-4 font-bold">{{ $module }}</td>
-                            <td class="border border-black px-3 py-4 text-center">
-                                <div class="flex flex-col items-center">
-                                    <span class="font-bold">{{ $scores['input'] }}%</span>
-                                    <span class="text-[10px] text-gray-500">Terlaksana</span>
-                                </div>
+                            <td class="px-4 py-6 text-center text-base" style="border: 2px solid #000000; color: #000000;">{{ $no++ }}</td>
+                            <td class="px-4 py-6 font-bold text-base" style="border: 2px solid #000000; color: #000000;">{{ $module }}</td>
+                            <td class="px-4 py-6 text-center text-base font-bold" style="border: 2px solid #000000; color: #000000;">
+                                {{ $scores['input'] }}%
                             </td>
-                            <td class="border border-black px-3 py-4 text-xs italic text-gray-400">
+                            <td class="px-4 py-6 text-sm italic" style="border: 2px solid #000000; color: #000000;">
                                 -
                             </td>
                         </tr>
@@ -259,13 +250,13 @@
             </table>
 
             <!-- Signature Section -->
-            <div class="flex justify-end text-right">
-                <div class="inline-block text-right">
-                    <p class="text-sm" id="displayKotaTanggal_{{ $loop->index }}">Bandung, {{ date('d F Y') }}</p>
-                    <p class="text-sm font-bold uppercase tracking-tight" id="displayInstansi_{{ $loop->index }}">Kantor Wilayah Kemenkumham Jawa Barat</p>
-                    <div class="h-24"></div>
-                    <p class="text-sm font-bold" id="displayNama_{{ $loop->index }}">( . . . . . . . . . . . . . . . . . . )</p>
-                    <p class="text-xs font-bold mt-1" id="displayNip_{{ $loop->index }}">NIP. ............................</p>
+            <div class="flex justify-end mt-20 pr-10" style="color: #000000;">
+                <div class="text-center min-w-[250px]">
+                    <p class="text-base mb-1" id="displayKotaTanggal_{{ $loop->index }}">Bandung, {{ date('d F Y') }}</p>
+                    <p class="text-base font-bold uppercase underline" id="displayInstansi_{{ $loop->index }}">Kantor Wilayah Kemenkumham Jawa Barat</p>
+                    <div class="h-32"></div>
+                    <p class="text-base font-bold underline" id="displayNama_{{ $loop->index }}">( . . . . . . . . . . . . . . . . . . )</p>
+                    <p class="text-sm font-bold mt-1" id="displayNip_{{ $loop->index }}">NIP. ............................</p>
                 </div>
             </div>
         </div>
@@ -277,7 +268,7 @@
 <div id="printModal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-sm bg-black/60">
     <div class="bg-[#111827] border border-slate-800 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl transform scale-95 transition-all duration-300" id="modalContent">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-black text-white tracking-tight uppercase">Pengaturan Cetak</h3>
+            <h3 class="text-lg font-black text-white tracking-tight uppercase">Pengaturan Download</h3>
             <button onclick="closePrintModal()" class="text-slate-500 hover:text-white transition-colors">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
@@ -297,7 +288,7 @@
             
             <div class="space-y-1.5">
                 <label class="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Instansi / Kantor</label>
-                <input type="text" id="inputInstansi" value="{{ auth()->user()->cabang->name ?? 'Kantor Wilayah Kemenkumham Jawa Barat' }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none">
+                <input type="text" id="inputInstansi" value="{{ auth()->user()->cabang->name ?? 'Kanwil Kemenkumham Jawa Barat' }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none">
             </div>
             
             <div class="space-y-1.5">
@@ -316,25 +307,50 @@
                 Batal
             </button>
             <button onclick="doPrint()" class="flex-1 px-5 py-3.5 bg-indigo-500 text-white font-black rounded-xl shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-600 active:scale-95 uppercase tracking-widest text-[9px]">
-                Cetak Laporan
+                Download Laporan
             </button>
         </div>
     </div>
 </div>
 
 <style>
+    /* Remove default browser header/footer (date, title, URL, page number) */
+    @page { margin: 0; }
+
     @media print {
-        body { background: white !important; color: black !important; }
-        aside, header, #sidebarToggle, form, .filter-header, button, #printModal, .bg-[#111827], main header { display: none !important; }
+        /* Hide everything by default */
+        body * { visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
+        
+        /* Show only the printable area */
+        #printableArea, #printableArea * { visibility: visible !important; height: auto !important; overflow: visible !important; }
+        
+        /* Layout adjustments for print */
+        #printableArea { 
+            position: absolute !important; 
+            left: 0 !important; 
+            top: 0 !important; 
+            width: 100% !important; 
+            display: block !important; 
+            background: white !important;
+            padding: 2cm !important; /* Add padding to replace the removed page margin */
+            margin: 0 !important;
+        }
+        
+        /* Force remove sidebar and navbar space */
+        aside, nav, header, button, .no-print { display: none !important; }
         main { padding: 0 !important; margin: 0 !important; width: 100% !important; background: white !important; }
-        .hidden.print\:block { display: block !important; }
-        .page-break-after-always { page-break-after: always; }
+        
+        .page-break-after-always { page-break-after: always !important; }
         
         /* Reset table styles for print */
-        table { width: 100% !important; border-collapse: collapse !important; }
-        th, td { border: 1px solid black !important; color: black !important; }
+        table { width: 100% !important; border-collapse: collapse !important; border: 2px solid black !important; }
+        th, td { border: 2px solid black !important; color: black !important; padding: 8px !important; }
+        th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; }
     }
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script>
     function openPrintModal() {
@@ -356,24 +372,181 @@
     }
 
     function doPrint() {
-        const kota = document.getElementById('inputKota').value;
-        const tanggal = document.getElementById('inputTanggal').value;
-        const instansi = document.getElementById('inputInstansi').value;
+        const kota = document.getElementById('inputKota').value || 'Bandung';
+        const tanggal = document.getElementById('inputTanggal').value || '{{ date('d F Y') }}';
+        const instansi = document.getElementById('inputInstansi').value || 'Kanwil Kemenkumham Jawa Barat';
         const nama = document.getElementById('inputNama').value || '............................';
         const nip = document.getElementById('inputNip').value || '............................';
 
-        // Update all signature sections in the printable area
-        @foreach($reportData as $index => $data)
-            document.getElementById('displayKotaTanggal_{{ $index }}').textContent = kota + ', ' + tanggal;
-            document.getElementById('displayInstansi_{{ $index }}').textContent = instansi;
-            document.getElementById('displayNama_{{ $index }}').textContent = '( ' + nama + ' )';
-            document.getElementById('displayNip_{{ $index }}').textContent = 'NIP. ' + nip;
-        @endforeach
-        
+        const reportData = {!! json_encode($reportData) !!};
+        const selectedJenis = '{{ $selectedJenis }}';
+
         closePrintModal();
-        setTimeout(() => {
-            window.print();
-        }, 500);
+
+        try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const isMultiCabang = reportData.length > 1;
+
+            // Judul Laporan
+            doc.setFont("times", "bold");
+            doc.setFontSize(16);
+            doc.text("LAPORAN PENGENDALIAN INTERNAL", 105, 25, { align: "center" });
+            doc.setLineWidth(0.5);
+            doc.line(55, 26, 155, 26); // Garis bawah judul
+
+            // Info Section
+            doc.setFont("times", "bold");
+            doc.setFontSize(11);
+            doc.text("Nama Cabang", 15, 40);
+            doc.text(":", 45, 40);
+            const namaCabangLabel = isMultiCabang ? "SEMUA CABANG" : String(reportData[0].cabang).toUpperCase();
+            doc.text(namaCabangLabel, 50, 40);
+
+            doc.text("Periode", 15, 47);
+            doc.text(":", 45, 47);
+            doc.setFont("times", "normal");
+            const rawPeriode = '{{ $selectedPeriode }}';
+            const tahunLaporan = '{{ $selectedTahun }}';
+            const periodeStr = (!rawPeriode || rawPeriode === 'all' || rawPeriode === '') ? "Semua Periode" : rawPeriode;
+            doc.text(periodeStr + " / " + tahunLaporan, 50, 47);
+
+            doc.setFont("times", "bold");
+            doc.text("Data", 15, 54);
+            doc.text(":", 45, 54);
+            doc.setFont("times", "normal");
+            const dataLabel = selectedJenis === 'all' ? 'All' : String(selectedJenis).toUpperCase();
+            doc.text(dataLabel, 50, 54);
+
+            // Siapkan Data Tabel
+            const tableBody = [];
+            let no = 1;
+            
+            reportData.forEach((data) => {
+                let visibleModules = [];
+                for (const [moduleName, scores] of Object.entries(data.modules)) {
+                    let shouldShow = selectedJenis === 'all' || 
+                        (selectedJenis === 'zi' && moduleName === 'Zona Integritas') ||
+                        (selectedJenis === 'resiko' && moduleName === 'Manajemen Resiko') ||
+                        (selectedJenis === 'tahanan' && moduleName === 'Data Tahanan') ||
+                        (selectedJenis === 'belanja' && moduleName === 'Belanja Satker');
+                        
+                    if (shouldShow) {
+                        visibleModules.push({ name: moduleName, input: scores.input });
+                    }
+                }
+
+                if (visibleModules.length > 0) {
+                    if (isMultiCabang) {
+                        visibleModules.forEach((mod, idx) => {
+                            if (idx === 0) {
+                                tableBody.push([
+                                    { content: no++, rowSpan: visibleModules.length, styles: { valign: 'middle', halign: 'center' } },
+                                    { content: data.cabang, rowSpan: visibleModules.length, styles: { valign: 'middle' } },
+                                    mod.name,
+                                    mod.input + '%',
+                                    '-'
+                                ]);
+                            } else {
+                                tableBody.push([
+                                    mod.name,
+                                    mod.input + '%',
+                                    '-'
+                                ]);
+                            }
+                        });
+                    } else {
+                        // Single cabang
+                        visibleModules.forEach((mod) => {
+                            tableBody.push([
+                                no++,
+                                mod.name,
+                                mod.input + '%',
+                                '-'
+                            ]);
+                        });
+                    }
+                }
+            });
+
+            const headColumns = isMultiCabang 
+                ? [['NO', 'CABANG', 'DATA', 'KELENGKAPAN', 'KETERANGAN']]
+                : [['NO', 'DATA', 'KELENGKAPAN DATA', 'KETERANGAN']];
+
+            const colStyles = isMultiCabang
+                ? {
+                    0: { halign: 'center', cellWidth: 10 },
+                    1: { fontStyle: 'bold', cellWidth: 50 },
+                    2: { fontStyle: 'bold' },
+                    3: { halign: 'center', fontStyle: 'bold', cellWidth: 30 },
+                    4: { fontStyle: 'italic', cellWidth: 30 }
+                  }
+                : {
+                    0: { halign: 'center', cellWidth: 15 },
+                    1: { fontStyle: 'bold' },
+                    2: { halign: 'center', fontStyle: 'bold', cellWidth: 45 },
+                    3: { fontStyle: 'italic', cellWidth: 35 }
+                  };
+
+            // Gambar Tabel
+            doc.autoTable({
+                startY: 62,
+                theme: 'grid',
+                headStyles: { 
+                    fillColor: [243, 244, 246], 
+                    textColor: [0, 0, 0], 
+                    font: 'times', 
+                    fontStyle: 'bold',
+                    lineColor: [0, 0, 0],
+                    lineWidth: 0.3,
+                    halign: 'center'
+                },
+                bodyStyles: { 
+                    textColor: [0, 0, 0], 
+                    font: 'times',
+                    lineColor: [0, 0, 0],
+                    lineWidth: 0.3,
+                },
+                columnStyles: colStyles,
+                head: headColumns,
+                body: tableBody,
+                margin: { left: 15, right: 15 }
+            });
+
+            // Tanda Tangan
+            let finalY = doc.lastAutoTable.finalY + 25; 
+            const rightAlignX = 195; 
+            
+            // Check if signature needs a new page to avoid breaking
+            if (finalY > 250) {
+                doc.addPage();
+                finalY = 30;
+            }
+
+            doc.setFont("times", "normal");
+            doc.setFontSize(11);
+            doc.text(kota + ", " + tanggal, rightAlignX - 15, finalY, { align: "right" });
+            
+            doc.setFont("times", "bold");
+            doc.text(String(instansi).toUpperCase(), rightAlignX - 15, finalY + 6, { align: "right" });
+            
+            doc.text("( " + nama + " )", rightAlignX - 15, finalY + 30, { align: "right" });
+            
+            doc.setFontSize(10);
+            doc.text("NIP. " + nip, rightAlignX - 15, finalY + 35, { align: "right" });
+
+            // Download PDF
+            doc.save('Laporan_Pengendalian_Internal.pdf');
+
+        } catch (err) {
+            console.error("PDF Engine Error: ", err);
+            alert("Terjadi kesalahan sistem saat memproses PDF. Error: " + err.message);
+        }
     }
 </script>
 @endsection
