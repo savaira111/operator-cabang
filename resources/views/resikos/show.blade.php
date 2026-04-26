@@ -16,8 +16,8 @@
                     <i data-lucide="shield-alert" class="w-8 h-8"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-black text-white tracking-tight">{{ $resiko->name }}</h3>
-                    <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Identitas Laporan Terdeteksi #{{ str_pad($resiko->id, 3, '0', STR_PAD_LEFT) }}</p>
+                    <h3 class="text-2xl font-black text-white tracking-tight">{{ $resiko->kode ?? 'WP. ' . $resiko->id }}</h3>
+                    <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Identitas Laporan Pengendalian</p>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -38,38 +38,28 @@
                 <div class="bg-slate-800/20 border border-slate-800/50 rounded-3xl p-8">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-8 flex items-center">
                         <i data-lucide="alert-triangle" class="w-3 h-3 mr-2 text-rose-400"></i>
-                        Klasifikasi & Tingkat Pengendalian
+                        Klasifikasi Laporan Pengendalian
                     </h4>
                     
                     <div class="grid grid-cols-2 gap-y-8">
                         <div>
-                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Nama Identitas Laporan</p>
-                            <p class="text-lg font-bold text-white tracking-tight">{{ $resiko->name }}</p>
+                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Pernyataan Risiko</p>
+                            <p class="text-sm font-bold text-white tracking-tight">{{ $resiko->pernyataan_risiko ?? ($resiko->name ?? '-') }}</p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Status Tingkatan</p>
-                            @php
-                                $badgeColor = match($resiko->status) {
-                                    'low' => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                                    'medium' => 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-                                    'high' => 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-                                    default => 'bg-slate-800 text-slate-500 border-slate-700'
-                                };
-                            @endphp
-                            <span class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border mt-1 {{ $badgeColor }}">
-                                {{ $resiko->status }}
+                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Kode Penyebab</p>
+                            <span class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border mt-1 bg-rose-500/10 text-rose-400 border-rose-500/20">
+                                {{ str_replace(' ', '', $resiko->kode) }}{{ $resiko->kode_penyebab_jenis }}.{{ $resiko->kode_penyebab_nomor }}
                             </span>
                         </div>
+
                         <div>
-                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Ditemukan di Cabang</p>
-                            <div class="flex items-center text-white font-bold mt-1">
-                                <i data-lucide="building-2" class="w-4 h-4 mr-2 text-slate-500"></i>
-                                {{ $resiko->cabang->name ?? 'N/A' }}
-                            </div>
+                            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Akar Penyebab</p>
+                            <p class="text-sm font-bold text-white mt-1">{{ $resiko->akar_penyebab ?? '-' }}</p>
                         </div>
                         <div>
                             <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Waktu Identifikasi</p>
-                            <p class="text-sm font-bold text-slate-300 mt-1 uppercase tracking-tighter">{{ $resiko->created_at->format('d F Y, H:i') }}</p>
+                            <p class="text-sm font-bold text-slate-300 mt-1 uppercase tracking-tighter">{{ $resiko->created_at->format('d F Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -77,53 +67,46 @@
                 <div class="bg-slate-800/20 border border-slate-800/50 rounded-3xl p-8">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center">
                         <i data-lucide="align-left" class="w-3 h-3 mr-2 text-rose-400"></i>
-                        Deskripsi & Analisa Laporan
+                        Analisis 5 Why
                     </h4>
-                    <p class="text-slate-400 text-sm leading-relaxed whitespace-pre-line">
-                        {{ $resiko->description ?? 'Tidak ada deskripsi detail atau analisa tambahan mengenai laporan ini.' }}
-                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-rose-400 font-bold mr-4">W1</span>
+                            <p class="text-slate-300 text-sm flex-1">{{ $resiko->why_1 ?? '-' }}</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-rose-400 font-bold mr-4">W2</span>
+                            <p class="text-slate-300 text-sm flex-1">{{ $resiko->why_2 ?? '-' }}</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-rose-400 font-bold mr-4">W3</span>
+                            <p class="text-slate-300 text-sm flex-1">{{ $resiko->why_3 ?? '-' }}</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-rose-400 font-bold mr-4">W4</span>
+                            <p class="text-slate-300 text-sm flex-1">{{ $resiko->why_4 ?? '-' }}</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-rose-400 font-bold mr-4">W5</span>
+                            <p class="text-slate-300 text-sm flex-1">{{ $resiko->why_5 ?? '-' }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Risk Sidebar -->
             <div class="space-y-8">
-                <div class="bg-gradient-to-br from-rose-500/10 to-amber-500/10 border border-rose-500/20 rounded-3xl p-8 shadow-inner overflow-hidden relative">
+                <div class="bg-gradient-to-br from-indigo-500/10 to-blue-500/10 border border-indigo-500/20 rounded-3xl p-8 shadow-inner overflow-hidden relative h-full">
                     <div class="absolute -right-8 -top-8 opacity-5">
-                         <i data-lucide="shield-alert" class="w-40 h-40"></i>
+                         <i data-lucide="check-circle" class="w-40 h-40"></i>
                     </div>
                     
-                    <h4 class="text-[10px] font-black text-rose-400 uppercase tracking-[0.2em] mb-8 text-center">Rekomendasi Tindakan</h4>
-                    <div class="flex flex-col items-center text-center space-y-6">
-                        @if($resiko->status == 'high')
-                        <div class="p-4 bg-rose-500/20 border border-rose-500/30 rounded-2xl">
-                            <p class="text-[10px] font-black text-rose-400 uppercase mb-2">Tindakan Segera</p>
-                            <p class="text-[9px] text-slate-400">Hubungi administrator pusat dan cabang terkait untuk mitigasi langsung.</p>
-                        </div>
-                        @elseif($resiko->status == 'medium')
-                        <div class="p-4 bg-amber-500/20 border border-amber-500/30 rounded-2xl">
-                            <p class="text-[10px] font-black text-amber-400 uppercase mb-2">Pantau Berkala</p>
-                            <p class="text-[9px] text-slate-400">Lakukan pemantauan setiap minggu untuk memastikan tingkat pengendalian terjaga.</p>
-                        </div>
-                        @else
-                        <div class="p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-2xl">
-                            <p class="text-[10px] font-black text-emerald-400 uppercase mb-2">Operasi Normal</p>
-                            <p class="text-[9px] text-slate-400">Tingkat rendah, cukup lakukan pencatatan dalam laporan bulanan.</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/10 border border-slate-800/50 rounded-3xl p-8">
-                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Audit Keamanan</h4>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase">Integritas Data</span>
-                            <span class="text-[10px] px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-black tracking-tighter">TERVERIFIKASI</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase">UpdateID</span>
-                            <span class="text-[10px] font-mono text-slate-600">R-{{ $resiko->id }}-OK</span>
-                        </div>
+                    <h4 class="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-6 flex items-center">
+                        <i data-lucide="shield-check" class="w-4 h-4 mr-2"></i>
+                        Kegiatan Pengendalian
+                    </h4>
+                    <div class="text-slate-300 text-sm leading-relaxed whitespace-pre-line relative z-10">
+                        {{ $resiko->kegiatan_pengendalian ?? ($resiko->description ?? 'Tidak ada kegiatan pengendalian detail.') }}
                     </div>
                 </div>
             </div>

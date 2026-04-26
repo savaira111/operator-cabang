@@ -140,7 +140,7 @@
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
 
-                <a href="{{ route('resikos.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('resikos.*') ? 'active' : '' }}">
+                <a href="{{ route('identifikasi-risiko.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
                     </span>

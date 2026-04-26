@@ -1,0 +1,77 @@
+@extends('layouts.app')
+
+@section('title', 'Identifikasi Risiko')
+@section('page_title', 'Perbarui Identifikasi Risiko')
+
+@section('content')
+<div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
+    <div class="mb-10 flex items-start justify-between">
+        <div>
+            <h3 class="text-2xl font-black text-white tracking-tight">Perbarui Identifikasi Risiko</h3>
+            <p class="text-slate-500 text-sm mt-1">Perbarui data laporan identifikasi risiko unit kerja.</p>
+        </div>
+        <a href="{{ route('identifikasi-risiko.index') }}" class="flex items-center px-6 py-3 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group">
+            <i data-lucide="x" class="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300"></i>
+            <span class="text-xs uppercase tracking-widest">Batal</span>
+        </a>
+    </div>
+
+    <form action="{{ route('identifikasi-risiko.update', $identifikasi_risiko) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="space-y-6">
+
+            <div class="grid grid-cols-2 gap-6">
+                <div class="col-span-2">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode Risiko</label>
+                    <input type="text" name="kode_risiko" value="{{ old('kode_risiko', $identifikasi_risiko->kode_risiko) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Contoh: R-01">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Konteks</label>
+                    <input type="text" name="jenis_konteks" value="{{ old('jenis_konteks', $identifikasi_risiko->jenis_konteks) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Masukkan jenis konteks...">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Konteks</label>
+                    <input type="text" name="nama_konteks" value="{{ old('nama_konteks', $identifikasi_risiko->nama_konteks) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Masukkan nama konteks...">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Indikator</label>
+                <textarea name="indikator" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none" placeholder="Masukkan indikator...">{{ old('indikator', $identifikasi_risiko->indikator) }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pernyataan Risiko</label>
+                <textarea name="pernyataan_risiko" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none" placeholder="Masukkan pernyataan risiko...">{{ old('pernyataan_risiko', $identifikasi_risiko->pernyataan_risiko) }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kategori Risiko</label>
+                    <input type="text" name="kategori_risiko" value="{{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Masukkan kategori risiko...">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Uraian Dampak</label>
+                <textarea name="uraian_dampak" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none" placeholder="Masukkan uraian dampak...">{{ old('uraian_dampak', $identifikasi_risiko->uraian_dampak) }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Metode Pencapaian Tujuan SPIP</label>
+                <textarea name="metode_pencapaian_tujuan_spip" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none" placeholder="Masukkan metode pencapaian...">{{ old('metode_pencapaian_tujuan_spip', $identifikasi_risiko->metode_pencapaian_tujuan_spip) }}</textarea>
+            </div>
+
+            <div class="pt-6 flex space-x-4">
+                <button type="submit" class="px-10 py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-blue-500/20 active:scale-95">
+                    Perbarui Identifikasi Risiko
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+@endsection

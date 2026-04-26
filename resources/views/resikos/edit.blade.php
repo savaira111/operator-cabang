@@ -25,35 +25,64 @@
     <form action="{{ route('resikos.update', $resiko) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="space-y-8">
+        <div class="space-y-6">
+
+
             <div>
-                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Laporan / Isu</label>
-                <input type="text" name="name" value="{{ $resiko->name }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: Kebocoran Data Sesi">
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pernyataan Risiko</label>
+                <textarea name="pernyataan_risiko" required rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Masukkan pernyataan risiko...">{{ $resiko->pernyataan_risiko ?? $resiko->name }}</textarea>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Tingkat Status</label>
-                    <select name="status" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
-                        <option value="low" {{ $resiko->status == 'low' ? 'selected' : '' }}>Low (Rendah)</option>
-                        <option value="medium" {{ $resiko->status == 'medium' ? 'selected' : '' }}>Medium (Sedang)</option>
-                        <option value="high" {{ $resiko->status == 'high' ? 'selected' : '' }}>High (Tinggi)</option>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Why 1</label>
+                    <input type="text" name="why_1" value="{{ $resiko->why_1 }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 outline-none" placeholder="...">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Why 2</label>
+                    <input type="text" name="why_2" value="{{ $resiko->why_2 }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 outline-none" placeholder="...">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Why 3</label>
+                    <input type="text" name="why_3" value="{{ $resiko->why_3 }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 outline-none" placeholder="...">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Why 4</label>
+                    <input type="text" name="why_4" value="{{ $resiko->why_4 }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 outline-none" placeholder="...">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Why 5</label>
+                    <input type="text" name="why_5" value="{{ $resiko->why_5 }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 outline-none" placeholder="...">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Akar Penyebab</label>
+                <input type="text" name="akar_penyebab" value="{{ $resiko->akar_penyebab }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Masukkan akar penyebab...">
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 border border-slate-700/50 p-6 rounded-2xl bg-slate-800/20">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Kode Penyebab</label>
+                    <select name="kode_penyebab_jenis" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
+                        <option value="" selected disabled hidden>-- Pilih Jenis --</option>
+                        <option value="MN" {{ $resiko->kode_penyebab_jenis == 'MN' ? 'selected' : '' }}>Orang (Man) : MN</option>
+                        <option value="MY" {{ $resiko->kode_penyebab_jenis == 'MY' ? 'selected' : '' }}>Dana (Money) : MY</option>
+                        <option value="MD" {{ $resiko->kode_penyebab_jenis == 'MD' ? 'selected' : '' }}>Metode (Method) : MD</option>
+                        <option value="MR" {{ $resiko->kode_penyebab_jenis == 'MR' ? 'selected' : '' }}>Bahan (Material) : MR</option>
+                        <option value="MC" {{ $resiko->kode_penyebab_jenis == 'MC' ? 'selected' : '' }}>Mesin (Machine) : MC</option>
+                        <option value="EX" {{ $resiko->kode_penyebab_jenis == 'EX' ? 'selected' : '' }}>Eksternal : EX</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Cabang Terdampak</label>
-                    <select name="cabang_id" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
-                        <option value="">-- Pilih Cabang --</option>
-                        @foreach($cabangs as $cabang)
-                            <option value="{{ $cabang->id }}" {{ $resiko->cabang_id == $cabang->id ? 'selected' : '' }}>{{ $cabang->name }}</option>
-                        @endforeach
-                    </select>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nomor Kode Penyebab</label>
+                    <input type="number" name="kode_penyebab_nomor" value="{{ $resiko->kode_penyebab_nomor }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
                 </div>
             </div>
 
             <div>
-                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Analisis / Detail Laporan</label>
-                <textarea name="description" rows="4" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Jelaskan dampak dan mitigasi pengendalian ini...">{{ $resiko->description }}</textarea>
+                <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kegiatan Pengendalian</label>
+                <textarea name="kegiatan_pengendalian" required rows="3" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Masukkan kegiatan pengendalian...">{{ $resiko->kegiatan_pengendalian ?? $resiko->description }}</textarea>
             </div>
             
             <div class="pt-6 flex space-x-4">
