@@ -18,7 +18,8 @@ class ResikoController extends Controller
     public function create()
     {
         $cabangs = \App\Models\Cabang::all();
-        return view('resikos.create', compact('cabangs'));
+        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')->get();
+        return view('resikos.create', compact('cabangs', 'analisis_risikos'));
     }
 
     public function show(\App\Models\Resiko $resiko)
@@ -61,7 +62,8 @@ class ResikoController extends Controller
     public function edit(\App\Models\Resiko $resiko)
     {
         $cabangs = \App\Models\Cabang::all();
-        return view('resikos.edit', compact('resiko', 'cabangs'));
+        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')->get();
+        return view('resikos.edit', compact('resiko', 'cabangs', 'analisis_risikos'));
     }
 
     public function update(Request $request, \App\Models\Resiko $resiko)

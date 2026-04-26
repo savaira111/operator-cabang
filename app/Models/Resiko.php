@@ -17,4 +17,19 @@ class Resiko extends Model
     {
         return $this->belongsTo(Cabang::class);
     }
+
+    public function rencanaTindak()
+    {
+        return $this->hasOne(RencanaTindakPengendalian::class, 'resiko_id');
+    }
+
+    public function reviuUsulan()
+    {
+        return $this->hasMany(ReviuUsulanRisiko::class, 'resiko_id');
+    }
+
+    public function evaluasiRisiko()
+    {
+        return $this->hasMany(EvaluasiRisiko::class, 'resiko_id');
+    }
 }

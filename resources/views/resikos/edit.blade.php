@@ -30,7 +30,16 @@
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pernyataan Risiko</label>
-                <textarea name="pernyataan_risiko" required rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Masukkan pernyataan risiko...">{{ $resiko->pernyataan_risiko ?? $resiko->name }}</textarea>
+                <select name="pernyataan_risiko" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
+                    <option value="" disabled hidden>-- Pilih Risiko Prioritas --</option>
+                    @foreach($analisis_risikos as $analisis)
+                        @if($analisis->identifikasiRisiko)
+                            <option value="{{ $analisis->identifikasiRisiko->pernyataan_risiko }}" {{ ($resiko->pernyataan_risiko ?? $resiko->name) == $analisis->identifikasiRisiko->pernyataan_risiko ? 'selected' : '' }}>
+                                [{{ $analisis->identifikasiRisiko->kode_risiko ?? '-' }}] {{ $analisis->identifikasiRisiko->pernyataan_risiko }}
+                            </option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">

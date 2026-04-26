@@ -26,4 +26,14 @@ class RencanaTindakPengendalian extends Model
     {
         return $this->belongsTo(Resiko::class, 'resiko_id');
     }
+
+    public function pemantauanKegiatan()
+    {
+        return $this->hasMany(PemantauanKegiatan::class, 'rencana_tindak_pengendalian_id');
+    }
+
+    public function rencanaBelumTerealisasi()
+    {
+        return $this->hasMany(RencanaBelumTerealisasi::class, 'rencana_tindak_pengendalian_id');
+    }
 }

@@ -25,6 +25,24 @@
     <a href="{{ route('rencana-tindak.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('rencana-tindak.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
         <i data-lucide="check-square" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 5. Rencana Tindak Pengendalian
     </a>
+    <a href="{{ route('pemantauan-kegiatan.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('pemantauan-kegiatan.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="bar-chart-2" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 6. Pemantauan Kegiatan
+    </a>
+    <a href="{{ route('pemantauan-peristiwa.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('pemantauan-peristiwa.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="alert-triangle" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 7. Pemantauan Peristiwa
+    </a>
+    <a href="{{ route('pemantauan-level.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('pemantauan-level.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="layers" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 8. Pemantauan Level Risiko
+    </a>
+    <a href="{{ route('reviu-usulan.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('reviu-usulan.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="clipboard-check" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 9. Reviu Usulan Risiko
+    </a>
+    <a href="{{ route('rencana-belum-terealisasi.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('rencana-belum-terealisasi.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="clock" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 10. Kegiatan Belum Realisasi
+    </a>
+    <a href="{{ route('evaluasi-risiko.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 active:scale-95 {{ request()->routeIs('evaluasi-risiko.*') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'bg-slate-800/40 text-slate-500 hover:bg-slate-800 hover:text-slate-300 border border-transparent' }}">
+        <i data-lucide="check-circle-2" class="w-4 h-4 inline-block mr-1 -mt-0.5"></i> 11. Hasil Evaluasi / Komentar
+    </a>
 </div>
 
 <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">

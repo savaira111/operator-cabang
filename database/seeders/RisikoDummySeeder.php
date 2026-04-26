@@ -8,6 +8,12 @@ use App\Models\IdentifikasiRisiko;
 use App\Models\AnalisisRisiko;
 use App\Models\Resiko;
 use App\Models\RencanaTindakPengendalian;
+use App\Models\PemantauanKegiatan;
+use App\Models\PemantauanPeristiwa;
+use App\Models\PemantauanLevelRisiko;
+use App\Models\ReviuUsulanRisiko;
+use App\Models\RencanaBelumTerealisasi;
+use App\Models\EvaluasiRisiko;
 
 class RisikoDummySeeder extends Seeder
 {
@@ -36,7 +42,7 @@ class RisikoDummySeeder extends Seeder
             'metode_pencapaian_tujuan_spip' => 'Peningkatan keamanan siber'
         ]);
 
-        AnalisisRisiko::create([
+        $ar1 = AnalisisRisiko::create([
             'identifikasi_risiko_id' => $id1->id,
             'frekuensi' => '4',
             'dampak' => '4',
@@ -48,6 +54,13 @@ class RisikoDummySeeder extends Seeder
             'skor_dampak_residu' => '4',
             'level_risiko_residu' => '15 - Sedang (3)'
         ]);
+
+        PemantauanLevelRisiko::create([
+            'analisis_risiko_id' => $ar1->id,
+            'deviasi' => 'Masih ditemukan celah keamanan pada sistem login meskipun server sudah di-patch.',
+            'rekomendasi' => 'Implementasi Multi-Factor Authentication (MFA) segera.',
+        ]);
+
 
         $resiko1 = Resiko::create([
             'cabang_id' => $cabang->id,
@@ -61,11 +74,20 @@ class RisikoDummySeeder extends Seeder
             'akar_penyebab' => 'Kurangnya kesadaran manajemen terhadap risiko siber',
             'kode_penyebab_jenis' => 'MN',
             'kode_penyebab_nomor' => 1,
-            'kegiatan_pengendalian' => 'Pembaruan server dan pelatihan staf IT',
+            'kegiatan_pengendalian' => 'Pembaruan server and pelatihan staf IT',
             'tahun' => date('Y')
         ]);
 
-        RencanaTindakPengendalian::create([
+        ReviuUsulanRisiko::create([
+            'resiko_id' => $resiko1->id,
+            'usulan_pernyataan_risiko' => 'Penambahan protokol Zero Trust Architecture pada jaringan internal',
+            'unit_pemilik_pengusul' => 'Andi Wijaya (Staf IT)',
+            'status' => 'Diterima',
+            'alasan_diterima' => 'Sesuai dengan rencana pengembangan keamanan siber tahun depan.',
+            'alasan_ditolak' => '-',
+        ]);
+
+        $rencana1 = RencanaTindakPengendalian::create([
             'resiko_id' => $resiko1->id,
             'rencana_tindak' => 'Migrasi ke server berbasis cloud dengan enkripsi standar industri',
             'waktu_pelaksanaan' => 'Triwulan III 2026',
@@ -76,6 +98,32 @@ class RisikoDummySeeder extends Seeder
             'frekuensi' => '2',
             'dampak' => '4',
             'level_risiko' => '9 - Rendah (2)'
+        ]);
+
+        $pk1 = PemantauanKegiatan::create([
+            'rencana_tindak_pengendalian_id' => $rencana1->id,
+            'realisasi_waktu' => 'Bulan September 2026',
+            'hambatan_kendala' => 'Terdapat kendala teknis kecil saat sinkronisasi data awal.',
+        ]);
+
+        RencanaBelumTerealisasi::create([
+            'rencana_tindak_pengendalian_id' => $rencana1->id,
+            'keterangan' => 'Belum terealisasi penuh karena keterbatasan akses ke data center pada minggu ke-4.',
+        ]);
+
+        EvaluasiRisiko::create([
+            'resiko_id' => $resiko1->id,
+            'pemilik_risiko' => 'Kepala Bagian IT',
+            'keterangan' => 'Pengendalian sudah cukup efektif, namun perlu percepatan implementasi MFA untuk menutup celah siber.',
+        ]);
+
+        PemantauanPeristiwa::create([
+            'pemantauan_kegiatan_id' => $pk1->id,
+            'uraian_peristiwa' => 'Percobaan serangan brute force pada server database utama',
+            'waktu_kejadian' => '12 September 2026',
+            'tempat_kejadian' => 'Data Center Lantai 2',
+            'skor_dampak' => 4,
+            'pemicu_peristiwa' => 'Port SSH terbuka secara publik selama migrasi sementara',
         ]);
 
         // Data 2: Risiko Pasokan Makanan
@@ -91,7 +139,7 @@ class RisikoDummySeeder extends Seeder
             'metode_pencapaian_tujuan_spip' => 'Manajemen Vendor'
         ]);
 
-        AnalisisRisiko::create([
+        $ar2 = AnalisisRisiko::create([
             'identifikasi_risiko_id' => $id2->id,
             'frekuensi' => '3',
             'dampak' => '5',
@@ -103,6 +151,13 @@ class RisikoDummySeeder extends Seeder
             'skor_dampak_residu' => '5',
             'level_risiko_residu' => '17 - Tinggi (4)'
         ]);
+
+        PemantauanLevelRisiko::create([
+            'analisis_risiko_id' => $ar2->id,
+            'deviasi' => 'Vendor baru masih dalam tahap penyesuaian jadwal pengiriman.',
+            'rekomendasi' => 'Pemberian SP-1 kepada vendor utama dan percepatan kontrak vendor cadangan.',
+        ]);
+
 
         $resiko2 = Resiko::create([
             'cabang_id' => $cabang->id,
@@ -120,7 +175,16 @@ class RisikoDummySeeder extends Seeder
             'tahun' => date('Y')
         ]);
 
-        RencanaTindakPengendalian::create([
+        ReviuUsulanRisiko::create([
+            'resiko_id' => $resiko2->id,
+            'usulan_pernyataan_risiko' => 'Pengadaan armada logistik mandiri milik satker',
+            'unit_pemilik_pengusul' => 'Siti Aminah (Kaur Umum)',
+            'status' => 'Ditolak',
+            'alasan_diterima' => '-',
+            'alasan_ditolak' => 'Anggaran tidak mencukupi untuk pembelian aset kendaraan tahun ini.',
+        ]);
+
+        $rencana2 = RencanaTindakPengendalian::create([
             'resiko_id' => $resiko2->id,
             'rencana_tindak' => 'Menambah vendor cadangan dan merevisi syarat kontrak logistik',
             'waktu_pelaksanaan' => 'Semester II 2026',
@@ -131,6 +195,27 @@ class RisikoDummySeeder extends Seeder
             'frekuensi' => '1',
             'dampak' => '5',
             'level_risiko' => '5 - Sangat Rendah (1)'
+        ]);
+
+        $pk2 = PemantauanKegiatan::create([
+            'rencana_tindak_pengendalian_id' => $rencana2->id,
+            'realisasi_waktu' => 'Bulan Juli 2026',
+            'hambatan_kendala' => 'Proses tender vendor cadangan mengalami sedikit penundaan.',
+        ]);
+
+        PemantauanPeristiwa::create([
+            'pemantauan_kegiatan_id' => $pk2->id,
+            'uraian_peristiwa' => 'Keterlambatan pengiriman bahan makanan selama 4 jam',
+            'waktu_kejadian' => '05 Juli 2026',
+            'tempat_kejadian' => 'Gerbang Logistik Cabang',
+            'skor_dampak' => 3,
+            'pemicu_peristiwa' => 'Armada vendor utama mengalami pecah ban di jalan tol',
+        ]);
+
+        EvaluasiRisiko::create([
+            'resiko_id' => $resiko2->id,
+            'pemilik_risiko' => 'Kepala Bagian Umum',
+            'keterangan' => 'Pengendalian cukup efektif menurunkan dampak, namun frekuensi keterlambatan masih perlu diawasi ketat.',
         ]);
 
         // Data 3: Risiko Kepatuhan Laporan
@@ -146,7 +231,7 @@ class RisikoDummySeeder extends Seeder
             'metode_pencapaian_tujuan_spip' => 'Digitalisasi Pelaporan'
         ]);
 
-        AnalisisRisiko::create([
+        $ar3 = AnalisisRisiko::create([
             'identifikasi_risiko_id' => $id3->id,
             'frekuensi' => '5',
             'dampak' => '3',
@@ -157,6 +242,12 @@ class RisikoDummySeeder extends Seeder
             'skor_probabilitas_residu' => '5',
             'skor_dampak_residu' => '3',
             'level_risiko_residu' => '17 - Tinggi (4)'
+        ]);
+
+        PemantauanLevelRisiko::create([
+            'analisis_risiko_id' => $ar3->id,
+            'deviasi' => 'Aplikasi akuntansi baru sering mengalami downtime saat jam sibuk.',
+            'rekomendasi' => 'Upgrade spesifikasi server hosting aplikasi akuntansi.',
         ]);
 
         $resiko3 = Resiko::create([
@@ -175,7 +266,16 @@ class RisikoDummySeeder extends Seeder
             'tahun' => date('Y')
         ]);
 
-        RencanaTindakPengendalian::create([
+        ReviuUsulanRisiko::create([
+            'resiko_id' => $resiko3->id,
+            'usulan_pernyataan_risiko' => 'Integrasi sistem pelaporan dengan API pusat untuk otomasi data',
+            'unit_pemilik_pengusul' => 'Bambang (Bendahara)',
+            'status' => 'Diterima',
+            'alasan_diterima' => 'Akan dikoordinasikan dengan tim IT pusat bulan depan.',
+            'alasan_ditolak' => '-',
+        ]);
+
+        $rencana3 = RencanaTindakPengendalian::create([
             'resiko_id' => $resiko3->id,
             'rencana_tindak' => 'Implementasi sistem ERP sederhana untuk pencatatan transaksi real-time',
             'waktu_pelaksanaan' => 'Triwulan IV 2026',
@@ -186,6 +286,27 @@ class RisikoDummySeeder extends Seeder
             'frekuensi' => '2',
             'dampak' => '3',
             'level_risiko' => '7 - Rendah (2)'
+        ]);
+
+        $pk3 = PemantauanKegiatan::create([
+            'rencana_tindak_pengendalian_id' => $rencana3->id,
+            'realisasi_waktu' => 'Terlaksana pada minggu ke-2 bulan Oktober',
+            'hambatan_kendala' => 'Proses adaptasi staf membutuhkan waktu sedikit lebih lama dari perkiraan.',
+        ]);
+
+        PemantauanPeristiwa::create([
+            'pemantauan_kegiatan_id' => $pk3->id,
+            'uraian_peristiwa' => 'Selisih saldo kas kecil sebesar Rp 500.000 pada laporan mingguan',
+            'waktu_kejadian' => '15 Oktober 2026',
+            'tempat_kejadian' => 'Ruang Administrasi Keuangan',
+            'skor_dampak' => 2,
+            'pemicu_peristiwa' => 'Human error saat input manual nota yang menumpuk',
+        ]);
+
+        EvaluasiRisiko::create([
+            'resiko_id' => $resiko3->id,
+            'pemilik_risiko' => 'Bendahara Cabang',
+            'keterangan' => 'Digitalisasi laporan sangat membantu akurasi, perlu pelatihan lanjutan bagi staf baru.',
         ]);
     }
 }
