@@ -80,7 +80,12 @@ function filterTable() {
 </script>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <style>
+            .overflow-x-auto::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
