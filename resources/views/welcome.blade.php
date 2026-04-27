@@ -100,6 +100,69 @@
             z-index: -1;
             filter: blur(20px);
         }
+
+        /* Mascot Card Styles (Accreditation Style) */
+        .mascot-card {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 10px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(210, 160, 57, 0.3);
+            animation: mascot-float 4s ease-in-out infinite;
+            pointer-events: auto;
+        }
+        .mascot-thumb {
+            width: 50px;
+            height: 50px;
+            background: #f0f4f8;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(210, 160, 57, 0.2);
+        }
+        .mascot-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1);
+        }
+        .mascot-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .mascot-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #061B30;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+        }
+        .mascot-subtitle {
+            font-size: 9px;
+            font-weight: 600;
+            color: #D2A039;
+            margin-top: 2px;
+        }
+        @keyframes mascot-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @media (max-width: 1024px) {
+            .mascot-card {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -166,6 +229,22 @@
                         <div class="border-glow-border"></div>
                         <div class="border-glow-outer"></div>
                         <img src="{{ asset('Logo_2.png') }}" alt="Sipinter Jabar" class="max-w-[300px] lg:max-w-[350px] h-auto rounded-[38px] drop-shadow-[0_0_15px_rgba(210,160,57,0.15)] z-20">
+                    </div>
+                    
+                    <!-- Mascot Card Addition -->
+                    <div class="mascot-card animate-in fade-in slide-in-from-right-12 duration-1000 delay-500">
+                        <div class="mascot-thumb">
+                            <img src="{{ asset('mascot.png') }}" alt="Maskot Sipinter">
+                        </div>
+                        <div class="mascot-text">
+                            <div class="flex items-center gap-1.5">
+                                <span class="mascot-title">Integritas Pelayanan</span>
+                                <div class="bg-green-500 rounded-full p-0.5">
+                                    <i data-lucide="check" class="w-2 h-2 text-white stroke-[4]"></i>
+                                </div>
+                            </div>
+                            <span class="mascot-subtitle">Terakreditasi Unggul</span>
+                        </div>
                     </div>
                 </div>
             </div>
