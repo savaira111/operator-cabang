@@ -13,7 +13,7 @@ class ZiMonitoringSeeder extends Seeder
         $cabang = Cabang::first();
         if (!$cabang) return;
 
-        // SS.1.1 - WARNA BIRU (Langsung jadi Root)
+        // SS.1.1 - WARNA BIRU (Root Sasaran Indikatif)
         $ss1_1 = ZiMonitoring::create([
             'cabang_id' => $cabang->id,
             'parent_id' => null,
@@ -38,8 +38,8 @@ class ZiMonitoringSeeder extends Seeder
         ZiMonitoring::create([
             'cabang_id' => $cabang->id,
             'parent_id' => $k2->id,
-            'tipe' => 'RK',
-            'nomor' => 'RK.2.2',
+            'tipe' => 'IO',
+            'nomor' => 'IO.2.2',
             'rincian_kegiatan' => 'Penggunaan Aplikasi Srikandi untuk persuratan masuk, keluar, pemberkasan dan penyusutan arsip',
             'indikator_output' => 'Jumlah Laporan Penggunaan Aplikasi Srikandi untuk persuratan masuk, keluar, pemberkasan dan penyusutan arsip',
             'target_output' => '1',
@@ -55,8 +55,8 @@ class ZiMonitoringSeeder extends Seeder
         ZiMonitoring::create([
             'cabang_id' => $cabang->id,
             'parent_id' => $k2->id,
-            'tipe' => 'RK',
-            'nomor' => 'RK.2.10',
+            'tipe' => 'IO',
+            'nomor' => 'IO.2.10',
             'rincian_kegiatan' => 'Pembentukan Tim Pengawasan Kearsipan',
             'indikator_output' => 'Jumlah dokumen SK Tim Pengawasan Kearsipan',
             'target_output' => '1',

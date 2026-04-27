@@ -15,7 +15,7 @@
         <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
             <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
         </div>
-        <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari rincian kegiatan atau sasaran...">
+        <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
     </div>
 
     <div class="flex items-center space-x-3 w-full sm:w-auto">
@@ -36,7 +36,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Indikator</th>
                     <th class="px-4 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center border-r border-slate-800/60">Target</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Outcome</th>
-                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Rincian Kegiatan</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Indikator Output (IO)</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Indikator Output</th>
                     <th class="px-4 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center border-r border-slate-800/60">Target</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Waktu</th>
@@ -50,42 +50,20 @@
             </thead>
             <tbody class="divide-y divide-slate-800/40">
                 @foreach($monitorings as $item)
-                    {{-- Row Sasaran Strategis (SS.x) --}}
-                    @if($item->tipe == 'SS1')
-                        <tr class="bg-amber-500/10 hover:bg-amber-500/15 transition-colors group">
-                            <td class="px-4 py-4 text-sm font-black text-amber-500 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
-                            <td colspan="13" class="px-6 py-4 text-sm font-black text-amber-400 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
-                            <td class="px-6 py-4 text-right">
-                                 <a href="{{ route('zi-monitoring.edit', $item) }}" class="p-2 text-slate-500 hover:text-amber-400 transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></a>
-                            </td>
-                        </tr>
-                    @endif
-
-                    {{-- Row Sasaran Indikatif (SS.x.y) --}}
+                    {{-- Row Sasaran Indikatif (SS2) --}}
                     @if($item->tipe == 'SS2')
                         <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
                             <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
-                            <td colspan="13" class="px-6 py-4 text-xs font-black text-blue-300">{{ $item->sasaran_kegiatan }}</td>
-                            <td class="px-6 py-4 text-right whitespace-nowrap">
-                                <a href="{{ route('zi-monitoring.edit', $item) }}" class="p-2 text-slate-500 hover:text-blue-400 transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></a>
+                            <td colspan="13" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
+                            <td class="px-6 py-4 text-right">
+                                 <a href="{{ route('zi-monitoring.edit', $item) }}" class="p-2 text-slate-500 hover:text-blue-400 transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></a>
                             </td>
                         </tr>
                     @endif
 
                     {{-- Recursive display for children if this is a root node --}}
                     @foreach($item->children as $child)
-                        @if($child->tipe == 'SS2')
-                            <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
-                                <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $child->nomor }}</td>
-                                <td colspan="13" class="px-6 py-4 text-xs font-black text-blue-300">{{ $child->sasaran_kegiatan }}</td>
-                                <td class="px-6 py-4 text-right whitespace-nowrap">
-                                    <a href="{{ route('zi-monitoring.edit', $child) }}" class="p-2 text-slate-500 hover:text-blue-400 transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></a>
-                                </td>
-                            </tr>
-                            @php $grandChildren = $child->children; @endphp
-                        @else
-                            @php $grandChildren = collect([$child]); @endphp
-                        @endif
+                        @php $grandChildren = collect([$child]); @endphp
 
                         @foreach($grandChildren as $k)
                             @if($k->tipe == 'K')
@@ -146,11 +124,11 @@
                                             </div>
                                         </td>
                                     @else
-                                        <td colspan="10" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada rincian kegiatan</td>
+                                        <td colspan="10" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada indikator output</td>
                                     @endif
                                 </tr>
                                 
-                                {{-- RK Lainnya --}}
+                                {{-- IO Lainnya --}}
                                 @foreach($k->children as $rk)
                                     @if($loop->first) @continue @endif
                                     <tr class="hover:bg-slate-800/20 transition-colors group text-xs align-top border-t border-slate-800/30">
