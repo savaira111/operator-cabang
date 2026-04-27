@@ -161,6 +161,20 @@
                     <span class="text-[13px] font-semibold tracking-wide">Penilaian Zona Integritas</span>
                 </a>
 
+                <a href="{{ route('zi-data-manage.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-data-manage.*') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="check-square" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">Kelola Data ZI</span>
+                </a>
+
+                <a href="{{ route('zi-data-fill.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-data-fill.*') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">Mengisi Data ZI</span>
+                </a>
+
                 <a href="{{ route('belanja-satker.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="shopping-cart" class="w-4 h-4"></i>

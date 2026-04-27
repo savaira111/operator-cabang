@@ -29,6 +29,14 @@ Route::resource('reviu-usulan', \App\Http\Controllers\ReviuUsulanRisikoControlle
 Route::resource('rencana-belum-terealisasi', \App\Http\Controllers\RencanaBelumTerealisasiController::class);
 Route::resource('evaluasi-risiko', \App\Http\Controllers\EvaluasiRisikoController::class);
 Route::resource('zi-monitoring', \App\Http\Controllers\ZiMonitoringController::class);
+Route::get('zi-data-manage', [\App\Http\Controllers\ZiDataManageController::class, 'index'])->name('zi-data-manage.index');
+Route::get('zi-data-manage/{id}', [\App\Http\Controllers\ZiDataManageController::class, 'show'])->name('zi-data-manage.show');
+Route::post('zi-data-manage/file/{fileId}/status', [\App\Http\Controllers\ZiDataManageController::class, 'updateFileStatus'])->name('zi-data-manage.update-file-status');
+
+Route::get('zi-data-fill', [\App\Http\Controllers\ZiDataFillController::class, 'index'])->name('zi-data-fill.index');
+Route::get('zi-data-fill/{id}/edit', [\App\Http\Controllers\ZiDataFillController::class, 'edit'])->name('zi-data-fill.edit');
+Route::post('zi-data-fill/{id}/upload', [\App\Http\Controllers\ZiDataFillController::class, 'upload'])->name('zi-data-fill.upload');
+
 Route::resource('identifikasi-risiko', \App\Http\Controllers\IdentifikasiRisikoController::class);
 Route::resource('analisis-risiko', \App\Http\Controllers\AnalisisRisikoController::class);
 Route::get('daftar-prioritas', [\App\Http\Controllers\DaftarPrioritasController::class, 'index'])->name('daftar-prioritas.index');

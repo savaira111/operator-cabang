@@ -41,6 +41,11 @@ class ZiMonitoring extends Model
         return $this->belongsTo(ZiMonitoring::class, 'parent_id');
     }
 
+    public function files()
+    {
+        return $this->hasMany(ZiMonitoringFile::class, 'zi_monitoring_id');
+    }
+
     public function children()
     {
         return $this->hasMany(ZiMonitoring::class, 'parent_id')->orderBy('nomor');
