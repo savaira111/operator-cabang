@@ -165,24 +165,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="bg-indigo-500/5 p-8 rounded-[2.5rem] border border-indigo-500/10 group hover:bg-indigo-500/10 transition-all">
                         <label class="flex items-center text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-5 ml-1">
-                            <i data-lucide="file-up" class="w-4 h-4 mr-2"></i>
-                            Data Dukung (File Bukti)
+                            <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
+                            Keterangan Data Dukung
                         </label>
-                        <input type="file" name="data_dukung" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-indigo-500 file:text-white hover:file:bg-indigo-600">
-                        @if($ziMonitoring->data_dukung)
-                            <div class="mt-4 flex items-center space-x-3 p-4 bg-[#0f172a] rounded-2xl border border-indigo-500/20 shadow-inner">
-                                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-                                    <i data-lucide="file-check" class="w-5 h-5 text-indigo-400"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <span class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-0.5">Dokumen Tersimpan</span>
-                                    <a href="{{ Storage::url($ziMonitoring->data_dukung) }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 font-bold text-xs flex items-center">
-                                        Lihat File Saat Ini
-                                        <i data-lucide="external-link" class="w-3 h-3 ml-1.5"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
+                        <textarea name="data_dukung" rows="4" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none shadow-inner">{{ $ziMonitoring->data_dukung }}</textarea>
+                        <p class="text-[10px] text-slate-500 mt-4 ml-1 italic leading-relaxed">Jelaskan jenis dokumen atau bukti dukung yang harus diunggah oleh pelaksana pada bagian pengisian data.</p>
                     </div>
                     <div class="bg-amber-500/5 p-8 rounded-[2.5rem] border border-amber-500/10 group hover:bg-amber-500/10 transition-all">
                         <label class="flex items-center text-[11px] font-black text-amber-400 uppercase tracking-widest mb-5 ml-1">

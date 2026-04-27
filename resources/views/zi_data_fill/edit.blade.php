@@ -94,8 +94,16 @@
                 </div>
 
                 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    {{-- File Status/Info --}}
-                    <div>
+                    {{-- Instruction and File Status --}}
+                    <div class="space-y-6">
+                        <div class="p-6 bg-indigo-500/5 border border-indigo-500/20 rounded-2xl shadow-inner">
+                            <label class="block text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-3 flex items-center">
+                                <i data-lucide="help-circle" class="w-3 h-3 mr-1.5"></i>
+                                Instruksi Data Dukung (Wajib Diunggah)
+                            </label>
+                            <p class="text-xs text-slate-300 font-bold leading-relaxed">{{ $item->data_dukung ?: 'Silakan unggah dokumen yang sesuai.' }}</p>
+                        </div>
+
                         @if($file)
                             <div class="space-y-6">
                                 <div class="flex items-center space-x-4 p-5 bg-slate-900/50 rounded-2xl border border-slate-800 shadow-inner">

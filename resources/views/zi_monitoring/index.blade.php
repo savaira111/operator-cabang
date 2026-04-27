@@ -103,15 +103,7 @@
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 w-56">
                                             <div class="flex flex-col gap-2">
-                                                <span class="px-3 py-2 rounded-xl text-[10px] font-black border {{ $firstRk->getStatusBadgeClass() }} text-center transition-all shadow-sm">
-                                                    {{ $firstRk->getStatusLabel() }}
-                                                </span>
-                                                @if($firstRk->data_dukung)
-                                                    <a href="{{ Storage::url($firstRk->data_dukung) }}" target="_blank" class="flex items-center justify-center space-x-2 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-blue-400 border border-slate-700 transition-all group">
-                                                        <i data-lucide="file-text" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
-                                                        <span class="font-bold tracking-tight">Lihat Bukti</span>
-                                                    </a>
-                                                @endif
+                                                <p class="text-[10px] text-slate-400 italic leading-relaxed">{{ $firstRk->data_dukung ?: 'Belum ditentukan' }}</p>
                                             </div>
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
@@ -163,15 +155,7 @@
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 w-56">
                                             <div class="flex flex-col gap-2">
-                                                <span class="px-3 py-2 rounded-xl text-[10px] font-black border {{ $rk->getStatusBadgeClass() }} text-center transition-all shadow-sm">
-                                                    {{ $rk->getStatusLabel() }}
-                                                </span>
-                                                @if($rk->data_dukung)
-                                                    <a href="{{ Storage::url($rk->data_dukung) }}" target="_blank" class="flex items-center justify-center space-x-2 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-blue-400 border border-slate-700 transition-all group">
-                                                        <i data-lucide="file-text" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
-                                                        <span class="font-bold tracking-tight">Lihat Bukti</span>
-                                                    </a>
-                                                @endif
+                                                <p class="text-[10px] text-slate-400 italic leading-relaxed">{{ $rk->data_dukung ?: 'Belum ditentukan' }}</p>
                                             </div>
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>

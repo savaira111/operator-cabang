@@ -35,6 +35,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Waktu</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Anggaran</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Penanggung Jawab</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Instruksi Data Dukung</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">File Terupload</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
@@ -92,6 +93,9 @@
                                                 <div class="flex flex-col"><span class="text-[9px] font-black text-slate-600 uppercase mb-0.5 tracking-widest italic">Koordinator</span><span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-[10px] font-bold border border-emerald-500/20">{{ $firstRk->koordinator }}</span></div>
                                             </div>
                                         </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 w-64">
+                                            <p class="text-[10px] text-slate-400 font-medium leading-relaxed italic">{{ $firstRk->data_dukung ?: 'Belum ada instruksi' }}</p>
+                                        </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 w-56">
                                             <div class="flex items-center gap-1.5">
                                                 @foreach($firstRk->files as $file)
@@ -147,6 +151,9 @@
                                                 <div class="flex flex-col"><span class="text-[9px] font-black text-slate-600 uppercase mb-0.5 tracking-widest italic">Pelaksana</span><span class="px-2 py-1 bg-indigo-500/10 text-indigo-400 rounded-lg text-[10px] font-bold border border-indigo-500/20">{{ $rk->pelaksana }}</span></div>
                                                 <div class="flex flex-col"><span class="text-[9px] font-black text-slate-600 uppercase mb-0.5 tracking-widest italic">Koordinator</span><span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-[10px] font-bold border border-emerald-500/20">{{ $rk->koordinator }}</span></div>
                                             </div>
+                                        </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 w-64">
+                                            <p class="text-[10px] text-slate-400 font-medium leading-relaxed italic">{{ $rk->data_dukung ?: 'Belum ada instruksi' }}</p>
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 w-56">
                                             <div class="flex items-center gap-1.5">

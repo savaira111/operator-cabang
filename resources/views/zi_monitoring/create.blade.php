@@ -132,6 +132,13 @@
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Indikator</label>
                             <input type="text" name="indikator" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
+                        <div class="space-y-4">
+                            <label class="block text-xs font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center">
+                                <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
+                                Keterangan Data Dukung
+                            </label>
+                            <textarea name="io_entries[0][data_dukung]" rows="2" class="w-full bg-[#0f172a] border border-slate-700 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all shadow-inner outline-none resize-none" placeholder="Tuliskan jenis dokumen yang harus diupload..."></textarea>
+                        </div>
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Target</label>
                             <input type="text" name="target" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
@@ -213,8 +220,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="pt-4 border-t border-slate-800/50">
-                    <div class="flex flex-wrap gap-2">
+                    <div class="pt-4 border-t border-slate-800/50">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Keterangan Data Dukung</label>
+                        <textarea name="io_entries[INDEX][data_dukung]" rows="2" class="w-full px-5 py-3 bg-[#0f172a] rounded-xl border border-slate-700 text-white text-[10px] resize-none outline-none focus:border-emerald-500/50" placeholder="Contoh: Laporan Penggunaan Aplikasi Srikandi..."></textarea>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/50">
+                        <div class="flex flex-wrap gap-2">
                         @foreach(['B03', 'B06', 'B09', 'B12'] as $b)
                             <label class="flex-1 flex items-center justify-center p-2 rounded-lg bg-[#0f172a] border border-slate-800 cursor-pointer group hover:border-emerald-500/50">
                                 <input type="checkbox" name="io_entries[INDEX][waktu_pelaksanaan][]" value="{{ $b }}" class="hidden peer">

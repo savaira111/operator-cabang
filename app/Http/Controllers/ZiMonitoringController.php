@@ -53,7 +53,7 @@ class ZiMonitoringController extends Controller
             'status_data_dukung' => 'nullable|in:sesuai,menunggu,tidak_sesuai,belum_ada',
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan' => 'nullable|string',
-            'data_dukung' => 'nullable|file|mimes:pdf,doc,docx,png,jpg,jpeg|max:10240',
+            'data_dukung' => 'nullable|string',
         ]);
 
         $validated['status_data_dukung'] = $validated['status_data_dukung'] ?? 'belum_ada';
@@ -95,11 +95,6 @@ class ZiMonitoringController extends Controller
         }
 
         $validated['parent_id'] = $parent_id;
-
-        if ($request->hasFile('data_dukung')) {
-            $path = $request->file('data_dukung')->store('zi_monitoring', 'public');
-            $validated['data_dukung'] = $path;
-        }
 
         if (isset($validated['waktu_pelaksanaan'])) {
             $validated['waktu_pelaksanaan'] = implode(',', $validated['waktu_pelaksanaan']);
@@ -164,7 +159,16 @@ class ZiMonitoringController extends Controller
                     $data['waktu_pelaksanaan'] = implode(',', $data['waktu_pelaksanaan']);
                 }
 
-                ZiMonitoring::create($data);
+                ZiMonitoring::create([
+                    'cabang_id' => $cabang_id,
+                    'parent_id' => $parent_id,
+                    'tipe' => 'IO',
+                    'nomor' => $entry['nomor'],
+                    'rincian_kegiatan' => $entry['rincian_kegiatan'],
+                    'status_data_dukung' => $entry['status_data_dukung'] ?? 'belum_ada',
+                    'data_dukung' => $entry['data_dukung'] ?? null,
+                    'prosentase' => 0,
+                ]);
             }
         }
 
@@ -208,7 +212,7 @@ class ZiMonitoringController extends Controller
             'status_data_dukung' => 'nullable|in:sesuai,menunggu,tidak_sesuai,belum_ada',
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan' => 'nullable|string',
-            'data_dukung' => 'nullable|file|mimes:pdf,doc,docx,png,jpg,jpeg|max:10240',
+            'data_dukung' => 'nullable|string',
         ]);
 
         $validated['status_data_dukung'] = $validated['status_data_dukung'] ?? $ziMonitoring->status_data_dukung;
@@ -221,14 +225,6 @@ class ZiMonitoringController extends Controller
             $parent_id = $request->ss_selection;
         }
         $validated['parent_id'] = $parent_id;
-
-        if ($request->hasFile('data_dukung')) {
-            if ($ziMonitoring->data_dukung) {
-                Storage::disk('public')->delete($ziMonitoring->data_dukung);
-            }
-            $path = $request->file('data_dukung')->store('zi_monitoring', 'public');
-            $validated['data_dukung'] = $path;
-        }
 
         if (isset($validated['waktu_pelaksanaan'])) {
             $validated['waktu_pelaksanaan'] = implode(',', $validated['waktu_pelaksanaan']);
@@ -243,9 +239,6 @@ class ZiMonitoringController extends Controller
 
     public function destroy(ZiMonitoring $ziMonitoring)
     {
-        if ($ziMonitoring->data_dukung) {
-            Storage::disk('public')->delete($ziMonitoring->data_dukung);
-        }
         $ziMonitoring->delete();
 
         return redirect()->route('zi-monitoring.index')->with('success', 'Data Monitoring Zi berhasil dihapus.');
