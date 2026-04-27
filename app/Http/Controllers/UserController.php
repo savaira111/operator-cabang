@@ -37,7 +37,7 @@ class UserController extends Controller
                 'regex:/[0-9]/',      // At least one digit
                 'regex:/[@$!%*#?&]/', // At least one special character
             ],
-            'role' => 'required|in:operator cabang,operator kanwil,operator admin',
+            'role' => 'required|in:operator cabang,operator kanwil',
             'cabang_id' => 'required_if:role,operator cabang|exists:cabangs,id|nullable',
         ]);
 
@@ -86,7 +86,7 @@ class UserController extends Controller
                 'regex:/[0-9]/',      // At least one digit
                 'regex:/[@$!%*#?&]/', // At least one special character
             ],
-            'role' => 'required|in:operator cabang,operator kanwil,operator admin',
+            'role' => 'required|in:operator cabang,operator kanwil',
             'cabang_id' => 'required_if:role,operator cabang|exists:cabangs,id|nullable',
         ]);
         

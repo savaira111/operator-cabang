@@ -14,19 +14,22 @@ class UserSeeder extends Seeder
     {
         $cabang = \App\Models\Cabang::first();
         
-        \App\Models\User::firstOrCreate(
+        // Update to Operator Kanwil (Previously Admin)
+        \App\Models\User::updateOrCreate(
             ['username' => 'admin'],
-            ['name' => 'Admin Utama', 'role' => 'operator admin', 'email' => 'admin@example.com', 'password' => bcrypt('password')]
+            ['name' => 'Administrator', 'role' => 'operator kanwil', 'email' => 'admin@example.com', 'password' => bcrypt('Sipinter@2026')]
         );
 
-        \App\Models\User::firstOrCreate(
+        // Operator Kanwil
+        \App\Models\User::updateOrCreate(
             ['username' => 'kanwil'],
-            ['name' => 'Staff Kanwil', 'role' => 'operator kanwil', 'email' => 'staff@example.com', 'password' => bcrypt('password')]
+            ['name' => 'Staff Kanwil', 'role' => 'operator kanwil', 'email' => 'staff@example.com', 'password' => bcrypt('Sipinter@2026')]
         );
 
-        \App\Models\User::firstOrCreate(
+        // Operator Cabang
+        \App\Models\User::updateOrCreate(
             ['username' => 'cabang'],
-            ['name' => 'Manager Cabang', 'role' => 'operator cabang', 'cabang_id' => $cabang->id ?? null, 'email' => 'manager@example.com', 'password' => bcrypt('password')]
+            ['name' => 'Operator Cabang', 'role' => 'operator cabang', 'cabang_id' => $cabang->id ?? null, 'email' => 'manager@example.com', 'password' => bcrypt('Sipinter@2026')]
         );
     }
 }

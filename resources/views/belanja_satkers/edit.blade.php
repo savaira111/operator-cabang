@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Belanja Satker')
-@section('page_title', 'Edit Belanja Satker')
+@section('title', 'Edit Penyerapan Anggaran')
+@section('page_title', 'Edit Penyerapan Anggaran')
 
 @section('content')
 <div class="max-w-2xl mx-auto">
@@ -10,8 +10,8 @@
             <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
             Kembali ke Daftar
         </a>
-        <h3 class="text-3xl font-black text-white tracking-tighter">Edit Belanja Satker</h3>
-        <p class="text-slate-500 text-sm mt-1">Perbarui data realisasi belanja satker.</p>
+        <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Edit Penyerapan Anggaran</h3>
+        <p class="text-slate-500 text-sm mt-1">Perbarui data realisasi penyerapan anggaran satker.</p>
     </div>
 
     <form action="{{ route('belanja-satker.update', $belanjaSatker) }}" method="POST" enctype="multipart/form-data" class="bg-[#031121] border border-[#D2A039]/20 rounded-[1.5rem] p-6 sm:p-8 shadow-xl">
@@ -53,7 +53,7 @@
 
             <!-- Total Nominal -->
             <div>
-                <label for="total" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Total Belanja (Rp) <span class="text-rose-500">*</span></label>
+                <label for="total" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Total Anggaran (Rp) <span class="text-rose-500">*</span></label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <span class="text-slate-500 font-bold">Rp</span>
@@ -72,7 +72,7 @@
 
             <!-- Upload Dokumen -->
             <div>
-                <label for="dokumen" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Upload Dokumen Belanja Baru (Opsional)</label>
+                <label for="dokumen" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Upload Dokumen Anggaran Baru (Opsional)</label>
                 <div class="relative group">
                     <input type="file" name="dokumen" id="dokumen" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-sm text-slate-400 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#D2A039]/10 file:text-[#D2A039] hover:file:bg-[#D2A039]/20 file:transition-all bg-[#111827] border border-slate-700 rounded-xl focus:outline-none focus:ring-[#D2A039]/20 focus:border-[#D2A039] transition-all cursor-pointer">
                 </div>

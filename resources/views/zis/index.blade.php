@@ -42,7 +42,12 @@ function filterTable() {
 </script>
 
 <div class="bg-[#031121] border border-[#D2A039]/20 rounded-[2rem] overflow-hidden shadow-2xl">
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <style>
+            .overflow-x-auto::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-[#D2A039]/5 border-b border-[#D2A039]/10">

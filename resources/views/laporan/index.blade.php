@@ -56,7 +56,7 @@
                     <option value="zi" {{ $selectedJenis == 'zi' ? 'selected' : '' }}>Zona Integritas</option>
                     <option value="resiko" {{ $selectedJenis == 'resiko' ? 'selected' : '' }}>Manajemen Resiko</option>
                     <option value="tahanan" {{ $selectedJenis == 'tahanan' ? 'selected' : '' }}>Data Tahanan</option>
-                    <option value="belanja" {{ $selectedJenis == 'belanja' ? 'selected' : '' }}>Belanja Satker</option>
+                    <option value="belanja" {{ $selectedJenis == 'belanja' ? 'selected' : '' }}>Penyerapan Anggaran</option>
                 </select>
             </div>
 
@@ -115,7 +115,7 @@
                                             ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
                                             ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
                                             ($selectedJenis == 'tahanan' && $module == 'Data Tahanan') ||
-                                            ($selectedJenis == 'belanja' && $module == 'Belanja Satker');
+                                            ($selectedJenis == 'belanja' && $module == 'Penyerapan Anggaran');
                                     @endphp
 
                                     @if($shouldShow)
@@ -148,7 +148,7 @@
                                             ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
                                             ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
                                             ($selectedJenis == 'tahanan' && $module == 'Data Tahanan') ||
-                                            ($selectedJenis == 'belanja' && $module == 'Belanja Satker');
+                                            ($selectedJenis == 'belanja' && $module == 'Penyerapan Anggaran');
                                     @endphp
 
                                     @if($shouldShow)
@@ -231,7 +231,7 @@
                                 ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
                                 ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
                                 ($selectedJenis == 'tahanan' && $module == 'Data Tahanan') ||
-                                ($selectedJenis == 'belanja' && $module == 'Belanja Satker');
+                                ($selectedJenis == 'belanja' && $module == 'Penyerapan Anggaran');
                         @endphp
                         @if($shouldShow)
                         <tr>
@@ -253,7 +253,7 @@
             <div class="flex justify-end mt-20 pr-10" style="color: #000000;">
                 <div class="text-center min-w-[250px]">
                     <p class="text-base mb-1" id="displayKotaTanggal_{{ $loop->index }}">Bandung, {{ date('d F Y') }}</p>
-                    <p class="text-base font-bold uppercase underline" id="displayInstansi_{{ $loop->index }}">Kantor Wilayah Kemenkumham Jawa Barat</p>
+                    <p class="text-base font-bold uppercase underline" id="displayInstansi_{{ $loop->index }}">Kanwil Ditjen Pemasyarakatan Jawa Barat</p>
                     <div class="h-32"></div>
                     <p class="text-base font-bold underline" id="displayNama_{{ $loop->index }}">( . . . . . . . . . . . . . . . . . . )</p>
                     <p class="text-sm font-bold mt-1" id="displayNip_{{ $loop->index }}">NIP. ............................</p>
@@ -288,7 +288,7 @@
             
             <div class="space-y-1.5">
                 <label class="block text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Instansi / Kantor</label>
-                <input type="text" id="inputInstansi" value="{{ auth()->user()->cabang->name ?? 'Kanwil Kemenkumham Jawa Barat' }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none">
+                <input type="text" id="inputInstansi" value="{{ auth()->user()->cabang->name ?? 'Kanwil Ditjen Pemasyarakatan Jawa Barat' }}" class="w-full px-4 py-3 bg-slate-800/50 rounded-xl border border-slate-700 text-sm text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none">
             </div>
             
             <div class="space-y-1.5">
@@ -374,7 +374,7 @@
     function doPrint() {
         const kota = document.getElementById('inputKota').value || 'Bandung';
         const tanggal = document.getElementById('inputTanggal').value || '{{ date('d F Y') }}';
-        const instansi = document.getElementById('inputInstansi').value || 'Kanwil Kemenkumham Jawa Barat';
+        const instansi = document.getElementById('inputInstansi').value || 'Kanwil Ditjen Pemasyarakatan Jawa Barat';
         const nama = document.getElementById('inputNama').value || '............................';
         const nip = document.getElementById('inputNip').value || '............................';
 
@@ -434,7 +434,7 @@
                         (selectedJenis === 'zi' && moduleName === 'Zona Integritas') ||
                         (selectedJenis === 'resiko' && moduleName === 'Manajemen Resiko') ||
                         (selectedJenis === 'tahanan' && moduleName === 'Data Tahanan') ||
-                        (selectedJenis === 'belanja' && moduleName === 'Belanja Satker');
+                        (selectedJenis === 'belanja' && moduleName === 'Penyerapan Anggaran');
                         
                     if (shouldShow) {
                         visibleModules.push({ name: moduleName, input: scores.input });

@@ -86,9 +86,66 @@
         /* Hide sidebar scrollbar */
         nav::-webkit-scrollbar { display: none; }
         nav { scrollbar-width: none; -ms-overflow-style: none; }
+
+        /* Page Transitions */
+        .page-transition-enter {
+            animation: pageEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes pageEnter {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px);
+                filter: blur(4px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Top Loading Bar */
+        #loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #D2A039, #f9d77e);
+            z-index: 9999;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(210,160,57,0.5);
+        }
+
+        /* Dropdown Animation */
+        .dropdown-container {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.4s ease;
+        }
+        .dropdown-container.show {
+            max-height: 200px;
+            opacity: 1;
+        }
+        .dropdown-item {
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .dropdown-container.show .dropdown-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        /* Staggered delay for items */
+        .dropdown-item:nth-child(1) { transition-delay: 0.1s; }
+        .dropdown-item:nth-child(2) { transition-delay: 0.15s; }
+        .dropdown-item:nth-child(3) { transition-delay: 0.2s; }
     </style>
 </head>
 <body class="bg-[#061B30] text-slate-300 antialiased">
+    <div id="loading-bar"></div>
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="bg-[#031121] border-r border-[#D2A039]/20 flex-shrink-0 flex flex-col">
@@ -127,25 +184,32 @@
                     <span class="text-[13px] font-semibold tracking-wide">Manajemen Cabang</span>
                 </a>
 
-                <!-- Section Label -->
-                <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Monitoring & Laporan</p>
-
-                <a href="{{ route('laporan.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Rekap Pengendalian</span>
-                </a>
+                <!-- Dropdown Kelola LPI -->
+                @if(auth()->user()?->role !== 'operator cabang')
+                <div class="sidebar-dropdown">
+                    <button onclick="toggleLpiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                            </span>
+                            <span class="text-[13px] font-semibold tracking-wide">Kelola LPI</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="lpiChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
+                    </button>
+                    
+                    <div id="lpiMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
+                        <a href="{{ route('laporan.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('laporan.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Rekap Pengendalian</span>
+                        </a>
+                        <a href="{{ route('identifikasi-risiko.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Laporan Internal</span>
+                        </a>
+                    </div>
+                </div>
+                @endif
 
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
-
-                <a href="{{ route('identifikasi-risiko.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Laporan Pengendalian Internal</span>
-                </a>
 
                 <a href="{{ route('tahanans.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
@@ -154,32 +218,36 @@
                     <span class="text-[13px] font-semibold tracking-wide">Data Tahanan</span>
                 </a>
 
-                <a href="{{ route('zi-monitoring.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-monitoring.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="award" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Penilaian Zona Integritas</span>
-                </a>
-
-                <a href="{{ route('zi-data-manage.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-data-manage.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="check-square" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Kelola Data ZI</span>
-                </a>
-
-                <a href="{{ route('zi-data-fill.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-data-fill.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="edit-3" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Mengisi Data ZI</span>
-                </a>
+                <!-- Dropdown Kelola Zona Integritas -->
+                <div class="sidebar-dropdown">
+                    <button onclick="toggleZiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-monitoring.*') || request()->routeIs('zi-data-manage.*') || request()->routeIs('zi-data-fill.*') ? 'bg-white/5' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                                <i data-lucide="award" class="w-4 h-4"></i>
+                            </span>
+                            <span class="text-[13px] font-semibold tracking-wide">Kelola Zona Integritas</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="ziChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('zi-monitoring.*') || request()->routeIs('zi-data-manage.*') || request()->routeIs('zi-data-fill.*') ? 'rotate-180' : '' }}"></i>
+                    </button>
+                    
+                    <div id="ziMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('zi-monitoring.*') || request()->routeIs('zi-data-manage.*') || request()->routeIs('zi-data-fill.*') ? 'show' : '' }}">
+                        <a href="{{ route('zi-monitoring.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-monitoring.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Penilaian ZI</span>
+                        </a>
+                        <a href="{{ route('zi-data-manage.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-data-manage.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Manajemen Data</span>
+                        </a>
+                        <a href="{{ route('zi-data-fill.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-data-fill.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Input Data ZI</span>
+                        </a>
+                    </div>
+                </div>
 
                 <a href="{{ route('belanja-satker.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                     </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Belanja Satker</span>
+                    <span class="text-[13px] font-semibold tracking-wide">Penyerapan Anggaran</span>
                 </a>
             </nav>
         </aside>
@@ -230,15 +298,17 @@
                 </div>
             </header>
 
-            <div class="p-8">
+            <div class="p-8 page-transition-enter">
                 @if(session('success'))
                     <div class="mb-6 p-4 bg-[#D2A039]/10 border border-[#D2A039]/20 text-[#D2A039] rounded-2xl flex items-center animate-in fade-in slide-in-from-top-4">
                         <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
                         <span class="text-sm font-medium">{{ session('success') }}</span>
                     </div>
                 @endif
-
-                @yield('content')
+                
+                <div class="content-wrapper">
+                    @yield('content')
+                </div>
             </div>
         </main>
     </div>
@@ -263,6 +333,34 @@
                 btn.innerHTML = '<i data-lucide="panel-left-open" class="w-4 h-4"></i>';
             }
             lucide.createIcons();
+        }
+
+        // Toggle Zi Dropdown Menu
+        function toggleZiMenu() {
+            const menu = document.getElementById('ziMenu');
+            const chevron = document.getElementById('ziChevron');
+            
+            if (!menu.classList.contains('show')) {
+                menu.classList.add('show');
+                chevron.classList.add('rotate-180');
+            } else {
+                menu.classList.remove('show');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        // Toggle Lpi Dropdown Menu
+        function toggleLpiMenu() {
+            const menu = document.getElementById('lpiMenu');
+            const chevron = document.getElementById('lpiChevron');
+            
+            if (!menu.classList.contains('show')) {
+                menu.classList.add('show');
+                chevron.classList.add('rotate-180');
+            } else {
+                menu.classList.remove('show');
+                chevron.classList.remove('rotate-180');
+            }
         }
 
         // Profile Dropdown Toggle
@@ -361,6 +459,27 @@
                 }
             });
         }
+
+        // Top Loading Bar Logic
+        window.addEventListener('beforeunload', function() {
+            const bar = document.getElementById('loading-bar');
+            bar.style.width = '30%';
+            setTimeout(() => {
+                bar.style.width = '70%';
+            }, 100);
+        });
+
+        window.addEventListener('load', function() {
+            const bar = document.getElementById('loading-bar');
+            bar.style.width = '100%';
+            setTimeout(() => {
+                bar.style.opacity = '0';
+                setTimeout(() => {
+                    bar.style.width = '0%';
+                    bar.style.opacity = '1';
+                }, 300);
+            }, 200);
+        });
     </script>
 </body>
 </html>

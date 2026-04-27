@@ -12,7 +12,16 @@ class DashboardController extends Controller
         $cabangCount = \App\Models\Cabang::count();
         $resikoCount = \App\Models\Resiko::count();
         $tahananCount = \App\Models\Tahanan::count();
+        $ziCount = \App\Models\ZiMonitoring::where('tipe', 'IO')->count();
+        $anggaranTotal = \App\Models\BelanjaSatker::sum('total');
 
-        return view('dashboard', compact('userCount', 'cabangCount', 'resikoCount', 'tahananCount'));
+        return view('dashboard', compact(
+            'userCount', 
+            'cabangCount', 
+            'resikoCount', 
+            'tahananCount', 
+            'ziCount', 
+            'anggaranTotal'
+        ));
     }
 }

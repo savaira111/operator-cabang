@@ -27,7 +27,12 @@
 </div>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <style>
+            .overflow-x-auto::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
         <table class="w-full text-left border-collapse min-w-[2000px]">
             <thead>
                 <tr class="bg-slate-800/40 border-b border-slate-800/60 backdrop-blur-md sticky top-0 z-10">

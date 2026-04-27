@@ -101,6 +101,19 @@
             filter: blur(20px);
         }
 
+        /* Top Loading Bar */
+        #loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #D2A039, #f9d77e);
+            z-index: 9999;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(210,160,57,0.5);
+        }
+
         /* Mascot Card Styles (Accreditation Style) */
         .mascot-card {
             position: absolute;
@@ -166,6 +179,7 @@
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <div id="loading-bar"></div>
     <!-- Ambient Kembaliground Glow -->
     <div class="glow-effect"></div>
 
@@ -216,9 +230,9 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row">
-                        <a href="{{ route('dashboard') }}" class="px-8 py-4 bg-gold hover-bg-gold text-[#061B30] font-black text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(210,160,57,0.6)] hover:-translate-y-1 flex items-center justify-center group">
-                            Menuju Dashboard
-                            <i data-lucide="layout-dashboard" class="w-4 h-4 ml-3 group-hover:rotate-12 transition-transform"></i>
+                        <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" class="px-8 py-4 bg-gold hover-bg-gold text-[#061B30] font-black text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(210,160,57,0.6)] hover:-translate-y-1 flex items-center justify-center group">
+                            {{ Auth::check() ? 'Menuju Dashboard' : 'Masuk Ke Sistem' }}
+                            <i data-lucide="{{ Auth::check() ? 'layout-dashboard' : 'log-in' }}" class="w-4 h-4 ml-3 group-hover:rotate-12 transition-transform"></i>
                         </a>
                     </div>
                 </div>
@@ -366,6 +380,27 @@
                 card.style.setProperty('--glow-opacity', '0');
             });
         }
+
+        // Top Loading Bar Logic
+        window.addEventListener('beforeunload', function() {
+            const bar = document.getElementById('loading-bar');
+            bar.style.width = '30%';
+            setTimeout(() => {
+                bar.style.width = '70%';
+            }, 100);
+        });
+
+        window.addEventListener('load', function() {
+            const bar = document.getElementById('loading-bar');
+            bar.style.width = '100%';
+            setTimeout(() => {
+                bar.style.opacity = '0';
+                setTimeout(() => {
+                    bar.style.width = '0%';
+                    bar.style.opacity = '1';
+                }, 300);
+            }, 200);
+        });
     </script>
 </body>
 </html>

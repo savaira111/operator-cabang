@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Belanja Satker')
-@section('page_title', 'Belanja Satker')
+@section('title', 'Penyerapan Anggaran')
+@section('page_title', 'Penyerapan Anggaran')
 
 @section('content')
 <div class="flex items-center justify-between mb-8">
     <div>
-        <h3 class="text-3xl font-black text-white tracking-tighter">Belanja Satker</h3>
-        <p class="text-slate-500 text-sm mt-1">Data realisasi belanja masing-masing cabang / satker.</p>
+        <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Penyerapan Anggaran</h3>
+        <p class="text-slate-500 text-sm mt-1">Data realisasi penyerapan anggaran masing-masing cabang / satker.</p>
     </div>
     <a href="{{ route('belanja-satker.create') }}" class="px-6 py-3 bg-[#D2A039] text-[#061B30] font-bold rounded-2xl flex items-center hover:bg-[#b88a2e] transition-all duration-300 shadow-xl shadow-[#D2A039]/20 active:scale-95">
         <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
@@ -103,7 +103,7 @@ function filterTable() {
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-4 py-8 text-center text-slate-500 text-sm">Belum ada data belanja satker.</td>
+                    <td colspan="7" class="px-4 py-8 text-center text-slate-500 text-sm">Belum ada data penyerapan anggaran.</td>
                 </tr>
                 @endforelse
             </tbody>

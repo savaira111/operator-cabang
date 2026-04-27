@@ -14,6 +14,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('landing');
 
+use App\Http\Controllers\LoginController;
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/forgot-password', [LoginController::class, 'showForgotPasswordForm'])->name('password.request');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 use App\Http\Controllers\ZiSoalController;
@@ -52,7 +58,4 @@ Route::get('/profile', function() {
     return view('profile');
 })->name('profile');
 
-Route::get('/logout', function() {
-    // Logic logout normally goes here
-    return redirect()->route('dashboard')->with('success', 'Anda berhasil keluar dari sistem');
-})->name('logout');
+// Logout handled by LoginController above
