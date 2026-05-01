@@ -12,7 +12,10 @@ class BelanjaSatker extends Model
         'tahun',
         'keterangan',
         'dokumen_path',
-        'total'
+        'total',
+        'status_evaluasi',
+        'prosentase',
+        'catatan_evaluasi'
     ];
 
     public function cabang()

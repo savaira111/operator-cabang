@@ -47,8 +47,14 @@ Route::resource('identifikasi-risiko', \App\Http\Controllers\IdentifikasiRisikoC
 Route::resource('analisis-risiko', \App\Http\Controllers\AnalisisRisikoController::class);
 Route::get('daftar-prioritas', [\App\Http\Controllers\DaftarPrioritasController::class, 'index'])->name('daftar-prioritas.index');
 Route::resource('tahanans', TahananController::class);
+Route::resource('penilaian-tahanan', \App\Http\Controllers\PenilaianTahananController::class);
 Route::resource('zis', ZiController::class);
+
 Route::resource('belanja-satker', BelanjaSatkerController::class);
+Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaController::class);
+
+Route::resource('laporan-pengendalian', \App\Http\Controllers\LaporanPengendalianController::class);
+Route::resource('penilaian-lpi', \App\Http\Controllers\PenilaianLpiController::class);
 
 Route::post('/zis/{zi}/soals', [ZiSoalController::class, 'store'])->name('zi_soals.store');
 Route::put('/zi_soals/{soal}', [ZiSoalController::class, 'update'])->name('zi_soals.update');

@@ -72,20 +72,31 @@ class LaporanController extends Controller
             $lpiEvalPct = EvaluasiRisiko::whereHas('resiko', fn($q) => $q->where('cabang_id', $cabang->id)->where('tahun', $selectedTahun))->exists() ? 100 : 0;
 
             // 3. Data Tahanan Logic
-            $tahananExists = Tahanan::where('cabang_id', $cabang->id)
+            $tahananQuery = Tahanan::where('cabang_id', $cabang->id)
                 ->where('periode_tahun', $selectedTahun)
-                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('periode_bulan', $selectedPeriode))
-                ->exists();
+                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('periode_bulan', $selectedPeriode));
+            
+            $tahananExists = $tahananQuery->exists();
             $tahananInputPct = $tahananExists ? 100 : 0;
-            $tahananEvalPct = $tahananExists ? 100 : 0;
+            $tahananEvalPct = $tahananExists ? round($tahananQuery->avg('prosentase')) : 0;
 
             // 4. Penyerapan Anggaran (Belanja Satker) Logic
-            $belanjaExists = BelanjaSatker::where('cabang_id', $cabang->id)
+            $belanjaQuery = BelanjaSatker::where('cabang_id', $cabang->id)
                 ->where('tahun', $selectedTahun)
-                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('bulan', $selectedPeriode))
-                ->exists();
+                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('bulan', $selectedPeriode));
+                
+            $belanjaExists = $belanjaQuery->exists();
             $belanjaInputPct = $belanjaExists ? 100 : 0;
-            $belanjaEvalPct = $belanjaExists ? 100 : 0;
+            $belanjaEvalPct = $belanjaExists ? round($belanjaQuery->avg('prosentase')) : 0;
+
+            // 5. LPI Tambahan Logic
+            $lpiTambahQuery = \App\Models\LaporanPengendalian::where('cabang_id', $cabang->id)
+                ->where('periode_tahun', $selectedTahun)
+                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('periode_bulan', $selectedPeriode));
+                
+            $lpiTambahExists = $lpiTambahQuery->exists();
+            $lpiTambahInputPct = $lpiTambahExists ? 100 : 0;
+            $lpiTambahEvalPct = $lpiTambahExists ? round($lpiTambahQuery->avg('prosentase')) : 0;
 
             $reportData[] = [
                 'cabang' => $cabang->name,
@@ -107,6 +118,10 @@ class LaporanController extends Controller
                     'Penyerapan Anggaran' => [
                         'input' => (int)$belanjaInputPct,
                         'evaluasi' => (int)$belanjaEvalPct
+                    ],
+                    'LPI Tambahan' => [
+                        'input' => (int)$lpiTambahInputPct,
+                        'evaluasi' => (int)$lpiTambahEvalPct
                     ],
                 ]
             ];

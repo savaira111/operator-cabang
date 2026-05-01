@@ -101,9 +101,10 @@
                 <textarea name="keterangan" rows="4" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Catatan khusus mengenai laporan ini...">{{ $tahanan->keterangan }}</textarea>
             </div>
             
-            <div class="pt-6">
-                <button type="submit" class="px-10 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95 uppercase tracking-widest text-sm">
-                    Simpan Perubahan Laporan
+            <div class="pt-10 border-t border-slate-800/60 mt-10">
+                <button type="submit" class="w-full md:w-auto px-12 py-5 bg-indigo-500 hover:bg-indigo-600 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95 uppercase tracking-widest text-xs flex items-center justify-center">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                    Update & Simpan Perubahan
                 </button>
             </div>
         </div>

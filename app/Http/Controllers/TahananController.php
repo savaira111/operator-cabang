@@ -109,6 +109,9 @@ class TahananController extends Controller
             'periode_tahun' => 'required|integer',
             'excel_file' => 'nullable|file|mimes:xlsx,xls,csv|max:5120',
             'keterangan' => 'nullable|string',
+            'status_evaluasi' => 'nullable|string',
+            'prosentase' => 'nullable|integer|min:0|max:100',
+            'catatan_evaluasi' => 'nullable|string',
         ]);
 
         // Handle File Update

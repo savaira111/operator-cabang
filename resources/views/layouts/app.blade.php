@@ -187,22 +187,25 @@
                 <!-- Dropdown Kelola LPI -->
                 @if(auth()->user()?->role !== 'operator cabang')
                 <div class="sidebar-dropdown">
-                    <button onclick="toggleLpiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
+                    <button onclick="toggleLpiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
                             <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                                 <i data-lucide="shield-alert" class="w-4 h-4"></i>
                             </span>
                             <span class="text-[13px] font-semibold tracking-wide">Kelola LPI</span>
                         </div>
-                        <i data-lucide="chevron-down" id="lpiChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
+                        <i data-lucide="chevron-down" id="lpiChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
                     </button>
                     
-                    <div id="lpiMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('laporan.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
+                    <div id="lpiMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
                         <a href="{{ route('laporan.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('laporan.*') ? 'text-[#D2A039] font-bold' : '' }}">
                             <span class="text-[12px] tracking-wide">Rekap Pengendalian</span>
                         </a>
                         <a href="{{ route('identifikasi-risiko.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'text-[#D2A039] font-bold' : '' }}">
                             <span class="text-[12px] tracking-wide">Laporan Internal</span>
+                        </a>
+                        <a href="{{ route('penilaian-lpi.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-lpi.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Penilaian LPI</span>
                         </a>
                     </div>
                 </div>
@@ -211,12 +214,27 @@
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
 
-                <a href="{{ route('tahanans.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="user-minus" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Data Tahanan</span>
-                </a>
+                <!-- Dropdown Data Tahanan -->
+                <div class="sidebar-dropdown">
+                    <button onclick="toggleTahananMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') ? 'bg-white/5' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                                <i data-lucide="user-minus" class="w-4 h-4"></i>
+                            </span>
+                            <span class="text-[13px] font-semibold tracking-wide">Data Tahanan</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="tahananChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('tahanans.*') ? 'rotate-180' : '' }}"></i>
+                    </button>
+                    
+                    <div id="tahananMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('tahanans.*') || request()->routeIs('penilaian-tahanan.*') ? 'show' : '' }}">
+                        <a href="{{ route('penilaian-tahanan.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-tahanan.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Penilaian Tahanan</span>
+                        </a>
+                        <a href="{{ route('tahanans.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('tahanans.index') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Tahanan Management</span>
+                        </a>
+                    </div>
+                </div>
 
                 <!-- Dropdown Kelola Zona Integritas -->
                 <div class="sidebar-dropdown">
@@ -243,12 +261,27 @@
                     </div>
                 </div>
 
-                <a href="{{ route('belanja-satker.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Penyerapan Anggaran</span>
-                </a>
+                <!-- Dropdown Penyelenggaraan Anggaran -->
+                <div class="sidebar-dropdown">
+                    <button onclick="toggleAnggaranMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') ? 'bg-white/5' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            </span>
+                            <span class="text-[13px] font-semibold tracking-wide">Penyelenggaraan Belanja Satker</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="anggaranChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('belanja-satker.*') ? 'rotate-180' : '' }}"></i>
+                    </button>
+                    
+                    <div id="anggaranMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'show' : '' }}">
+                        <a href="{{ route('penilaian-belanja.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-belanja.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Penilaian Belanja Satker</span>
+                        </a>
+                        <a href="{{ route('belanja-satker.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('belanja-satker.index') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Belanja Satker Management</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </aside>
 
@@ -353,6 +386,34 @@
         function toggleLpiMenu() {
             const menu = document.getElementById('lpiMenu');
             const chevron = document.getElementById('lpiChevron');
+            
+            if (!menu.classList.contains('show')) {
+                menu.classList.add('show');
+                chevron.classList.add('rotate-180');
+            } else {
+                menu.classList.remove('show');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        // Toggle Tahanan Dropdown Menu
+        function toggleTahananMenu() {
+            const menu = document.getElementById('tahananMenu');
+            const chevron = document.getElementById('tahananChevron');
+            
+            if (!menu.classList.contains('show')) {
+                menu.classList.add('show');
+                chevron.classList.add('rotate-180');
+            } else {
+                menu.classList.remove('show');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        // Toggle Anggaran Dropdown Menu
+        function toggleAnggaranMenu() {
+            const menu = document.getElementById('anggaranMenu');
+            const chevron = document.getElementById('anggaranChevron');
             
             if (!menu.classList.contains('show')) {
                 menu.classList.add('show');

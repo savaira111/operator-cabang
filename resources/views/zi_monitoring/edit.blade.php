@@ -177,14 +177,14 @@
                             Status & Progress Capaian
                         </label>
                         <div class="grid grid-cols-2 gap-4">
-                            <select name="status_data_dukung" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none">
+                            <select id="status_data_dukung" name="status_data_dukung" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none" onchange="updateProsentase()">
                                 <option value="belum_ada" {{ $ziMonitoring->status_data_dukung == 'belum_ada' ? 'selected' : '' }}>Belum Ada Data</option>
                                 <option value="menunggu" {{ $ziMonitoring->status_data_dukung == 'menunggu' ? 'selected' : '' }}>Menunggu Evaluasi</option>
                                 <option value="sesuai" {{ $ziMonitoring->status_data_dukung == 'sesuai' ? 'selected' : '' }}>Sesuai (Diterima)</option>
                                 <option value="tidak_sesuai" {{ $ziMonitoring->status_data_dukung == 'tidak_sesuai' ? 'selected' : '' }}>Tidak Sesuai</option>
                             </select>
                             <div class="relative">
-                                <input type="number" name="prosentase" min="0" max="100" value="{{ $ziMonitoring->prosentase }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none pl-14 font-black">
+                                <input type="number" id="prosentase" name="prosentase" min="0" max="100" value="{{ $ziMonitoring->prosentase }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none pl-14 font-black">
                                 <span class="absolute left-6 top-5 text-slate-500 font-black text-sm">%</span>
                             </div>
                         </div>
@@ -243,6 +243,22 @@
             if (k.id == currentKId) opt.selected = true;
             kSelect.appendChild(opt);
         });
+    }
+
+    function updateProsentase() {
+        const status = document.getElementById('status_data_dukung').value;
+        const prosentaseInput = document.getElementById('prosentase');
+        
+        const map = {
+            'belum_ada': 0,
+            'menunggu': 50,
+            'sesuai': 100,
+            'tidak_sesuai': 25
+        };
+        
+        if (map.hasOwnProperty(status)) {
+            prosentaseInput.value = map[status];
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {

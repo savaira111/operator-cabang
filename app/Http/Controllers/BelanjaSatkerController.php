@@ -56,6 +56,9 @@ class BelanjaSatkerController extends Controller
             'keterangan' => 'nullable|string',
             'total' => 'required|numeric|min:0',
             'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'status_evaluasi' => 'nullable|string',
+            'prosentase' => 'nullable|integer|min:0|max:100',
+            'catatan_evaluasi' => 'nullable|string',
         ]);
 
         if ($request->hasFile('dokumen')) {

@@ -16,6 +16,9 @@ class IdentifikasiRisiko extends Model
         'kategori_risiko',
         'uraian_dampak',
         'metode_pencapaian_tujuan_spip',
+        'status_evaluasi',
+        'prosentase',
+        'catatan_evaluasi',
     ];
 
     public function cabang()
