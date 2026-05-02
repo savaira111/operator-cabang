@@ -25,4 +25,14 @@ class IdentifikasiRisiko extends Model
     {
         return $this->belongsTo(Cabang::class);
     }
+
+    public function analisisRisiko()
+    {
+        return $this->hasOne(AnalisisRisiko::class, 'identifikasi_risiko_id');
+    }
+
+    public function resiko()
+    {
+        return $this->hasOne(Resiko::class, 'pernyataan_risiko', 'pernyataan_risiko');
+    }
 }

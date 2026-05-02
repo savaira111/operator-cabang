@@ -24,12 +24,20 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Cabang Satker</label>
-                    <select name="cabang_id" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
-                        <option value="" {{ is_null($ziMonitoring->cabang_id) ? 'selected' : '' }}>Semua Cabang (Global)</option>
-                        @foreach($cabangs as $c)
-                            <option value="{{ $c->id }}" {{ $ziMonitoring->cabang_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
-                        @endforeach
-                    </select>
+                    @if(auth()->user()->cabang_id)
+                        <div class="px-5 py-4 bg-[#0f172a]/50 rounded-2xl border border-slate-700/50 text-slate-400 font-bold flex items-center">
+                            <i data-lucide="building-2" class="w-4 h-4 mr-3 text-blue-400"></i>
+                            {{ auth()->user()->cabang->name }}
+                        </div>
+                        <input type="hidden" name="cabang_id" value="{{ auth()->user()->cabang_id }}">
+                    @else
+                        <select name="cabang_id" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
+                            <option value="" {{ is_null($ziMonitoring->cabang_id) ? 'selected' : '' }}>Semua Cabang (Global)</option>
+                            @foreach($cabangs as $c)
+                                <option value="{{ $c->id }}" {{ $ziMonitoring->cabang_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Tipe Level</label>

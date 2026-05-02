@@ -43,7 +43,15 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Konteks</label>
-                    <input type="text" name="jenis_konteks" value="{{ old('jenis_konteks', $identifikasi_risiko->jenis_konteks) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Masukkan jenis konteks...">
+                    <div class="relative group">
+                        <select name="jenis_konteks" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none appearance-none cursor-pointer">
+                            <option value="Sasaran Kegiatan" {{ old('jenis_konteks', $identifikasi_risiko->jenis_konteks) == 'Sasaran Kegiatan' ? 'selected' : '' }} class="bg-slate-900 text-white">Sasaran Kegiatan</option>
+                            <option value="Program Kerja" {{ old('jenis_konteks', $identifikasi_risiko->jenis_konteks) == 'Program Kerja' ? 'selected' : '' }} class="bg-slate-900 text-white">Program Kerja</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-blue-400 transition-colors">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Konteks</label>
@@ -64,7 +72,19 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kategori Risiko</label>
-                    <input type="text" name="kategori_risiko" value="{{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) }}" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Masukkan kategori risiko...">
+                    <div class="relative group">
+                        <select name="kategori_risiko" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none appearance-none cursor-pointer">
+                            <option value="Risiko Bencana" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Bencana' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Bencana</option>
+                            <option value="Risiko Kebijakan" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Kebijakan' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Kebijakan</option>
+                            <option value="Risiko Kecurangan" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Kecurangan' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Kecurangan</option>
+                            <option value="Risiko Kepatuhan" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Kepatuhan' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Kepatuhan</option>
+                            <option value="Risiko Operasional" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Operasional' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Operasional</option>
+                            <option value="Risiko Pemangku Kepentingan" {{ old('kategori_risiko', $identifikasi_risiko->kategori_risiko) == 'Risiko Pemangku Kepentingan' ? 'selected' : '' }} class="bg-slate-900 text-white">Risiko Pemangku Kepentingan</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-blue-400 transition-colors">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -58,6 +58,11 @@ class ZiMonitoringController extends Controller
 
         $validated['status_data_dukung'] = $validated['status_data_dukung'] ?? 'belum_ada';
 
+        // Auto-fill cabang_id if user has one
+        if (auth()->user()->cabang_id) {
+            $validated['cabang_id'] = auth()->user()->cabang_id;
+        }
+
         // Determine Parent ID from hierarchy selection if provided
         $parent_id = null;
 
@@ -216,6 +221,11 @@ class ZiMonitoringController extends Controller
         ]);
 
         $validated['status_data_dukung'] = $validated['status_data_dukung'] ?? $ziMonitoring->status_data_dukung;
+
+        // Auto-fill cabang_id if user has one
+        if (auth()->user()->cabang_id) {
+            $validated['cabang_id'] = auth()->user()->cabang_id;
+        }
 
         // Handle Parent ID from hierarchical selects
         $parent_id = $request->parent_id;

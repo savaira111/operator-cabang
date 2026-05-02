@@ -7,11 +7,31 @@ use Illuminate\Http\Request;
 
 class PenilaianLpiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Penilaian LPI sekarang menilai data Identifikasi Risiko (Laporan Internal)
-        $identifikasi_risikos = IdentifikasiRisiko::with('cabang')->latest()->get();
-        return view('penilaian_lpis.index', compact('identifikasi_risikos'));
+        $step = $request->get('step', 11);
+        $query = IdentifikasiRisiko::with([
+            'cabang', 
+            'analisisRisiko', 
+            'resiko.rencanaTindak.pemantauanKegiatan',
+            'resiko.rencanaTindak.rencanaBelumTerealisasi',
+            'resiko.reviuUsulan',
+        ]);
+
+        if ($request->filled('search')) {
+            $query->where('pernyataan_risiko', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('cabang_id')) {
+            $query->where('cabang_id', $request->cabang_id);
+        }
+        if ($request->filled('status_evaluasi')) {
+            $query->where('status_evaluasi', $request->status_evaluasi);
+        }
+
+        $identifikasi_risikos = $query->latest()->get();
+        $cabangs = \App\Models\Cabang::all();
+
+        return view('penilaian_lpis.index', compact('identifikasi_risikos', 'cabangs', 'step'));
     }
 
     public function edit(IdentifikasiRisiko $penilaian_lpi)

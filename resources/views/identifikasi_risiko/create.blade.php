@@ -36,7 +36,16 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Konteks</label>
-                    <input type="text" name="jenis_konteks" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Masukkan jenis konteks...">
+                    <div class="relative group">
+                        <select name="jenis_konteks" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                            <option value="" disabled selected class="bg-slate-900 text-slate-400">Pilih jenis konteks...</option>
+                            <option value="Sasaran Kegiatan" class="bg-slate-900 text-white">Sasaran Kegiatan</option>
+                            <option value="Program Kerja" class="bg-slate-900 text-white">Program Kerja</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-rose-400 transition-colors">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Konteks</label>
@@ -57,7 +66,20 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kategori Risiko</label>
-                    <input type="text" name="kategori_risiko" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Masukkan kategori risiko...">
+                    <div class="relative group">
+                        <select name="kategori_risiko" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                            <option value="" disabled selected class="bg-slate-900 text-slate-400">Pilih kategori risiko...</option>
+                            <option value="Risiko Bencana" class="bg-slate-900 text-white">Risiko Bencana</option>
+                            <option value="Risiko Kebijakan" class="bg-slate-900 text-white">Risiko Kebijakan</option>
+                            <option value="Risiko Kecurangan" class="bg-slate-900 text-white">Risiko Kecurangan</option>
+                            <option value="Risiko Kepatuhan" class="bg-slate-900 text-white">Risiko Kepatuhan</option>
+                            <option value="Risiko Operasional" class="bg-slate-900 text-white">Risiko Operasional</option>
+                            <option value="Risiko Pemangku Kepentingan" class="bg-slate-900 text-white">Risiko Pemangku Kepentingan</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-rose-400 transition-colors">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
