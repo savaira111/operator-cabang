@@ -19,10 +19,7 @@
     </div>
 
     <div class="flex items-center space-x-3 w-full sm:w-auto">
-        <a href="{{ route('zi-monitoring.create') }}" class="flex-1 sm:flex-none px-6 py-4 bg-blue-500 text-white font-bold rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 shadow-xl shadow-blue-500/30 active:scale-95 group">
-            <i data-lucide="plus-circle" class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform"></i>
-            Create New
-        </a>
+        {{-- Button Create New dihapus sesuai permintaan --}}
     </div>
 </div>
 

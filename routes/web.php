@@ -56,9 +56,13 @@ Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaContr
 Route::resource('laporan-pengendalian', \App\Http\Controllers\LaporanPengendalianController::class);
 Route::resource('penilaian-lpi', \App\Http\Controllers\PenilaianLpiController::class);
 
-Route::post('/zis/{zi}/soals', [ZiSoalController::class, 'store'])->name('zi_soals.store');
-Route::put('/zi_soals/{soal}', [ZiSoalController::class, 'update'])->name('zi_soals.update');
-Route::delete('/zi_soals/{soal}', [ZiSoalController::class, 'destroy'])->name('zi_soals.destroy');
+Route::get('master-resiko', [\App\Http\Controllers\MasterResikoController::class, 'index'])->name('master-resiko.index');
+Route::post('master-resiko/risk', [\App\Http\Controllers\MasterResikoController::class, 'storeRisk'])->name('master-resiko.store-risk');
+Route::put('master-resiko/risk/{risk}', [\App\Http\Controllers\MasterResikoController::class, 'updateRisk'])->name('master-resiko.update-risk');
+Route::delete('master-resiko/risk/{risk}', [\App\Http\Controllers\MasterResikoController::class, 'destroyRisk'])->name('master-resiko.destroy-risk');
+Route::post('master-resiko/cause', [\App\Http\Controllers\MasterResikoController::class, 'storeCause'])->name('master-resiko.store-cause');
+Route::put('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'updateCause'])->name('master-resiko.update-cause');
+Route::delete('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'destroyCause'])->name('master-resiko.destroy-cause');
 
 Route::get('/profile', function() {
     return view('profile');

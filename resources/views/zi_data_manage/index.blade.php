@@ -10,14 +10,21 @@
 </div>
 
 <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
-<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-    <div class="relative group w-full max-w-md">
-        <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-            <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div class="relative group w-full max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+            </div>
+            <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
         </div>
-        <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
+
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <a href="{{ route('zi-monitoring.create') }}" class="flex-1 sm:flex-none px-6 py-4 bg-emerald-500 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-all duration-300 shadow-xl shadow-emerald-500/20 active:scale-95 group">
+                <i data-lucide="plus-circle" class="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform"></i>
+                Tambah Data ZI
+            </a>
+        </div>
     </div>
-</div>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
     <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
@@ -54,7 +61,21 @@
                             <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
                             <td colspan="13" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
                             <td class="px-6 py-4 text-right">
-                                 <a href="{{ route('zi-data-manage.show', $item->id) }}" class="p-2 text-slate-500 hover:text-blue-400 transition-all"><i data-lucide="eye" class="w-4 h-4"></i></a>
+                                <div class="flex items-center justify-end space-x-2">
+                                    <a href="{{ route('zi-data-manage.show', $item->id) }}" class="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all" title="Verifikasi">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </a>
+                                    <a href="{{ route('zi-monitoring.edit', $item->id) }}" class="p-2 text-slate-500 hover:text-amber-400 hover:bg-amber-400/10 rounded-lg transition-all" title="Edit">
+                                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                    </a>
+                                    <form action="{{ route('zi-monitoring.destroy', $item->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all" onclick="return confirm('Hapus data ini?')" title="Hapus">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endif
@@ -107,9 +128,21 @@
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
                                         <td class="px-6 py-6 text-right">
-                                            <a href="{{ route('zi-data-manage.show', $firstRk->id) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Detail & ACC">
-                                                <i data-lucide="eye" class="w-4 h-4"></i>
-                                            </a>
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <a href="{{ route('zi-data-manage.show', $firstRk->id) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Verifikasi">
+                                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                                </a>
+                                                <a href="{{ route('zi-monitoring.edit', $firstRk->id) }}" class="p-3 bg-amber-500/10 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-white transition-all shadow-lg active:scale-90" title="Edit">
+                                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                                </a>
+                                                <form action="{{ route('zi-monitoring.destroy', $firstRk->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="p-3 bg-rose-500/10 text-rose-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-lg active:scale-90" onclick="return confirm('Hapus data ini?')" title="Hapus">
+                                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     @else
                                         <td colspan="10" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada indikator output</td>
@@ -158,9 +191,21 @@
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>
                                         <td class="px-6 py-6 text-right">
-                                            <a href="{{ route('zi-data-manage.show', $rk->id) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Detail & ACC">
-                                                <i data-lucide="eye" class="w-4 h-4"></i>
-                                            </a>
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <a href="{{ route('zi-data-manage.show', $rk->id) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Verifikasi">
+                                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                                </a>
+                                                <a href="{{ route('zi-monitoring.edit', $rk->id) }}" class="p-3 bg-amber-500/10 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-white transition-all shadow-lg active:scale-90" title="Edit">
+                                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                                </a>
+                                                <form action="{{ route('zi-monitoring.destroy', $rk->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="p-3 bg-rose-500/10 text-rose-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-lg active:scale-90" onclick="return confirm('Hapus data ini?')" title="Hapus">
+                                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
