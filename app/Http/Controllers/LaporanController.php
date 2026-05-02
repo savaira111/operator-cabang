@@ -98,30 +98,83 @@ class LaporanController extends Controller
             $lpiTambahInputPct = $lpiTambahExists ? 100 : 0;
             $lpiTambahEvalPct = $lpiTambahExists ? round($lpiTambahQuery->avg('prosentase')) : 0;
 
+            $tahananCatatans = Tahanan::where('cabang_id', $cabang->id)
+                ->where('periode_tahun', $selectedTahun)
+                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('periode_bulan', $selectedPeriode))
+                ->whereNotNull('catatan_evaluasi')
+                ->where('catatan_evaluasi', '!=', '')
+                ->pluck('catatan_evaluasi')
+                ->unique()
+                ->values()
+                ->map(fn($item, $key) => ($key + 1) . ". " . $item)
+                ->implode("\n");
+            
+            $tahananCatatanFinal = $tahananCatatans ?: '-';
+
+            $ziCurrentInput = $ziWithFiles;
+            $ziCurrentEval = $ziVerified;
+            $ziModuleTotal = $ziTotal > 0 ? $ziTotal : 26;
+
+            $lpiCurrentInput = $lpiCompleted;
+            $lpiCurrentEval = EvaluasiRisiko::whereHas('resiko', fn($q) => $q->where('cabang_id', $cabang->id)->where('tahun', $selectedTahun))->exists() ? 11 : 0;
+            $lpiModuleTotal = 11;
+
+            $periodTotal = ($selectedPeriode && $selectedPeriode !== 'all') ? 1 : 4;
+            
+            $tahananCurrentInput = $tahananQuery->count();
+            $tahananCurrentEval = (int)round(($tahananQuery->sum('prosentase') / 100));
+            
+            $belanjaCurrentInput = $belanjaQuery->count();
+            $belanjaCurrentEval = (int)round(($belanjaQuery->sum('prosentase') / 100));
+
+            $lpiTambahCurrentInput = $lpiTambahQuery->count();
+            $lpiTambahCurrentEval = (int)round(($lpiTambahQuery->sum('prosentase') / 100));
+
             $reportData[] = [
                 'cabang' => $cabang->name,
                 'periode' => $selectedPeriode ?? 'All',
                 'tahun' => $selectedTahun,
+                'catatan' => $tahananCatatanFinal,
                 'modules' => [
                     'Zona Integritas' => [
-                        'input' => (int)$ziInputPct,
-                        'evaluasi' => (int)$ziEvalPct
+                        'current_input' => $ziCurrentInput,
+                        'current_eval' => $ziCurrentEval,
+                        'total' => $ziModuleTotal,
+                        'pct_input' => (int)$ziInputPct,
+                        'pct_eval' => (int)$ziEvalPct,
+                        'catatan' => '-'
                     ],
                     'Manajemen Resiko' => [
-                        'input' => (int)$lpiInputPct,
-                        'evaluasi' => (int)$lpiEvalPct
+                        'current_input' => $lpiCurrentInput,
+                        'current_eval' => $lpiCurrentEval,
+                        'total' => $lpiModuleTotal,
+                        'pct_input' => (int)$lpiInputPct,
+                        'pct_eval' => (int)$lpiEvalPct,
+                        'catatan' => '-'
                     ],
                     'Data Tahanan' => [
-                        'input' => (int)$tahananInputPct,
-                        'evaluasi' => (int)$tahananEvalPct
+                        'current_input' => $tahananCurrentInput,
+                        'current_eval' => $tahananCurrentEval,
+                        'total' => $periodTotal,
+                        'pct_input' => (int)$tahananInputPct,
+                        'pct_eval' => (int)$tahananEvalPct,
+                        'catatan' => $tahananCatatanFinal
                     ],
                     'Penyerapan Anggaran' => [
-                        'input' => (int)$belanjaInputPct,
-                        'evaluasi' => (int)$belanjaEvalPct
+                        'current_input' => $belanjaCurrentInput,
+                        'current_eval' => $belanjaCurrentEval,
+                        'total' => $periodTotal,
+                        'pct_input' => (int)$belanjaInputPct,
+                        'pct_eval' => (int)$belanjaEvalPct,
+                        'catatan' => '-'
                     ],
                     'LPI Tambahan' => [
-                        'input' => (int)$lpiTambahInputPct,
-                        'evaluasi' => (int)$lpiTambahEvalPct
+                        'current_input' => $lpiTambahCurrentInput,
+                        'current_eval' => $lpiTambahCurrentEval,
+                        'total' => $periodTotal,
+                        'pct_input' => (int)$lpiTambahInputPct,
+                        'pct_eval' => (int)$lpiTambahEvalPct,
+                        'catatan' => '-'
                     ],
                 ]
             ];

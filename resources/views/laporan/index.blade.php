@@ -107,10 +107,6 @@
                             <div class="grid grid-cols-1 gap-8">
                                 @foreach($data['modules'] as $module => $scores)
                                     @php
-                                        $percentage = $scores['input'];
-                                        $total = 26;
-                                        $current = round(($percentage / 100) * $total);
-                                        
                                         $shouldShow = $selectedJenis == 'all' || 
                                             ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
                                             ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
@@ -123,13 +119,13 @@
                                         <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 text-center leading-tight">{{ $module }}</span>
                                         <div class="w-full flex flex-col items-center">
                                             <div class="flex items-center gap-1 mb-1.5">
-                                                <span class="text-sm font-black text-white">{{ $current }}</span>
-                                                <span class="text-xs font-bold text-slate-600">/ {{ $total }}</span>
+                                                <span class="text-sm font-black text-white">{{ $scores['current_input'] }}</span>
+                                                <span class="text-xs font-bold text-slate-600">/ {{ $scores['total'] }}</span>
                                             </div>
                                             <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-1.5">
-                                                <div class="bg-indigo-500 h-full rounded-full transition-all duration-1000" style="width: {{ $percentage }}%"></div>
+                                                <div class="bg-indigo-500 h-full rounded-full transition-all duration-1000" style="width: {{ $scores['pct_input'] }}%"></div>
                                             </div>
-                                            <span class="text-[11px] font-bold text-slate-400">{{ $percentage }}%</span>
+                                            <span class="text-[11px] font-bold text-slate-400">{{ $scores['pct_input'] }}%</span>
                                         </div>
                                     </div>
                                     @endif
@@ -140,10 +136,6 @@
                             <div class="grid grid-cols-1 gap-8">
                                 @foreach($data['modules'] as $module => $scores)
                                     @php
-                                        $percentage = $scores['evaluasi'];
-                                        $total = 26;
-                                        $current = round(($percentage / 100) * $total);
-                                        
                                         $shouldShow = $selectedJenis == 'all' || 
                                             ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
                                             ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
@@ -156,13 +148,13 @@
                                         <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 text-center leading-tight">{{ $module }}</span>
                                         <div class="w-full flex flex-col items-center">
                                             <div class="flex items-center gap-1 mb-1.5">
-                                                <span class="text-sm font-black text-emerald-400">{{ $current }}</span>
-                                                <span class="text-xs font-bold text-slate-600">/ {{ $total }}</span>
+                                                <span class="text-sm font-black text-emerald-400">{{ $scores['current_eval'] }}</span>
+                                                <span class="text-xs font-bold text-slate-600">/ {{ $scores['total'] }}</span>
                                             </div>
                                             <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-1.5">
-                                                <div class="bg-emerald-500 h-full rounded-full transition-all duration-1000" style="width: {{ $percentage }}%"></div>
+                                                <div class="bg-emerald-500 h-full rounded-full transition-all duration-1000" style="width: {{ $scores['pct_eval'] }}%"></div>
                                             </div>
-                                            <span class="text-[11px] font-bold text-slate-400">{{ $percentage }}%</span>
+                                            <span class="text-[11px] font-bold text-slate-400">{{ $scores['pct_eval'] }}%</span>
                                         </div>
                                     </div>
                                     @endif
@@ -225,6 +217,19 @@
                 </thead>
                 <tbody style="color: #000000;">
                     @php $no = 1; @endphp
+                    @php
+                        $visibleModulesCount = 0;
+                        foreach($data['modules'] as $module => $scores) {
+                            if ($selectedJenis == 'all' || 
+                                ($selectedJenis == 'zi' && $module == 'Zona Integritas') ||
+                                ($selectedJenis == 'resiko' && $module == 'Manajemen Resiko') ||
+                                ($selectedJenis == 'tahanan' && $module == 'Data Tahanan') ||
+                                ($selectedJenis == 'belanja' && $module == 'Penyerapan Anggaran')) {
+                                $visibleModulesCount++;
+                            }
+                        }
+                        $rowIdx = 0;
+                    @endphp
                     @foreach($data['modules'] as $module => $scores)
                         @php
                             $shouldShow = $selectedJenis == 'all' || 
@@ -238,12 +243,15 @@
                             <td class="px-4 py-6 text-center text-base" style="border: 2px solid #000000; color: #000000;">{{ $no++ }}</td>
                             <td class="px-4 py-6 font-bold text-base" style="border: 2px solid #000000; color: #000000;">{{ $module }}</td>
                             <td class="px-4 py-6 text-center text-base font-bold" style="border: 2px solid #000000; color: #000000;">
-                                {{ $scores['input'] }}%
+                                {{ $scores['pct_eval'] }}%
                             </td>
-                            <td class="px-4 py-6 text-sm italic" style="border: 2px solid #000000; color: #000000;">
-                                -
+                            @if($rowIdx == 0)
+                            <td class="px-4 py-6 text-sm italic" style="border: 2px solid #000000; color: #000000;" rowspan="{{ $visibleModulesCount }}">
+                                {!! nl2br(e($data['catatan'])) !!}
                             </td>
+                            @endif
                         </tr>
+                        @php $rowIdx++; @endphp
                         @endif
                     @endforeach
                 </tbody>
@@ -265,7 +273,7 @@
 </div>
 
 <!-- Print Modal -->
-<div id="printModal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-sm bg-black/60">
+<div id="printModal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 bg-black/80">
     <div class="bg-[#111827] border border-slate-800 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl transform scale-95 transition-all duration-300" id="modalContent">
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-black text-white tracking-tight uppercase">Pengaturan Download</h3>
@@ -381,172 +389,242 @@
         const reportData = {!! json_encode($reportData) !!};
         const selectedJenis = '{{ $selectedJenis }}';
 
+        if (!reportData || reportData.length === 0) {
+            swalDark.fire({
+                icon: 'warning',
+                title: 'Data Kosong',
+                text: 'Tidak ada data yang bisa didownload untuk filter yang dipilih.',
+                confirmButtonText: 'Tutup'
+            });
+            return;
+        }
+
         closePrintModal();
 
-        try {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const isMultiCabang = reportData.length > 1;
-
-            // Judul Laporan
-            doc.setFont("times", "bold");
-            doc.setFontSize(16);
-            doc.text("LAPORAN PENGENDALIAN INTERNAL", 105, 25, { align: "center" });
-            doc.setLineWidth(0.5);
-            doc.line(55, 26, 155, 26); // Garis bawah judul
-
-            // Info Section
-            doc.setFont("times", "bold");
-            doc.setFontSize(11);
-            doc.text("Nama Cabang", 15, 40);
-            doc.text(":", 45, 40);
-            const namaCabangLabel = isMultiCabang ? "SEMUA CABANG" : String(reportData[0].cabang).toUpperCase();
-            doc.text(namaCabangLabel, 50, 40);
-
-            doc.text("Periode", 15, 47);
-            doc.text(":", 45, 47);
-            doc.setFont("times", "normal");
-            const rawPeriode = '{{ $selectedPeriode }}';
-            const tahunLaporan = '{{ $selectedTahun }}';
-            const periodeStr = (!rawPeriode || rawPeriode === 'all' || rawPeriode === '') ? "Semua Periode" : rawPeriode;
-            doc.text(periodeStr + " / " + tahunLaporan, 50, 47);
-
-            doc.setFont("times", "bold");
-            doc.text("Data", 15, 54);
-            doc.text(":", 45, 54);
-            doc.setFont("times", "normal");
-            const dataLabel = selectedJenis === 'all' ? 'All' : String(selectedJenis).toUpperCase();
-            doc.text(dataLabel, 50, 54);
-
-            // Siapkan Data Tabel
-            const tableBody = [];
-            let no = 1;
-            
-            reportData.forEach((data) => {
-                let visibleModules = [];
-                for (const [moduleName, scores] of Object.entries(data.modules)) {
-                    let shouldShow = selectedJenis === 'all' || 
-                        (selectedJenis === 'zi' && moduleName === 'Zona Integritas') ||
-                        (selectedJenis === 'resiko' && moduleName === 'Manajemen Resiko') ||
-                        (selectedJenis === 'tahanan' && moduleName === 'Data Tahanan') ||
-                        (selectedJenis === 'belanja' && moduleName === 'Penyerapan Anggaran');
-                        
-                    if (shouldShow) {
-                        visibleModules.push({ name: moduleName, input: scores.input });
-                    }
-                }
-
-                if (visibleModules.length > 0) {
-                    if (isMultiCabang) {
-                        visibleModules.forEach((mod, idx) => {
-                            if (idx === 0) {
-                                tableBody.push([
-                                    { content: no++, rowSpan: visibleModules.length, styles: { valign: 'middle', halign: 'center' } },
-                                    { content: data.cabang, rowSpan: visibleModules.length, styles: { valign: 'middle' } },
-                                    mod.name,
-                                    mod.input + '%',
-                                    '-'
-                                ]);
-                            } else {
-                                tableBody.push([
-                                    mod.name,
-                                    mod.input + '%',
-                                    '-'
-                                ]);
-                            }
-                        });
-                    } else {
-                        // Single cabang
-                        visibleModules.forEach((mod) => {
-                            tableBody.push([
-                                no++,
-                                mod.name,
-                                mod.input + '%',
-                                '-'
-                            ]);
-                        });
-                    }
-                }
-            });
-
-            const headColumns = isMultiCabang 
-                ? [['NO', 'CABANG', 'DATA', 'KELENGKAPAN', 'KETERANGAN']]
-                : [['NO', 'DATA', 'KELENGKAPAN DATA', 'KETERANGAN']];
-
-            const colStyles = isMultiCabang
-                ? {
-                    0: { halign: 'center', cellWidth: 10 },
-                    1: { fontStyle: 'bold', cellWidth: 50 },
-                    2: { fontStyle: 'bold' },
-                    3: { halign: 'center', fontStyle: 'bold', cellWidth: 30 },
-                    4: { fontStyle: 'italic', cellWidth: 30 }
-                  }
-                : {
-                    0: { halign: 'center', cellWidth: 15 },
-                    1: { fontStyle: 'bold' },
-                    2: { halign: 'center', fontStyle: 'bold', cellWidth: 45 },
-                    3: { fontStyle: 'italic', cellWidth: 35 }
-                  };
-
-            // Gambar Tabel
-            doc.autoTable({
-                startY: 62,
-                theme: 'grid',
-                headStyles: { 
-                    fillColor: [243, 244, 246], 
-                    textColor: [0, 0, 0], 
-                    font: 'times', 
-                    fontStyle: 'bold',
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.3,
-                    halign: 'center'
-                },
-                bodyStyles: { 
-                    textColor: [0, 0, 0], 
-                    font: 'times',
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.3,
-                },
-                columnStyles: colStyles,
-                head: headColumns,
-                body: tableBody,
-                margin: { left: 15, right: 15 }
-            });
-
-            // Tanda Tangan
-            let finalY = doc.lastAutoTable.finalY + 25; 
-            const rightAlignX = 195; 
-            
-            // Check if signature needs a new page to avoid breaking
-            if (finalY > 250) {
-                doc.addPage();
-                finalY = 30;
+        // Show loading state to prevent "blurry" frozen UI
+        swalDark.fire({
+            title: 'Generating PDF...',
+            text: 'Mohon tunggu sebentar, sedang menyiapkan laporan.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                swalDark.showLoading();
             }
+        });
 
-            doc.setFont("times", "normal");
-            doc.setFontSize(11);
-            doc.text(kota + ", " + tanggal, rightAlignX - 15, finalY, { align: "right" });
-            
-            doc.setFont("times", "bold");
-            doc.text(String(instansi).toUpperCase(), rightAlignX - 15, finalY + 6, { align: "right" });
-            
-            doc.text("( " + nama + " )", rightAlignX - 15, finalY + 30, { align: "right" });
-            
-            doc.setFontSize(10);
-            doc.text("NIP. " + nip, rightAlignX - 15, finalY + 35, { align: "right" });
+        // Use setTimeout to allow the modal to close and the loader to show
+        setTimeout(() => {
+            try {
+                // Better jsPDF initialization for UMD
+                const jsPDFConstructor = window.jspdf ? window.jspdf.jsPDF : null;
+                if (!jsPDFConstructor) {
+                    throw new Error("Library jsPDF tidak ditemukan. Pastikan koneksi internet stabil.");
+                }
 
-            // Download PDF
-            doc.save('Laporan_Pengendalian_Internal.pdf');
+                const doc = new jsPDFConstructor({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
 
-        } catch (err) {
-            console.error("PDF Engine Error: ", err);
-            alert("Terjadi kesalahan sistem saat memproses PDF. Error: " + err.message);
-        }
+                const isMultiCabang = reportData.length > 1;
+
+                // Judul Laporan
+                doc.setFont("times", "bold");
+                doc.setFontSize(16);
+                doc.text("LAPORAN PENGENDALIAN INTERNAL", 105, 25, { align: "center" });
+                doc.setLineWidth(0.5);
+                doc.line(55, 26, 155, 26); 
+
+                // Info Section
+                doc.setFont("times", "bold");
+                doc.setFontSize(11);
+                doc.text("Nama Cabang", 15, 40);
+                doc.text(":", 45, 40);
+                
+                // Safe access to reportData[0]
+                const namaCabangLabel = isMultiCabang ? "SEMUA CABANG" : (reportData[0] ? String(reportData[0].cabang).toUpperCase() : "-");
+                doc.text(namaCabangLabel, 50, 40);
+
+                doc.text("Periode", 15, 47);
+                doc.text(":", 45, 47);
+                doc.setFont("times", "normal");
+                const rawPeriode = '{{ $selectedPeriode }}';
+                const tahunLaporan = '{{ $selectedTahun }}';
+                const periodeStr = (!rawPeriode || rawPeriode === 'all' || rawPeriode === '') ? "Semua Periode" : rawPeriode;
+                doc.text(periodeStr + " / " + tahunLaporan, 50, 47);
+
+                doc.setFont("times", "bold");
+                doc.text("Data", 15, 54);
+                doc.text(":", 45, 54);
+                doc.setFont("times", "normal");
+                const dataLabel = selectedJenis === 'all' ? 'All' : String(selectedJenis).toUpperCase();
+                doc.text(dataLabel, 50, 54);
+
+                // Siapkan Data Tabel
+                const tableBody = [];
+                let no = 1;
+                
+                reportData.forEach((data) => {
+                    let visibleModules = [];
+                    for (const [moduleName, scores] of Object.entries(data.modules)) {
+                        let shouldShow = selectedJenis === 'all' || 
+                            (selectedJenis === 'zi' && moduleName === 'Zona Integritas') ||
+                            (selectedJenis === 'resiko' && moduleName === 'Manajemen Resiko') ||
+                            (selectedJenis === 'tahanan' && moduleName === 'Data Tahanan') ||
+                            (selectedJenis === 'belanja' && moduleName === 'Penyerapan Anggaran');
+                            
+                        if (shouldShow) {
+                            visibleModules.push({ 
+                                name: moduleName, 
+                                evaluasi: scores.current_eval, 
+                                total: scores.total,
+                                pct: scores.pct_eval,
+                                catatan: scores.catatan
+                            });
+                        }
+                    }
+
+                    if (visibleModules.length > 0) {
+                        // Get the Tahanan notes from the first module that has them (it's the same for all modules now)
+                        const combinedCatatan = visibleModules.find(m => m.name === 'Data Tahanan')?.catatan || '-';
+
+                        if (isMultiCabang) {
+                            visibleModules.forEach((mod, idx) => {
+                                if (idx === 0) {
+                                    tableBody.push([
+                                        { content: no++, rowSpan: visibleModules.length, styles: { valign: 'middle', halign: 'center' } },
+                                        { content: data.cabang, rowSpan: visibleModules.length, styles: { valign: 'middle' } },
+                                        mod.name,
+                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        { content: combinedCatatan, rowSpan: visibleModules.length, styles: { valign: 'middle' } }
+                                    ]);
+                                } else {
+                                    tableBody.push([
+                                        mod.name,
+                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                    ]);
+                                }
+                            });
+                        } else {
+                            visibleModules.forEach((mod, idx) => {
+                                if (idx === 0) {
+                                    tableBody.push([
+                                        no++,
+                                        mod.name,
+                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        { content: combinedCatatan, rowSpan: visibleModules.length, styles: { valign: 'middle' } }
+                                    ]);
+                                } else {
+                                    tableBody.push([
+                                        no++,
+                                        mod.name,
+                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                    ]);
+                                }
+                            });
+                        }
+                    }
+                });
+
+                const headColumns = isMultiCabang 
+                    ? [['NO', 'CABANG', 'DATA', 'PROGRESS EVALUASI', 'KETERANGAN']]
+                    : [['NO', 'DATA', 'PROGRESS EVALUASI', 'KETERANGAN']];
+
+                const colStyles = isMultiCabang
+                    ? {
+                        0: { halign: 'center', cellWidth: 10 },
+                        1: { fontStyle: 'bold', cellWidth: 50 },
+                        2: { fontStyle: 'bold' },
+                        3: { halign: 'center', fontStyle: 'bold', cellWidth: 30 },
+                        4: { fontStyle: 'italic', cellWidth: 30 }
+                      }
+                    : {
+                        0: { halign: 'center', cellWidth: 15 },
+                        1: { fontStyle: 'bold' },
+                        2: { halign: 'center', fontStyle: 'bold', cellWidth: 45 },
+                        3: { fontStyle: 'italic', cellWidth: 35 }
+                      };
+
+                if (typeof doc.autoTable !== 'function') {
+                    throw new Error("Plugin jspdf-autotable tidak terdeteksi.");
+                }
+
+                doc.autoTable({
+                    startY: 62,
+                    theme: 'grid',
+                    headStyles: { 
+                        fillColor: [243, 244, 246], 
+                        textColor: [0, 0, 0], 
+                        font: 'times', 
+                        fontStyle: 'bold',
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.3,
+                        halign: 'center'
+                    },
+                    bodyStyles: { 
+                        textColor: [0, 0, 0], 
+                        font: 'times',
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.3,
+                    },
+                    columnStyles: colStyles,
+                    head: headColumns,
+                    body: tableBody,
+                    margin: { left: 15, right: 15 }
+                });
+
+                let finalY = doc.lastAutoTable.finalY + 25; 
+                const rightAlignX = 195; 
+                
+                if (finalY > 250) {
+                    doc.addPage();
+                    finalY = 30;
+                }
+
+                doc.setFont("times", "normal");
+                doc.setFontSize(11);
+                doc.text(kota + ", " + tanggal, rightAlignX - 15, finalY, { align: "right" });
+                
+                doc.setFont("times", "bold");
+                doc.text(String(instansi).toUpperCase(), rightAlignX - 15, finalY + 6, { align: "right" });
+                
+                doc.text("( " + nama + " )", rightAlignX - 15, finalY + 30, { align: "right" });
+                
+                doc.setFontSize(10);
+                doc.text("NIP. " + nip, rightAlignX - 15, finalY + 35, { align: "right" });
+
+                doc.save('Laporan_Pengendalian_Internal.pdf');
+
+                swalDark.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Laporan PDF telah berhasil diunduh.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+            } catch (err) {
+                console.error("PDF Engine Error: ", err);
+                swalDark.fire({
+                    icon: 'error',
+                    title: 'Gagal Download',
+                    text: "Terjadi kesalahan sistem saat memproses PDF. Error: " + err.message
+                });
+            }
+        }, 500);
     }
+
+    // Clean up page transition animation to fix "fixed" positioning issues
+    document.addEventListener('DOMContentLoaded', function() {
+        const wrapper = document.querySelector('.page-transition-enter');
+        if (wrapper) {
+            setTimeout(() => {
+                wrapper.style.filter = 'none';
+                wrapper.style.transform = 'none';
+                // Remove the class to stop it from being a containing block for fixed elements
+                wrapper.classList.remove('page-transition-enter');
+            }, 600);
+        }
+    });
 </script>
 @endsection
