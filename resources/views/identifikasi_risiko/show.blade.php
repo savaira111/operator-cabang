@@ -4,7 +4,10 @@
 @section('page_title', 'Detail Identifikasi Risiko')
 
 @section('content')
-<div class="mb-8 flex items-center justify-between">
+<div class="mb-8 flex items-center gap-6">
+    <a href="{{ route('identifikasi-risiko.index') }}" class="p-3.5 bg-slate-800/50 hover:bg-blue-500/10 text-slate-400 hover:text-blue-400 rounded-2xl border border-slate-700/50 transition-all active:scale-95 group" title="Kembali">
+        <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300"></i>
+    </a>
     <div>
         <h3 class="text-3xl font-black text-white tracking-tighter flex items-center">
             <i data-lucide="file-search" class="w-8 h-8 mr-4 text-blue-500"></i>
@@ -12,11 +15,6 @@
         </h3>
         <p class="text-slate-500 text-sm mt-2 ml-12">Informasi lengkap mengenai identifikasi risiko.</p>
     </div>
-    
-    <a href="{{ route('identifikasi-risiko.index') }}" class="flex items-center px-5 py-2.5 bg-slate-800/40 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-700/50 transition-all active:scale-95">
-        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-        Kembali
-    </a>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

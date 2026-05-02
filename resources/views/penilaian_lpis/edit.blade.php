@@ -5,14 +5,20 @@
 
 @section('content')
 <div class="max-w-2xl mx-auto">
-    <div class="mb-10 flex items-start justify-between">
-        <div>
-            <h3 class="text-3xl font-black text-white tracking-tighter uppercase">PENILAIAN LPI</h3>
-            <p class="text-slate-500 text-sm mt-1">Berikan evaluasi terhadap data identifikasi risiko (Laporan Internal).</p>
+    <div class="mb-10 relative z-10">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
+                <i data-lucide="clipboard-check" class="w-6 h-6 md:w-7 md:h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-3xl font-black text-white tracking-tighter uppercase">PENILAIAN LPI</h3>
+                <p class="text-slate-500 text-sm mt-1">Berikan evaluasi terhadap data identifikasi risiko (Laporan Internal).</p>
+            </div>
         </div>
-        <a href="{{ route('penilaian-lpi.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
-            <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
+        
+        <a href="{{ route('penilaian-lpi.index') }}" class="flex items-center justify-center w-full px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group">
+            <i data-lucide="x" class="w-5 h-5 mr-3 transition-transform group-hover:rotate-90"></i>
+            <span class="text-xs uppercase tracking-[0.2em]">Batal</span>
         </a>
     </div>
 

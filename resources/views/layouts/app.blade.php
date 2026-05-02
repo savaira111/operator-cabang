@@ -374,7 +374,7 @@
             <header class="h-16 bg-[#031121]/80 backdrop-blur-md border-b border-[#D2A039]/20 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
                 <div class="flex items-center gap-3 md:gap-4">
                     <!-- Sidebar Toggle Button -->
-                    <button id="sidebarToggle" onclick="toggleSidebar()" class="active p-2 rounded-xl text-[#D2A039] hover:bg-[#D2A039]/10 border border-[#D2A039]/20 hover:border-[#D2A039]/40 transition-all duration-200 hover:shadow-[0_0_12px_rgba(210,160,57,0.2)]" title="Toggle Sidebar">
+                    <button id="sidebarToggle" onclick="toggleSidebar()" class="hidden md:flex active p-2 rounded-xl text-[#D2A039] hover:bg-[#D2A039]/10 border border-[#D2A039]/20 hover:border-[#D2A039]/40 transition-all duration-200 hover:shadow-[0_0_12px_rgba(210,160,57,0.2)]" title="Toggle Sidebar">
                         <i data-lucide="panel-left-close" class="w-4 h-4"></i>
                     </button>
                     <h2 class="text-xs md:text-sm font-bold text-slate-200 uppercase tracking-widest truncate max-w-[150px] md:max-w-none">

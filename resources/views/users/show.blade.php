@@ -10,26 +10,25 @@
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
 
-        <div class="mb-10 flex items-start justify-between relative z-10">
-            <div class="flex items-center">
-                <div class="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mr-6 shadow-xl shadow-blue-500/5">
-                    <i data-lucide="user" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-black text-white tracking-tight">{{ $user->name }}</h3>
-                    <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Profil Akun @<span>{{ $user->username }}</span></p>
+        <div class="mb-10 flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-6">
+                <a href="{{ route('users.index') }}" class="p-3.5 bg-slate-800/50 hover:bg-blue-500/10 text-slate-400 hover:text-blue-400 rounded-2xl border border-slate-700/50 transition-all active:scale-95 group" title="Kembali">
+                    <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300"></i>
+                </a>
+                <div class="flex items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mr-6 shadow-xl shadow-blue-500/5">
+                        <i data-lucide="user" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-white tracking-tight">{{ $user->name }}</h3>
+                        <p class="text-slate-500 text-sm mt-1 uppercase tracking-widest font-bold">Profil Akun @<span>{{ $user->username }}</span></p>
+                    </div>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('users.edit', $user) }}" class="flex items-center px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
-                    <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
-                    <span class="text-xs uppercase tracking-widest">Ubah Akun</span>
-                </a>
-                <a href="{{ route('users.index') }}" class="flex items-center px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95">
-                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-                    <span class="text-xs uppercase tracking-widest">Kembali</span>
-                </a>
-            </div>
+            <a href="{{ route('users.edit', $user) }}" class="flex items-center px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
+                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                <span class="text-xs uppercase tracking-widest">Ubah Akun</span>
+            </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">

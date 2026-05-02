@@ -10,13 +10,8 @@
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-[#D2A039]/10 blur-[100px] rounded-full group-hover:bg-[#D2A039]/20 transition-all duration-700 hidden sm:block"></div>
         <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full group-hover:bg-blue-500/20 transition-all duration-700 hidden sm:block"></div>
 
-        <div class="mb-10 flex flex-col md:flex-row md:items-center gap-6 relative z-10">
-            <a href="{{ route('analisis-risiko.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-slate-800/40 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-full border border-slate-700/50 transition-all active:scale-95 group order-2 md:order-1">
-                <i data-lucide="x" class="w-4 h-4 mr-2 transition-transform group-hover:rotate-90"></i>
-                <span class="text-[10px] uppercase tracking-[0.2em]">Batal</span>
-            </a>
-
-            <div class="flex items-center gap-4 order-1 md:order-2 flex-1">
+        <div class="mb-10 relative z-10">
+            <div class="flex items-center gap-4 mb-6">
                 <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-[#D2A039] to-[#f9d77e] flex items-center justify-center shadow-lg shadow-[#D2A039]/20 shrink-0">
                     <i data-lucide="shield-alert" class="w-6 h-6 md:w-7 md:h-7 text-[#061B30]"></i>
                 </div>
@@ -25,6 +20,11 @@
                     <p class="text-slate-400 text-[11px] md:text-sm mt-1 leading-tight">Gunakan formulir ini untuk menganalisis risiko yang telah diidentifikasi.</p>
                 </div>
             </div>
+            
+            <a href="{{ route('analisis-risiko.index') }}" class="flex items-center justify-center w-full px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group">
+                <i data-lucide="x" class="w-5 h-5 mr-3 transition-transform group-hover:rotate-90"></i>
+                <span class="text-xs uppercase tracking-[0.2em]">Batal</span>
+            </a>
         </div>
 
         <form action="{{ route('analisis-risiko.store') }}" method="POST" class="relative z-10">
