@@ -222,6 +222,7 @@
                         <span class="proximity-item block text-gold">
                             Internal Terpadu
                         </span>
+                        <span class="proximity-item block text-xl lg:text-2xl text-slate-400 font-bold uppercase tracking-widest mb-1">Kanwil Ditjen Pemasyarakatan</span>
                         <span class="proximity-item block text-2xl lg:text-4xl text-slate-300">Jawa Barat</span>
                     </h2>
 
