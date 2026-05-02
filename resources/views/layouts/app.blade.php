@@ -58,13 +58,33 @@
                         transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             width: 16rem; /* 256px = w-64 */
             overflow: hidden;
+            z-index: 50;
         }
+
+        @media (max-width: 1024px) {
+            #sidebar {
+                position: fixed;
+                height: 100vh;
+                width: 16rem;
+                transform: translateX(-100%);
+            }
+            #sidebar.show-mobile {
+                transform: translateX(0);
+                box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+            }
+            #sidebar.collapsed {
+                width: 16rem; /* Keep width consistent on mobile */
+                transform: translateX(-100%);
+            }
+        }
+
         #sidebar.collapsed {
             width: 0;
             opacity: 0;
             transform: translateX(-20px);
             pointer-events: none;
         }
+
         #sidebar .sidebar-text {
             transition: opacity 0.2s ease 0.1s;
             opacity: 1;
@@ -73,6 +93,22 @@
         #sidebar.collapsed .sidebar-text {
             opacity: 0;
             transition: opacity 0.1s ease;
+        }
+
+        /* Mobile Overlay */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 17, 33, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #sidebar-overlay.show {
+            display: block;
+            opacity: 1;
         }
 
         /* Toggle button spin animation */
@@ -126,7 +162,7 @@
                         opacity 0.4s ease;
         }
         .dropdown-container.show {
-            max-height: 200px;
+            max-height: 500px;
             opacity: 1;
         }
         .dropdown-item {
@@ -142,11 +178,59 @@
         .dropdown-item:nth-child(1) { transition-delay: 0.1s; }
         .dropdown-item:nth-child(2) { transition-delay: 0.15s; }
         .dropdown-item:nth-child(3) { transition-delay: 0.2s; }
+
+        /* Responsive spacing */
+        /* Mobile Bottom Nav */
+        .mobile-bottom-nav {
+            display: none;
+        }
+        @media (max-width: 1024px) {
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 4.5rem;
+                background: #031121;
+                border-top: 1px border-[#D2A039]/20;
+                backdrop-filter: blur(10px);
+                z-index: 45;
+                padding-bottom: env(safe-area-inset-bottom);
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 -10px 25px rgba(0,0,0,0.5);
+            }
+            .content-padding {
+                padding-bottom: 6rem !important; /* Spacing for bottom nav */
+            }
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: #64748b;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        .bottom-nav-item.active {
+            color: #D2A039;
+        }
+        .bottom-nav-item i {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
     </style>
 </head>
 <body class="bg-[#061B30] text-slate-300 antialiased">
     <div id="loading-bar"></div>
-    <div class="flex h-screen overflow-hidden">
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <div class="flex h-screen overflow-hidden relative">
         <!-- Sidebar -->
         <aside id="sidebar" class="bg-[#031121] border-r border-[#D2A039]/20 flex-shrink-0 flex flex-col">
             <div class="p-6">
@@ -287,13 +371,13 @@
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto bg-[#061B30]">
-            <header class="h-16 bg-[#031121]/80 backdrop-blur-md border-b border-[#D2A039]/20 flex items-center justify-between px-6 sticky top-0 z-10">
-                <div class="flex items-center gap-4">
+            <header class="h-16 bg-[#031121]/80 backdrop-blur-md border-b border-[#D2A039]/20 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
+                <div class="flex items-center gap-3 md:gap-4">
                     <!-- Sidebar Toggle Button -->
                     <button id="sidebarToggle" onclick="toggleSidebar()" class="active p-2 rounded-xl text-[#D2A039] hover:bg-[#D2A039]/10 border border-[#D2A039]/20 hover:border-[#D2A039]/40 transition-all duration-200 hover:shadow-[0_0_12px_rgba(210,160,57,0.2)]" title="Toggle Sidebar">
                         <i data-lucide="panel-left-close" class="w-4 h-4"></i>
                     </button>
-                    <h2 class="text-sm font-bold text-slate-200 uppercase tracking-widest">
+                    <h2 class="text-xs md:text-sm font-bold text-slate-200 uppercase tracking-widest truncate max-w-[150px] md:max-w-none">
                         @yield('page_title', 'Ringkasan')
                     </h2>
                 </div>
@@ -331,7 +415,7 @@
                 </div>
             </header>
 
-            <div class="p-8 page-transition-enter">
+            <div class="p-4 md:p-8 page-transition-enter content-padding">
                 @if(session('success'))
                     <div class="mb-6 p-4 bg-[#D2A039]/10 border border-[#D2A039]/20 text-[#D2A039] rounded-2xl flex items-center animate-in fade-in slide-in-from-top-4">
                         <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
@@ -344,6 +428,24 @@
                 </div>
             </div>
         </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav">
+            <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i data-lucide="home"></i>
+                <span>Beranda</span>
+            </a>
+            <button onclick="toggleSidebar()" class="bottom-nav-item">
+                <div class="w-12 h-12 -mt-8 rounded-full bg-gradient-to-br from-[#D2A039] to-[#f9d77e] flex items-center justify-center text-[#061B30] shadow-lg shadow-[#D2A039]/30 border-4 border-[#061B30]">
+                    <i data-lucide="menu"></i>
+                </div>
+                <span class="mt-1">Menu</span>
+            </button>
+            <a href="{{ route('profile') }}" class="bottom-nav-item {{ request()->routeIs('profile') ? 'active' : '' }}">
+                <i data-lucide="user"></i>
+                <span>Profil</span>
+            </a>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -351,22 +453,61 @@
         lucide.createIcons();
 
         // Sidebar Toggle
-        let sidebarOpen = true;
-        function toggleSidebar() {
+        let sidebarOpen = window.innerWidth > 1024;
+        
+        function updateSidebarState() {
             const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             const btn = document.getElementById('sidebarToggle');
-            sidebarOpen = !sidebarOpen;
+            const isMobile = window.innerWidth <= 1024;
+
             if (sidebarOpen) {
-                sidebar.classList.remove('collapsed');
+                if (isMobile) {
+                    sidebar.classList.add('show-mobile');
+                    sidebar.classList.remove('collapsed');
+                    overlay.classList.add('show');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                }
                 btn.classList.add('active');
                 btn.innerHTML = '<i data-lucide="panel-left-close" class="w-4 h-4"></i>';
             } else {
-                sidebar.classList.add('collapsed');
+                if (isMobile) {
+                    sidebar.classList.remove('show-mobile');
+                    overlay.classList.remove('show');
+                } else {
+                    sidebar.classList.add('collapsed');
+                }
                 btn.classList.remove('active');
                 btn.innerHTML = '<i data-lucide="panel-left-open" class="w-4 h-4"></i>';
             }
             lucide.createIcons();
         }
+
+        // Initialize state
+        if (window.innerWidth <= 1024) {
+            sidebarOpen = false;
+        }
+        updateSidebarState();
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            updateSidebarState();
+        }
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            const isMobile = window.innerWidth <= 1024;
+            if (!isMobile && !sidebarOpen && !document.getElementById('sidebar').classList.contains('collapsed')) {
+                // If moving to desktop and it wasn't explicitly collapsed, show it
+                sidebarOpen = true;
+                updateSidebarState();
+            } else if (isMobile && sidebarOpen && document.getElementById('sidebar').classList.contains('show-mobile') === false) {
+                // If moving to mobile and it was open, hide it but keep state
+                sidebarOpen = false;
+                updateSidebarState();
+            }
+        });
 
         // Toggle Zi Dropdown Menu
         function toggleZiMenu() {
