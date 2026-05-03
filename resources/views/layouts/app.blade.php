@@ -445,8 +445,8 @@
                                 <i data-lucide="user" class="w-3.5 h-3.5"></i>
                             </div>
                             <div class="text-left hidden sm:block">
-                                <p class="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-none">{{ auth()->user()->username }}</p>
-                                <p class="text-[8px] text-slate-500 tracking-tight leading-none mt-0.5">{{ ucwords(str_replace('_', ' ', auth()->user()->role)) }}</p>
+                                <p class="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-none">{{ auth()->user()->username ?? 'Guest' }}</p>
+                                <p class="text-[8px] text-slate-500 tracking-tight leading-none mt-0.5">{{ auth()->check() ? ucwords(str_replace('_', ' ', auth()->user()->role)) : 'Visitor' }}</p>
                             </div>
                             <i data-lucide="chevron-down" class="w-3 h-3 text-slate-500 ml-0.5 transition-transform duration-200" id="profileChevron"></i>
                         </button>

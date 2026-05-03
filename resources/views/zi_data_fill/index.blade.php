@@ -39,7 +39,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">File Terupload</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
-                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Aksi</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center sticky right-0 bg-[#0f172a] z-20 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-800/40">
@@ -49,8 +49,8 @@
                         <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
                             <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
                             <td colspan="13" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
-                            <td class="px-6 py-4 text-right">
-                                 <i data-lucide="lock" class="w-4 h-4 text-slate-700 mx-auto"></i>
+                            <td class="px-6 py-4 text-center sticky right-0 bg-[#1d2d4a] backdrop-blur-md z-10 border-l border-blue-400/10">
+                                <i data-lucide="lock" class="w-4 h-4 text-blue-400/30 mx-auto"></i>
                             </td>
                         </tr>
                     @endif
@@ -110,10 +110,15 @@
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
-                                        <td class="px-6 py-6 text-right">
-                                            <a href="{{ route('zi-data-fill.edit', $firstRk->id) }}" class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl hover:bg-indigo-500 hover:text-white transition-all shadow-lg active:scale-90" title="Isi Data Dukung">
-                                                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                                            </a>
+                                        <td class="px-6 py-6 text-center sticky right-0 bg-[#111827]/90 backdrop-blur-md z-10 border-l border-slate-800/60 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">
+                                            <div class="flex justify-center">
+                                                <a href="{{ route('zi-data-fill.edit', $firstRk->id) }}" 
+                                                   class="group/btn relative flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all duration-300 shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/40 active:scale-95" 
+                                                   title="Isi Data Dukung">
+                                                    <i data-lucide="edit-3" class="w-4 h-4 transition-transform group-hover/btn:rotate-12"></i>
+                                                    <div class="absolute inset-0 rounded-xl bg-indigo-400 opacity-0 group-hover/btn:opacity-20 blur-xl transition-opacity duration-300"></div>
+                                                </a>
+                                            </div>
                                         </td>
                                     @else
                                         <td colspan="10" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada indikator output</td>
@@ -169,10 +174,15 @@
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>
-                                        <td class="px-6 py-6 text-right">
-                                            <a href="{{ route('zi-data-fill.edit', $rk->id) }}" class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl hover:bg-indigo-500 hover:text-white transition-all shadow-lg active:scale-90" title="Isi Data Dukung">
-                                                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                                            </a>
+                                        <td class="px-6 py-6 text-center sticky right-0 bg-[#111827]/90 backdrop-blur-md z-10 border-l border-slate-800/60 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">
+                                            <div class="flex justify-center">
+                                                <a href="{{ route('zi-data-fill.edit', $rk->id) }}" 
+                                                   class="group/btn relative flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all duration-300 shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/40 active:scale-95" 
+                                                   title="Isi Data Dukung">
+                                                    <i data-lucide="edit-3" class="w-4 h-4 transition-transform group-hover/btn:rotate-12"></i>
+                                                    <div class="absolute inset-0 rounded-xl bg-indigo-400 opacity-0 group-hover/btn:opacity-20 blur-xl transition-opacity duration-300"></div>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

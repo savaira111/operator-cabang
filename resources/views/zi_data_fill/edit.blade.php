@@ -151,39 +151,56 @@
                                 @endif
                             </div>
                         @else
-                            <div class="h-full flex flex-col items-center justify-center p-8 bg-slate-900/30 rounded-[2rem] border border-dashed border-slate-700 text-center group-hover:bg-slate-900/50 transition-all">
-                                <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-                                    <i data-lucide="file-up" class="w-8 h-8 text-slate-600"></i>
+                            <div class="h-full flex flex-col items-center justify-center p-8 bg-[#0f172a]/40 rounded-[2rem] border border-dashed border-slate-800/60 text-center group-hover:border-indigo-500/40 group-hover:bg-indigo-500/[0.02] transition-all duration-500 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="relative z-10">
+                                    <div class="w-16 h-16 rounded-[1.5rem] bg-slate-800/50 flex items-center justify-center mb-4 mx-auto border border-slate-700/50 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                                        <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shadow-inner">
+                                            <i data-lucide="file-warning" class="w-5 h-5 text-indigo-400"></i>
+                                        </div>
+                                    </div>
+                                    <h6 class="text-lg font-black text-white tracking-tight mb-1 uppercase italic opacity-80">Belum Ada Data</h6>
+                                    <p class="text-[10px] text-slate-500 max-w-[180px] mx-auto leading-relaxed font-medium">
+                                        Unggah dokumen <span class="text-indigo-400 font-bold">PDF</span> (Maks <span class="text-white">25MB</span>) untuk periode <span class="px-1.5 py-0.5 bg-slate-800 rounded text-indigo-400 font-black">{{ $p }}</span>.
+                                    </p>
                                 </div>
-                                <h6 class="text-slate-400 font-bold tracking-tight">Belum Ada Data Dukung</h6>
-                                <p class="text-[10px] text-slate-600 mt-2 italic leading-relaxed">Silakan unggah dokumen PDF maksimal 25MB untuk periode {{ $p }}.</p>
                             </div>
                         @endif
                     </div>
 
                     {{-- Upload Form --}}
-                    <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 shadow-inner">
-                        <form action="{{ route('zi-data-fill.upload', $item->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <div class="bg-slate-800/20 p-8 rounded-[2rem] border border-slate-800 shadow-2xl relative overflow-hidden group/form">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 blur-[40px] -mr-12 -mt-12 rounded-full transition-all group-hover/form:bg-indigo-500/10"></div>
+                        
+                        <form action="{{ route('zi-data-fill.upload', $item->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6 relative z-10">
                             @csrf
                             <input type="hidden" name="period" value="{{ $p }}">
                             
-                            <div>
-                                <label class="flex items-center text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-5 ml-1">
-                                    <i data-lucide="upload-cloud" class="w-4 h-4 mr-2"></i>
-                                    Upload File Baru (PDF)
+                            <div class="space-y-3">
+                                <label class="flex items-center text-[9px] font-black text-indigo-400 uppercase tracking-[0.2em] ml-1">
+                                    <span class="w-5 h-5 rounded-md bg-indigo-500/10 flex items-center justify-center mr-2 border border-indigo-500/20">
+                                        <i data-lucide="upload-cloud" class="w-3 h-3"></i>
+                                    </span>
+                                    Pilih Dokumen PDF
                                 </label>
+                                
                                 <div class="relative group/input">
-                                    <input type="file" name="file" required accept="application/pdf" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-indigo-500 file:text-white hover:file:bg-indigo-600">
+                                    <input type="file" name="file" required accept="application/pdf" 
+                                           class="w-full px-5 py-3.5 bg-[#031121] rounded-xl border border-slate-800 text-slate-400 text-xs focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none 
+                                           file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[9px] file:font-black file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 file:cursor-pointer file:transition-all cursor-pointer">
                                 </div>
-                                <p class="text-[10px] text-slate-500 mt-4 ml-1 flex items-center italic">
-                                    <i data-lucide="info" class="w-3 h-3 mr-1.5 text-slate-600"></i>
-                                    Format PDF, Ukuran Maksimal 25MB
-                                </p>
+                                
+                                <div class="flex items-center gap-3 px-3 py-2 bg-indigo-500/[0.03] border border-indigo-500/10 rounded-xl">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-500/50"></i>
+                                    <p class="text-[9px] text-slate-500 font-medium leading-tight">
+                                        Format <span class="text-indigo-400 font-bold">PDF</span>, Maks <span class="text-white font-bold">25MB</span>.
+                                    </p>
+                                </div>
                             </div>
 
-                            <button type="submit" class="w-full py-4 bg-slate-800 hover:bg-indigo-500 text-slate-400 hover:text-white font-black rounded-xl border border-slate-700 hover:border-indigo-500 transition-all shadow-lg active:scale-95 uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 group/btn">
-                                <i data-lucide="send" class="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></i>
-                                Simpan & Upload Data {{ $p }}
+                            <button type="submit" class="w-full group/btn relative overflow-hidden py-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black rounded-xl transition-all shadow-[0_10px_25px_rgba(79,70,229,0.2)] active:scale-[0.98] uppercase tracking-[0.15em] text-[10px] flex items-center justify-center gap-2">
+                                <i data-lucide="upload" class="w-3.5 h-3.5 group-hover/btn:-translate-y-1 transition-transform duration-300"></i>
+                                <span>Unggah Data {{ $p }}</span>
                             </button>
                         </form>
                     </div>
