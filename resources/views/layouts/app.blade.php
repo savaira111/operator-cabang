@@ -400,17 +400,18 @@
                             <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                             </span>
-                            <span class="text-[13px] font-semibold tracking-wide">Penyelenggaraan Belanja Satker</span>
+                            <span class="text-[13px] font-semibold tracking-wide">Penyerapan Anggaran</span>
                         </div>
                         <i data-lucide="chevron-down" id="anggaranChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'rotate-180' : '' }}"></i>
                     </button>
                     
                     <div id="anggaranMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'show' : '' }}">
-                        @foreach($anggaranItems as $item)
-                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
+                        <a href="{{ route('penilaian-belanja.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-belanja.*') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Penilaian Belanja Satker</span>
                         </a>
-                        @endforeach
+                        <a href="{{ route('belanja-satker.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('belanja-satker.index') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">Belanja Satker Management</span>
+                        </a>
                     </div>
                 </div>
                 @elseif(count($anggaranItems) == 1)
@@ -687,7 +688,7 @@
                 text: "Apakah Anda yakin ingin mengakhiri sesi ini?",
                 icon: 'question',
                 iconColor: '#D2A039',
-                showBatalButton: true,
+                showCancelButton: true,
                 confirmButtonText: 'Ya, Keluar',
                 cancelButtonText: 'Batalkan',
                 reverseButtons: true
@@ -706,7 +707,7 @@
                 text: "Data ini akan dihapus secara permanen dari sistem.",
                 icon: 'warning',
                 iconColor: '#f43f5e',
-                showBatalButton: true,
+                showCancelButton: true,
                 confirmButtonText: 'Ya, Hapus Data',
                 cancelButtonText: 'Batalkan',
                 reverseButtons: true
