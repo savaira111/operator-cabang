@@ -39,6 +39,7 @@ class UserController extends Controller
             ],
             'role' => 'required|in:operator cabang,operator kanwil',
             'cabang_id' => 'required_if:role,operator cabang|exists:cabangs,id|nullable',
+            'permissions' => 'nullable|array',
         ]);
 
         \App\Models\User::create([
@@ -48,6 +49,7 @@ class UserController extends Controller
             'role' => $validated['role'],
             'cabang_id' => $validated['cabang_id'],
             'password' => bcrypt($validated['password']),
+            'permissions' => $request->permissions ?? [],
         ]);
         return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil ditambahkan');
     }
@@ -88,6 +90,7 @@ class UserController extends Controller
             ],
             'role' => 'required|in:operator cabang,operator kanwil',
             'cabang_id' => 'required_if:role,operator cabang|exists:cabangs,id|nullable',
+            'permissions' => 'nullable|array',
         ]);
         
         $data = [
@@ -96,6 +99,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'role' => $validated['role'],
             'cabang_id' => $validated['cabang_id'],
+            'permissions' => $request->permissions ?? [],
         ];
 
         if ($request->filled('password')) {

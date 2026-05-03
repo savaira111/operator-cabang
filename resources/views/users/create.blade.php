@@ -67,6 +67,70 @@
                 </div>
             </div>
 
+            <!-- Permission Section -->
+            <div class="p-8 bg-slate-800/30 rounded-[2.5rem] border border-slate-800/50">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wider">Hak Akses Fitur</h4>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Tentukan fitur yang dapat diakses pengguna ini</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @php
+                        $available_permissions = [
+                            'manajemen_pengguna' => ['label' => 'Manajemen Pengguna', 'icon' => 'users', 'group' => 'Utama'],
+                            'manajemen_cabang' => ['label' => 'Manajemen Cabang', 'icon' => 'building-2', 'group' => 'Utama'],
+                            
+                            'lpi_rekap_pengendalian' => ['label' => 'LPI: Rekap Pengendalian', 'icon' => 'file-text', 'group' => 'Kelola LPI'],
+                            'lpi_laporan_internal' => ['label' => 'LPI: Laporan Internal', 'icon' => 'clipboard-list', 'group' => 'Kelola LPI'],
+                            'lpi_penilaian_lpi' => ['label' => 'LPI: Penilaian LPI', 'icon' => 'check-square', 'group' => 'Kelola LPI'],
+                            'lpi_master_resiko' => ['label' => 'LPI: Master Resiko', 'icon' => 'database', 'group' => 'Kelola LPI'],
+                            
+                            'tahanan_penilaian' => ['label' => 'Tahanan: Penilaian', 'icon' => 'user-check', 'group' => 'Data Tahanan'],
+                            'tahanan_management' => ['label' => 'Tahanan: Management', 'icon' => 'users-round', 'group' => 'Data Tahanan'],
+                            
+                            'zi_penilaian' => ['label' => 'ZI: Penilaian', 'icon' => 'award', 'group' => 'Zona Integritas'],
+                            'zi_manajemen_data' => ['label' => 'ZI: Manajemen Data', 'icon' => 'settings', 'group' => 'Zona Integritas'],
+                            'zi_input_data' => ['label' => 'ZI: Input Data', 'icon' => 'edit-3', 'group' => 'Zona Integritas'],
+                            
+                            'belanja_penilaian' => ['label' => 'Belanja: Penilaian', 'icon' => 'trending-up', 'group' => 'Belanja Satker'],
+                            'belanja_management' => ['label' => 'Belanja: Management', 'icon' => 'shopping-bag', 'group' => 'Belanja Satker'],
+                        ];
+
+                        $groups = [];
+                        foreach($available_permissions as $key => $data) {
+                            $groups[$data['group']][$key] = $data;
+                        }
+                    @endphp
+
+                    @foreach($groups as $groupName => $permissions)
+                    <div class="col-span-full mt-4 first:mt-0">
+                        <h5 class="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-4 border-b border-slate-800 pb-2">{{ $groupName }}</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($permissions as $key => $data)
+                            <label class="relative flex items-center p-4 rounded-2xl bg-slate-900/50 border border-slate-700/50 hover:border-indigo-500/50 transition-all cursor-pointer group">
+                                <div class="flex items-center flex-1">
+                                    <div class="p-2 bg-slate-800 rounded-lg mr-3 text-slate-500 group-hover:text-indigo-400 transition-colors">
+                                        <i data-lucide="{{ $data['icon'] }}" class="w-4 h-4"></i>
+                                    </div>
+                                    <span class="text-[11px] font-bold text-slate-400 group-hover:text-white transition-colors uppercase tracking-tight">{{ $data['label'] }}</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="checkbox" name="permissions[]" value="{{ $key }}" class="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-slate-600 bg-slate-800 checked:bg-indigo-500 checked:border-indigo-500 transition-all">
+                                    <i data-lucide="check" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></i>
+                                </div>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Alamat Email</label>
                 <input type="email" name="email" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="andi@example.com">

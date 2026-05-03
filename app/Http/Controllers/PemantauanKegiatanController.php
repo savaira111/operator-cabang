@@ -10,14 +10,27 @@ class PemantauanKegiatanController extends Controller
 {
     public function index()
     {
-        $pemantauans = PemantauanKegiatan::with(['rencanaTindak.resiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $pemantauans = PemantauanKegiatan::with(['rencanaTindak.resiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('rencanaTindak.resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_kegiatan.index', compact('pemantauans'));
     }
 
     public function create()
     {
-        // Get Rencana Tindak records that don't have Pemantauan yet, or all of them.
-        $rencanas = RencanaTindakPengendalian::with(['resiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $rencanas = RencanaTindakPengendalian::with(['resiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_kegiatan.create', compact('rencanas'));
     }
 
@@ -42,7 +55,14 @@ class PemantauanKegiatanController extends Controller
 
     public function edit(PemantauanKegiatan $pemantauanKegiatan)
     {
-        $rencanas = RencanaTindakPengendalian::with(['resiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $rencanas = RencanaTindakPengendalian::with(['resiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_kegiatan.edit', compact('pemantauanKegiatan', 'rencanas'));
     }
 

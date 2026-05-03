@@ -8,13 +8,23 @@ class RencanaTindakPengendalianController extends Controller
 {
     public function index()
     {
-        $rencanas = \App\Models\RencanaTindakPengendalian::with('resiko.cabang')->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $rencanas = \App\Models\RencanaTindakPengendalian::with('resiko.cabang')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('rencana_tindak.index', compact('rencanas'));
     }
 
     public function create()
     {
-        $resikos = \App\Models\Resiko::all();
+        $userCabangId = auth()->user()->cabang_id;
+        $resikos = \App\Models\Resiko::when($userCabangId, function($q) use ($userCabangId) {
+            return $q->where('cabang_id', $userCabangId);
+        })->get();
         return view('rencana_tindak.create', compact('resikos'));
     }
 

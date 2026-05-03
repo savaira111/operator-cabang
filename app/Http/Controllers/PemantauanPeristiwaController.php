@@ -10,13 +10,27 @@ class PemantauanPeristiwaController extends Controller
 {
     public function index()
     {
-        $peristiwas = PemantauanPeristiwa::with(['pemantauanKegiatan.rencanaTindak.resiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $peristiwas = PemantauanPeristiwa::with(['pemantauanKegiatan.rencanaTindak.resiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('pemantauanKegiatan.rencanaTindak.resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_peristiwa.index', compact('peristiwas'));
     }
 
     public function create()
     {
-        $pemantauanKegiatans = PemantauanKegiatan::with(['rencanaTindak.resiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $pemantauanKegiatans = PemantauanKegiatan::with(['rencanaTindak.resiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('rencanaTindak.resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_peristiwa.create', compact('pemantauanKegiatans'));
     }
 

@@ -15,7 +15,7 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'email', 'password', 'username', 'role', 'cabang_id'];
+    protected $fillable = ['name', 'email', 'password', 'username', 'role', 'cabang_id', 'permissions'];
     protected $hidden = ['password', 'remember_token'];
 
     public function cabang()
@@ -33,6 +33,20 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'permissions' => 'array',
         ];
+    }
+
+    /**
+     * Check if user has permission to access a feature.
+     */
+    public function hasPermission($permission): bool
+    {
+        // If permissions is null (existing users not yet configured), grant access by default
+        if ($this->permissions === null) {
+            return true;
+        }
+
+        return in_array($permission, $this->permissions);
     }
 }

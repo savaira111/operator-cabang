@@ -91,9 +91,14 @@
                     <tr class="hover:bg-slate-800/30 transition-all group">
                         <td class="px-8 py-10 text-xs font-bold text-slate-500 align-top">{{ $index + 1 }}</td>
                         <td class="px-8 py-10 align-top">
-                            <span class="font-bold text-white tracking-tight uppercase text-sm">
-                                {{ $data['cabang'] }}
-                            </span>
+                            <div class="flex items-center">
+                                <div class="px-5 py-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl text-[11px] font-black text-indigo-300 uppercase tracking-widest shadow-xl shadow-indigo-500/5 min-w-[180px] flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                        <i data-lucide="building-2" class="w-4 h-4"></i>
+                                    </div>
+                                    <span class="truncate">{{ $data['cabang'] }}</span>
+                                </div>
+                            </div>
                         </td>
                         <td class="px-8 py-10 align-top">
                             <div class="flex flex-col">

@@ -11,7 +11,17 @@ class BelanjaSatkerController extends Controller
 {
     public function index()
     {
-        $belanjas = BelanjaSatker::with('cabang')->latest()->get();
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $query = BelanjaSatker::with('cabang');
+        
+        if ($userCabangId) {
+            $query->where('cabang_id', $userCabangId);
+        }
+
+        $belanjas = $query->latest()->get();
         return view('belanja_satkers.index', compact('belanjas'));
     }
 
@@ -23,14 +33,24 @@ class BelanjaSatkerController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'bulan' => 'required|string',
             'tahun' => 'required|integer',
             'keterangan' => 'nullable|string',
             'total' => 'required|numeric|min:0',
             'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         if ($request->hasFile('dokumen')) {
             $validated['dokumen_path'] = $request->file('dokumen')->store('belanja_dokumen', 'public');
@@ -49,8 +69,11 @@ class BelanjaSatkerController extends Controller
 
     public function update(Request $request, BelanjaSatker $belanjaSatker)
     {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'bulan' => 'required|string',
             'tahun' => 'required|integer',
             'keterangan' => 'nullable|string',
@@ -59,7 +82,14 @@ class BelanjaSatkerController extends Controller
             'status_evaluasi' => 'nullable|string',
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan_evaluasi' => 'nullable|string',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         if ($request->hasFile('dokumen')) {
             if ($belanjaSatker->dokumen_path) {

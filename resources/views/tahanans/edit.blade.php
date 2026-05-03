@@ -35,7 +35,8 @@
             @method('PUT')
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                <!-- ID Cabang (Lokasi) -->
+                <!-- ID Cabang (Lokasi) - Hidden if user has branch -->
+                @if(!auth()->user()->cabang_id)
                 <div class="space-y-1.5 md:space-y-3">
                     <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Kantor Cabang / Satker</label>
                     <div class="relative group/select">
@@ -49,6 +50,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Periode Input (Bulan) -->
                 <div class="space-y-1.5 md:space-y-3">

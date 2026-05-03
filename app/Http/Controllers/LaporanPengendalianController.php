@@ -10,7 +10,17 @@ class LaporanPengendalianController extends Controller
 {
     public function index()
     {
-        $laporans = LaporanPengendalian::with('cabang')->latest()->get();
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $query = LaporanPengendalian::with('cabang');
+        
+        if ($userCabangId) {
+            $query->where('cabang_id', $userCabangId);
+        }
+
+        $laporans = $query->latest()->get();
         return view('laporan_pengendalians.index', compact('laporans'));
     }
 
@@ -20,16 +30,24 @@ class LaporanPengendalianController extends Controller
         return view('laporan_pengendalians.create', compact('cabangs'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'nama_laporan' => 'required|string',
             'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xlsx,xls,jpg,png|max:10240',
             'keterangan' => 'nullable|string',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -51,8 +69,11 @@ class LaporanPengendalianController extends Controller
 
     public function update(Request $request, LaporanPengendalian $laporanPengendalian)
     {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'nama_laporan' => 'required|string',
             'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
@@ -61,7 +82,14 @@ class LaporanPengendalianController extends Controller
             'status_evaluasi' => 'nullable|string',
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan_evaluasi' => 'nullable|string',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         if ($request->hasFile('file')) {
             if ($laporanPengendalian->file_path && file_exists(public_path($laporanPengendalian->file_path))) {

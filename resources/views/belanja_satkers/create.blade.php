@@ -18,7 +18,8 @@
         @csrf
 
         <div class="space-y-6">
-            <!-- Satker/Cabang Selection -->
+            <!-- Satker/Cabang Selection (Hidden if user has branch) -->
+            @if(!auth()->user()->cabang_id)
             <div>
                 <label for="cabang_id" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Pilih Satker / Cabang <span class="text-rose-500">*</span></label>
                 <select name="cabang_id" id="cabang_id" required class="w-full bg-[#111827] border border-slate-700 text-white rounded-xl focus:ring-[#D2A039]/20 focus:border-[#D2A039] p-3 transition-all">
@@ -31,6 +32,7 @@
                 </select>
                 @error('cabang_id') <p class="mt-1.5 text-xs font-medium text-rose-500">{{ $message }}</p> @enderror
             </div>
+            @endif
 
             <!-- Periode Bulan & Tahun -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

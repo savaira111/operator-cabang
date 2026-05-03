@@ -12,7 +12,14 @@ class EvaluasiRisikoController extends Controller
 {
     public function index()
     {
-        $evaluasis = EvaluasiRisiko::with(['resiko.rencanaTindak.pemantauanKegiatan'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $evaluasis = EvaluasiRisiko::with(['resiko.rencanaTindak.pemantauanKegiatan'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('resiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         
         // Enhance with related data
         foreach($evaluasis as $e) {
@@ -27,7 +34,12 @@ class EvaluasiRisikoController extends Controller
 
     public function create()
     {
-        $resikos = Resiko::with('rencanaTindak')->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $resikos = Resiko::with('rencanaTindak')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->where('cabang_id', $userCabangId);
+            })
+            ->get();
         
         // Prepare data for auto-fill
         foreach($resikos as $r) {
@@ -69,7 +81,10 @@ class EvaluasiRisikoController extends Controller
 
     public function edit(EvaluasiRisiko $evaluasiRisiko)
     {
-        $resikos = Resiko::all();
+        $userCabangId = auth()->user()->cabang_id;
+        $resikos = Resiko::when($userCabangId, function($q) use ($userCabangId) {
+            return $q->where('cabang_id', $userCabangId);
+        })->get();
         foreach($resikos as $r) {
             $rtp = RencanaTindakPengendalian::where('resiko_id', $r->id)->first();
             $analisis = AnalisisRisiko::whereHas('identifikasiRisiko', function($q) use ($r) {

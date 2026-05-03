@@ -9,7 +9,12 @@ class IdentifikasiRisikoController extends Controller
 {
     public function index()
     {
-        $identifikasi_risikos = IdentifikasiRisiko::with('cabang')->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $identifikasi_risikos = IdentifikasiRisiko::with('cabang')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->where('cabang_id', $userCabangId);
+            })
+            ->get();
         return view('identifikasi_risiko.index', compact('identifikasi_risikos'));
     }
 
@@ -31,8 +36,13 @@ class IdentifikasiRisikoController extends Controller
             'metode_pencapaian_tujuan_spip' => 'nullable|string',
         ]);
 
-        $defaultCabang = \App\Models\Cabang::first();
-        $validated['cabang_id'] = auth()->user()->cabang_id ?? ($defaultCabang ? $defaultCabang->id : null);
+        $userCabangId = auth()->user()->cabang_id;
+        if (!$userCabangId) {
+            $defaultCabang = \App\Models\Cabang::first();
+            $userCabangId = $defaultCabang ? $defaultCabang->id : null;
+        }
+        $validated['cabang_id'] = $userCabangId;
+        $validated['user_id'] = auth()->id();
 
         IdentifikasiRisiko::create($validated);
         return redirect()->route('identifikasi-risiko.index')->with('success', 'Data Identifikasi Risiko berhasil ditambahkan.');

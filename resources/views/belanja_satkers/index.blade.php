@@ -63,9 +63,17 @@ function filterTable() {
                             {{ $loop->iteration }}
                         </span>
                     </td>
-                    <td class="px-4 py-4">
+                    <td class="px-4 py-6">
                         <div class="flex items-center">
-                            <span class="font-bold text-[13px] text-white tracking-tight leading-snug">{{ $belanja->cabang->kode_cabang ?? '-' }} | {{ $belanja->cabang->name }}</span>
+                            <div class="px-4 py-2 bg-[#D2A039]/10 border border-[#D2A039]/30 rounded-xl text-[11px] font-black text-[#D2A039] uppercase tracking-tighter shadow-xl shadow-[#D2A039]/5 min-w-[180px] flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-[#D2A039]/20 flex items-center justify-center text-[#D2A039] shrink-0">
+                                    <i data-lucide="building-2" class="w-4 h-4"></i>
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="truncate leading-none mb-1">{{ $belanja->cabang->name }}</span>
+                                    <span class="text-[9px] text-slate-500 font-bold tracking-tight">{{ $belanja->cabang->kode_cabang ?? '-' }}</span>
+                                </div>
+                            </div>
                         </div>
                     </td>
                     <td class="px-4 py-4">

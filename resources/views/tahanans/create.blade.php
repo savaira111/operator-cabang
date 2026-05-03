@@ -39,7 +39,8 @@
                     <p class="text-[10px] text-slate-600 ml-1 italic">* Pastikan format kolom sesuai dengan template standar.</p>
                 </div>
 
-                <!-- Id_Cabang (Dropdown) -->
+                <!-- Id_Cabang (Hidden if user has branch) -->
+                @if(!auth()->user()->cabang_id)
                 <div class="space-y-3">
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">ID Cabang (Lokasi)</label>
                     <div class="relative group">
@@ -54,6 +55,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Periode Input (Bulan) -->
                 <div class="space-y-3">

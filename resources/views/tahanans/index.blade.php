@@ -39,18 +39,7 @@
                     </div>
                 </div>
 
-                <!-- Cabang Selection -->
-                <div class="space-y-2 md:space-y-3">
-                    <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Kantor Cabang / Satker</label>
-                    <div class="relative group/select">
-                        <select id="cabangSelect" name="cabang_id" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none text-xs md:text-sm">
-                            <option value="" selected disabled hidden>-- Pilih Cabang --</option>
-                            @foreach($cabangs as $cabang)
-                                <option value="{{ $cabang->id }}">{{ $cabang->kode_cabang ?? 'UPT' }} - {{ $cabang->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+                <!-- Branch selection removed as per request - now fully automated -->
 
                 <!-- Periode Bulan -->
                 <div class="space-y-2 md:space-y-3">
@@ -140,9 +129,13 @@
                                 </div>
                             </td>
                             <td class="px-4 py-4 md:px-8 md:py-5">
-                                <div class="flex items-center text-[10px] md:text-[11px] font-bold text-slate-300 min-w-[120px]">
-                                    <i data-lucide="building-2" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-2 text-slate-700 group-hover:text-[#D2A039] transition-colors"></i>
-                                    {{ $tahanan->cabang->name ?? '-' }}
+                                <div class="flex items-center">
+                                    <div class="px-3 py-1.5 bg-[#D2A039]/10 border border-[#D2A039]/20 rounded-xl text-[10px] md:text-[11px] font-black text-[#D2A039] uppercase tracking-tighter shadow-lg shadow-[#D2A039]/5 min-w-[140px] flex items-center gap-2.5">
+                                        <div class="w-6 h-6 rounded-lg bg-[#D2A039]/20 flex items-center justify-center text-[#D2A039] shrink-0">
+                                            <i data-lucide="building-2" class="w-3 h-3"></i>
+                                        </div>
+                                        <span class="truncate">{{ $tahanan->cabang->name ?? '-' }}</span>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-4 py-4 md:px-8 md:py-5">
@@ -284,16 +277,4 @@ function filterTable() {
     font-size: 14px !important;
 }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        new TomSelect("#cabangSelect", {
-            create: false,
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            placeholder: '-- Pilih Cabang Terdaftar --'
-        });
-    });
-</script>
 @endsection

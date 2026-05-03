@@ -10,7 +10,16 @@ class TahananController extends Controller
 {
     public function index()
     {
-        $tahanans = \App\Models\Tahanan::with('cabang')->get();
+        $userCabangId = auth()->user()->cabang_id ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $query = \App\Models\Tahanan::with('cabang');
+        
+        if ($userCabangId) {
+            $query->where('cabang_id', $userCabangId);
+        }
+
+        $tahanans = $query->get();
         $cabangs = \App\Models\Cabang::all();
         return view('tahanans.index', compact('tahanans', 'cabangs'));
     }
@@ -23,13 +32,21 @@ class TahananController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
             'excel_file' => 'nullable|file|mimes:xlsx,xls,csv|max:5120',
             'keterangan' => 'nullable|string',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         // Auto generation logic for No Input
         $month = date('m');
@@ -103,8 +120,11 @@ class TahananController extends Controller
 
     public function update(Request $request, Tahanan $tahanan)
     {
-        $validated = $request->validate([
-            'cabang_id' => 'required|exists:cabangs,id',
+        $userCabangId = auth()->user()->cabang_id 
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
+            ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;
+
+        $rules = [
             'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
             'excel_file' => 'nullable|file|mimes:xlsx,xls,csv|max:5120',
@@ -112,7 +132,14 @@ class TahananController extends Controller
             'status_evaluasi' => 'nullable|string',
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan_evaluasi' => 'nullable|string',
-        ]);
+        ];
+
+        if (!$userCabangId) {
+            $rules['cabang_id'] = 'required|exists:cabangs,id';
+        }
+
+        $validated = $request->validate($rules);
+        $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
         // Handle File Update
         if ($request->hasFile('excel_file')) {

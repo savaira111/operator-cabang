@@ -46,7 +46,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Penanggung Jawab</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Cabang</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
-                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Dokumen</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Aksi</th>
                 </tr>
             </thead>
@@ -58,9 +58,26 @@
                             <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
                             <td colspan="12" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
                             <td class="px-6 py-4 border-r border-slate-800/60 text-center">
-                                <span class="px-3 py-1 bg-blue-500/20 rounded-full text-[9px] font-black text-blue-400 border border-blue-500/30 uppercase tracking-widest">
-                                    {{ $item->cabang?->name ?: 'Global' }}
-                                </span>
+                                <div class="flex justify-center">
+                                    <span class="px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-xl text-[10px] font-black text-blue-300 uppercase tracking-tighter shadow-lg shadow-blue-500/5 min-w-[120px]">
+                                        <i data-lucide="building-2" class="w-3 h-3 inline-block mr-1.5 mb-0.5"></i>
+                                        {{ $item->cabang?->name ?: 'Global Access' }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 border-r border-slate-800/60 text-center">
+                                @if($item->files->count() > 0)
+                                    <div class="flex flex-wrap justify-center gap-1">
+                                        @foreach($item->files as $file)
+                                            <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[8px] font-black text-slate-400 hover:bg-white/10 hover:text-white transition-all flex items-center gap-1" title="Lihat Dokumen {{ $file->period }}">
+                                                <i data-lucide="file-text" class="w-3 h-3 text-red-400"></i>
+                                                {{ $file->period }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-[9px] text-slate-700 italic">No Files</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 text-right">
                                  <a href="{{ route('zi-monitoring.edit', $item) }}" class="p-2 text-slate-500 hover:text-blue-400 transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></a>
@@ -109,12 +126,29 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center">
-                                            <span class="px-3 py-1 bg-slate-800 rounded-full text-[9px] font-black text-slate-400 border border-slate-700 uppercase tracking-widest">
-                                                {{ $firstRk->cabang?->name ?: 'Global' }}
-                                            </span>
+                                            <div class="flex justify-center">
+                                                <span class="px-4 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 uppercase tracking-tighter shadow-lg shadow-black/20 min-w-[120px]">
+                                                    <i data-lucide="map-pin" class="w-3 h-3 inline-block mr-1.5 mb-0.5 text-[#D2A039]"></i>
+                                                    {{ $firstRk->cabang?->name ?: 'Global Access' }}
+                                                </span>
+                                            </div>
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center">
+                                            @if($firstRk->files->count() > 0)
+                                                <div class="flex flex-wrap justify-center gap-1">
+                                                    @foreach($firstRk->files as $file)
+                                                        <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="px-2 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[9px] font-black text-red-400 hover:bg-red-500 hover:text-white transition-all flex items-center gap-1.5 shadow-lg shadow-red-500/5" title="Lihat Dokumen {{ $file->period }}">
+                                                            <i data-lucide="file-text" class="w-3 h-3"></i>
+                                                            {{ $file->period }}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="text-[9px] text-slate-700 italic">No Uploads</span>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-6 text-right">
                                             <div class="flex items-center justify-end space-x-1">
                                                 <a href="{{ route('zi-monitoring.edit', $firstRk) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Isi Data">
@@ -161,12 +195,29 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center">
-                                            <span class="px-3 py-1 bg-slate-800 rounded-full text-[9px] font-black text-slate-400 border border-slate-700 uppercase tracking-widest">
-                                                {{ $rk->cabang?->name ?: 'Global' }}
-                                            </span>
+                                            <div class="flex justify-center">
+                                                <span class="px-4 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 uppercase tracking-tighter shadow-lg shadow-black/20 min-w-[120px]">
+                                                    <i data-lucide="map-pin" class="w-3 h-3 inline-block mr-1.5 mb-0.5 text-[#D2A039]"></i>
+                                                    {{ $rk->cabang?->name ?: 'Global Access' }}
+                                                </span>
+                                            </div>
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center">
+                                            @if($rk->files->count() > 0)
+                                                <div class="flex flex-wrap justify-center gap-1">
+                                                    @foreach($rk->files as $file)
+                                                        <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="px-2 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[9px] font-black text-red-400 hover:bg-red-500 hover:text-white transition-all flex items-center gap-1.5 shadow-lg shadow-red-500/5" title="Lihat Dokumen {{ $file->period }}">
+                                                            <i data-lucide="file-text" class="w-3 h-3"></i>
+                                                            {{ $file->period }}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="text-[9px] text-slate-700 italic">No Uploads</span>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-6 text-right">
                                             <div class="flex items-center justify-end space-x-1">
                                                 <a href="{{ route('zi-monitoring.edit', $rk) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Isi Data">

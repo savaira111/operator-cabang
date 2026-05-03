@@ -20,10 +20,10 @@
             <div class="flex-1 text-center md:text-left">
                 <div class="mb-4 md:mb-6">
                     <span class="inline-flex px-3 py-1 rounded-full bg-[#D2A039]/10 border border-[#D2A039]/20 text-[10px] font-black text-[#D2A039] uppercase tracking-widest mb-3 md:mb-4">
-                        Super Administrator Access
+                        {{ ucwords(str_replace('_', ' ', auth()->user()->role)) }} Access
                     </span>
-                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-widest leading-none mb-2">ADMIN UTAMA</h2>
-                    <p class="text-slate-500 text-base md:text-lg font-medium tracking-tight">admin@management.system</p>
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-widest leading-none mb-2 uppercase">{{ auth()->user()->username }}</h2>
+                    <p class="text-slate-500 text-base md:text-lg font-medium tracking-tight">{{ auth()->user()->email ?? auth()->user()->username }}</p>
                 </div>
                 
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
@@ -45,7 +45,7 @@
                 <div class="space-y-6">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-slate-500">Full Name</span>
-                        <span class="text-sm font-bold text-white tracking-tight">Admin Administrator</span>
+                        <span class="text-sm font-bold text-white tracking-tight">{{ auth()->user()->name }}</span>
                     </div>
                     <div class="flex items-center justify-between border-t border-[#D2A039]/20 pt-4">
                         <span class="text-sm font-medium text-slate-500">Security Level</span>
@@ -57,7 +57,12 @@
                     </div>
                     <div class="flex items-center justify-between border-t border-[#D2A039]/20 pt-4">
                         <span class="text-sm font-medium text-slate-500">Assigned Branch</span>
-                        <span class="text-[10px] md:text-sm font-black text-[#D2A039] tracking-tighter uppercase whitespace-nowrap">KANTOR PUSAT CANARY</span>
+                        <div class="px-4 py-1.5 bg-[#D2A039]/10 border border-[#D2A039]/30 rounded-xl">
+                            <span class="text-[10px] md:text-xs font-black text-[#D2A039] tracking-widest uppercase whitespace-nowrap">
+                                <i data-lucide="map-pin" class="w-3 h-3 inline-block mr-1.5 mb-0.5"></i>
+                                {{ auth()->user()->cabang->name ?? 'KANTOR WILAYAH' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

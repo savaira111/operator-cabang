@@ -67,14 +67,16 @@ function filterTable() {
                             {{ $loop->iteration }}
                         </span>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="px-6 py-8 align-middle">
                         <div class="flex items-center">
-                            <div class="w-9 h-9 rounded-xl flex-shrink-0 bg-[#D2A039]/10 flex items-center justify-center text-[#D2A039] mr-4 border border-[#D2A039]/20">
-                                <i data-lucide="building" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <span class="font-black text-[11px] text-slate-200 tracking-widest uppercase block leading-none">{{ $zi->cabang->name }}</span>
-                                <span class="text-[9px] text-slate-500 font-bold uppercase tracking-tight mt-1 inline-block">{{ $zi->cabang->kode_cabang }}</span>
+                            <div class="px-5 py-3 bg-[#D2A039]/10 border border-[#D2A039]/30 rounded-2xl text-[11px] font-black text-[#D2A039] uppercase tracking-widest shadow-xl shadow-[#D2A039]/5 min-w-[200px] flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-[#D2A039]/20 flex items-center justify-center text-[#D2A039] shrink-0">
+                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="truncate leading-none mb-1.5">{{ $zi->cabang->name }}</span>
+                                    <span class="text-[9px] text-slate-500 font-bold tracking-tight">{{ $zi->cabang->kode_cabang }}</span>
+                                </div>
                             </div>
                         </div>
                     </td>

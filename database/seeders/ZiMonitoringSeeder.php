@@ -15,7 +15,7 @@ class ZiMonitoringSeeder extends Seeder
 
         // SS.1.1 - WARNA BIRU (Root Sasaran Indikatif)
         $ss1_1 = ZiMonitoring::create([
-            'cabang_id' => $cabang->id,
+            'cabang_id' => null,
             'parent_id' => null,
             'tipe' => 'SS2',
             'nomor' => 'SS.1.1',
@@ -24,7 +24,7 @@ class ZiMonitoringSeeder extends Seeder
 
         // K.2
         $k2 = ZiMonitoring::create([
-            'cabang_id' => $cabang->id,
+            'cabang_id' => null,
             'parent_id' => $ss1_1->id,
             'tipe' => 'K',
             'nomor' => 'K.2',
@@ -36,7 +36,7 @@ class ZiMonitoringSeeder extends Seeder
 
         // RK.2.2
         ZiMonitoring::create([
-            'cabang_id' => $cabang->id,
+            'cabang_id' => null,
             'parent_id' => $k2->id,
             'tipe' => 'IO',
             'nomor' => 'IO.2.2',
@@ -47,14 +47,13 @@ class ZiMonitoringSeeder extends Seeder
             'pelaksana' => 'Kanwil Ditjen Pemasyarakatan',
             'koordinator' => 'BIRO UMUM',
             'data_dukung' => 'Laporan Penggunaan Aplikasi Srikandi (Surat Masuk/Keluar)',
-            'status_data_dukung' => 'sesuai',
-            'prosentase' => 100,
-            'catatan' => 'Laporan sudah diverifikasi pusat.',
+            'status_data_dukung' => 'belum_ada',
+            'prosentase' => 0,
         ]);
 
         // RK.2.10
         ZiMonitoring::create([
-            'cabang_id' => $cabang->id,
+            'cabang_id' => null,
             'parent_id' => $k2->id,
             'tipe' => 'IO',
             'nomor' => 'IO.2.10',
@@ -65,9 +64,8 @@ class ZiMonitoringSeeder extends Seeder
             'pelaksana' => 'Kanwil Ditjen Pemasyarakatan',
             'koordinator' => 'BIRO UMUM',
             'data_dukung' => 'Dokumen SK Tim Pengawasan Kearsipan (PDF)',
-            'status_data_dukung' => 'menunggu',
-            'prosentase' => 75,
-            'catatan' => 'Menunggu tandatangan pimpinan.',
+            'status_data_dukung' => 'belum_ada',
+            'prosentase' => 0,
         ]);
     }
 }

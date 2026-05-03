@@ -11,7 +11,14 @@ class PemantauanLevelRisikoController extends Controller
 {
     public function index()
     {
-        $pemantauans = PemantauanLevelRisiko::with(['analisisRisiko.identifikasiRisiko'])->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $pemantauans = PemantauanLevelRisiko::with(['analisisRisiko.identifikasiRisiko'])
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('analisisRisiko.identifikasiRisiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         
         // Add event count for each
         foreach($pemantauans as $p) {
@@ -23,7 +30,14 @@ class PemantauanLevelRisikoController extends Controller
 
     public function create()
     {
-        $analisisRisikos = AnalisisRisiko::with('identifikasiRisiko')->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $analisisRisikos = AnalisisRisiko::with('identifikasiRisiko')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('identifikasiRisiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('pemantauan_level.create', compact('analisisRisikos'));
     }
 

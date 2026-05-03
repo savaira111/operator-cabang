@@ -11,14 +11,26 @@ class ResikoController extends Controller
      */
     public function index()
     {
-        $resikos = \App\Models\Resiko::with('cabang')->get();
+        $userCabangId = auth()->user()->cabang_id;
+        $resikos = \App\Models\Resiko::with('cabang')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->where('cabang_id', $userCabangId);
+            })
+            ->get();
         return view('resikos.index', compact('resikos'));
     }
 
     public function create()
     {
+        $userCabangId = auth()->user()->cabang_id;
         $cabangs = \App\Models\Cabang::all();
-        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')->get();
+        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('identifikasiRisiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('resikos.create', compact('cabangs', 'analisis_risikos'));
     }
 
@@ -43,9 +55,13 @@ class ResikoController extends Controller
             'kegiatan_pengendalian' => 'required|string',
         ]);
         
-        // Use authenticated user's cabang_id or fallback to a valid cabang
-        $defaultCabang = \App\Models\Cabang::first();
-        $validated['cabang_id'] = auth()->user()->cabang_id ?? ($defaultCabang ? $defaultCabang->id : null);
+        // Use authenticated user's cabang_id or fallback
+        $userCabangId = auth()->user()->cabang_id;
+        if (!$userCabangId) {
+            $defaultCabang = \App\Models\Cabang::first();
+            $userCabangId = $defaultCabang ? $defaultCabang->id : null;
+        }
+        $validated['cabang_id'] = $userCabangId;
         $validated['tahun'] = date('Y');
 
         $count = \App\Models\Resiko::count() + 1;
@@ -61,8 +77,15 @@ class ResikoController extends Controller
 
     public function edit(\App\Models\Resiko $resiko)
     {
+        $userCabangId = auth()->user()->cabang_id;
         $cabangs = \App\Models\Cabang::all();
-        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')->get();
+        $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')
+            ->when($userCabangId, function($q) use ($userCabangId) {
+                return $q->whereHas('identifikasiRisiko', function($sq) use ($userCabangId) {
+                    $sq->where('cabang_id', $userCabangId);
+                });
+            })
+            ->get();
         return view('resikos.edit', compact('resiko', 'cabangs', 'analisis_risikos'));
     }
 

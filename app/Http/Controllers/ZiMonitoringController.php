@@ -11,7 +11,7 @@ class ZiMonitoringController extends Controller
 {
     public function index()
     {
-        $monitorings = ZiMonitoring::with(['cabang', 'children'])
+        $monitorings = ZiMonitoring::with(['cabang', 'children.children.files', 'children.files', 'files'])
             ->whereNull('parent_id')
             ->orderBy('nomor')
             ->get();

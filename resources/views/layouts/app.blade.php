@@ -254,22 +254,34 @@
                     <span class="text-[13px] font-semibold tracking-wide">Dashboard</span>
                 </a>
 
+                @if(auth()->user()?->hasPermission('manajemen_pengguna'))
                 <a href="{{ route('users.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('users.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="users" class="w-4 h-4"></i>
                     </span>
                     <span class="text-[13px] font-semibold tracking-wide">Manajemen Pengguna</span>
                 </a>
+                @endif
 
+                @if(auth()->user()?->hasPermission('manajemen_cabang'))
                 <a href="{{ route('cabangs.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('cabangs.*') ? 'active' : '' }}">
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="building-2" class="w-4 h-4"></i>
                     </span>
                     <span class="text-[13px] font-semibold tracking-wide">Manajemen Cabang</span>
                 </a>
+                @endif
 
-                <!-- Dropdown Kelola LPI -->
-                @if(auth()->user()?->role !== 'operator cabang')
+                <!-- Kelola LPI -->
+                @php
+                    $lpiItems = [];
+                    if(auth()->user()?->hasPermission('lpi_rekap_pengendalian')) $lpiItems[] = ['route' => 'laporan.index', 'label' => 'Rekap Pengendalian'];
+                    if(auth()->user()?->hasPermission('lpi_laporan_internal')) $lpiItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
+                    if(auth()->user()?->hasPermission('lpi_penilaian_lpi')) $lpiItems[] = ['route' => 'penilaian-lpi.index', 'label' => 'Penilaian LPI'];
+                    if(auth()->user()?->hasPermission('lpi_master_resiko')) $lpiItems[] = ['route' => 'master-resiko.index', 'label' => 'Master Resiko'];
+                @endphp
+
+                @if(count($lpiItems) > 1)
                 <div class="sidebar-dropdown">
                     <button onclick="toggleLpiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('master-resiko.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
@@ -282,48 +294,70 @@
                     </button>
                     
                     <div id="lpiMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('master-resiko.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
-                        <a href="{{ route('laporan.index') }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('laporan.*') ? 'bg-[#D2A039]/10 text-[#D2A039] font-black' : '' }}">
-                            <span class="text-[12px] tracking-wide">Rekap Pengendalian</span>
+                        @foreach($lpiItems as $item)
+                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) || (request()->routeIs('identifikasi-risiko.*') && $item['route'] == 'identifikasi-risiko.index') ? 'bg-[#D2A039]/10 text-[#D2A039] font-black' : '' }}">
+                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
                         </a>
-                        <a href="{{ route('identifikasi-risiko.index') }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-blue-400 transition-all {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-blue-500/10 text-blue-400 font-black' : '' }}">
-                            <span class="text-[12px] tracking-wide">Laporan Internal</span>
-                        </a>
-                        <a href="{{ route('penilaian-lpi.index') }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-emerald-400 transition-all {{ request()->routeIs('penilaian-lpi.*') ? 'bg-emerald-500/10 text-emerald-400 font-black' : '' }}">
-                            <span class="text-[12px] tracking-wide">Penilaian LPI</span>
-                        </a>
-                        <a href="{{ route('master-resiko.index') }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-indigo-400 transition-all {{ request()->routeIs('master-resiko.*') ? 'bg-indigo-500/10 text-indigo-400 font-black' : '' }}">
-                            <span class="text-[12px] tracking-wide">Master Resiko</span>
-                        </a>
+                        @endforeach
                     </div>
                 </div>
+                @elseif(count($lpiItems) == 1)
+                <a href="{{ route($lpiItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($lpiItems[0]['route']) || (request()->routeIs('identifikasi-risiko.*') && $lpiItems[0]['route'] == 'identifikasi-risiko.index') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">{{ $lpiItems[0]['label'] }}</span>
+                </a>
                 @endif
 
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
 
-                <!-- Dropdown Data Tahanan -->
+                <!-- Data Tahanan -->
+                @php
+                    $tahananItems = [];
+                    if(auth()->user()?->hasPermission('tahanan_penilaian')) $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
+                    if(auth()->user()?->hasPermission('tahanan_management')) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Tahanan Management'];
+                @endphp
+
+                @if(count($tahananItems) > 1)
                 <div class="sidebar-dropdown">
-                    <button onclick="toggleTahananMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') ? 'bg-white/5' : '' }}">
+                    <button onclick="toggleTahananMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('tahanans.*') || request()->routeIs('penilaian-tahanan.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
                             <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                                 <i data-lucide="user-minus" class="w-4 h-4"></i>
                             </span>
                             <span class="text-[13px] font-semibold tracking-wide">Data Tahanan</span>
                         </div>
-                        <i data-lucide="chevron-down" id="tahananChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('tahanans.*') ? 'rotate-180' : '' }}"></i>
+                        <i data-lucide="chevron-down" id="tahananChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('tahanans.*') || request()->routeIs('penilaian-tahanan.*') ? 'rotate-180' : '' }}"></i>
                     </button>
                     
                     <div id="tahananMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('tahanans.*') || request()->routeIs('penilaian-tahanan.*') ? 'show' : '' }}">
-                        <a href="{{ route('penilaian-tahanan.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-tahanan.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Penilaian Tahanan</span>
+                        @foreach($tahananItems as $item)
+                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
                         </a>
-                        <a href="{{ route('tahanans.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('tahanans.index') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Tahanan Management</span>
-                        </a>
+                        @endforeach
                     </div>
                 </div>
+                @elseif(count($tahananItems) == 1)
+                <a href="{{ route($tahananItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($tahananItems[0]['route']) ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="user-minus" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">{{ $tahananItems[0]['label'] }}</span>
+                </a>
+                @endif
 
-                <!-- Dropdown Kelola Zona Integritas -->
+                <!-- Zona Integritas -->
+                @php
+                    $ziItems = [];
+                    if(auth()->user()?->hasPermission('zi_penilaian')) $ziItems[] = ['route' => 'zi-monitoring.index', 'label' => 'Penilaian ZI'];
+                    if(auth()->user()?->hasPermission('zi_manajemen_data')) $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => 'Manajemen Data'];
+                    if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => 'Input Data ZI'];
+                @endphp
+
+                @if(count($ziItems) > 1)
                 <div class="sidebar-dropdown">
                     <button onclick="toggleZiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('zi-monitoring.*') || request()->routeIs('zi-data-manage.*') || request()->routeIs('zi-data-fill.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
@@ -336,39 +370,57 @@
                     </button>
                     
                     <div id="ziMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('zi-monitoring.*') || request()->routeIs('zi-data-manage.*') || request()->routeIs('zi-data-fill.*') ? 'show' : '' }}">
-                        <a href="{{ route('zi-monitoring.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-monitoring.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Penilaian ZI</span>
+                        @foreach($ziItems as $item)
+                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
                         </a>
-                        <a href="{{ route('zi-data-manage.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-data-manage.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Manajemen Data</span>
-                        </a>
-                        <a href="{{ route('zi-data-fill.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('zi-data-fill.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Input Data ZI</span>
-                        </a>
+                        @endforeach
                     </div>
                 </div>
+                @elseif(count($ziItems) == 1)
+                <a href="{{ route($ziItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($ziItems[0]['route']) ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="award" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">{{ $ziItems[0]['label'] }}</span>
+                </a>
+                @endif
 
-                <!-- Dropdown Penyelenggaraan Anggaran -->
+                <!-- Belanja Satker -->
+                @php
+                    $anggaranItems = [];
+                    if(auth()->user()?->hasPermission('belanja_penilaian')) $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Belanja'];
+                    if(auth()->user()?->hasPermission('belanja_management')) $anggaranItems[] = ['route' => 'belanja-satker.index', 'label' => 'Belanja Satker Management'];
+                @endphp
+
+                @if(count($anggaranItems) > 1)
                 <div class="sidebar-dropdown">
-                    <button onclick="toggleAnggaranMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') ? 'bg-white/5' : '' }}">
+                    <button onclick="toggleAnggaranMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
                             <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                             </span>
                             <span class="text-[13px] font-semibold tracking-wide">Penyelenggaraan Belanja Satker</span>
                         </div>
-                        <i data-lucide="chevron-down" id="anggaranChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('belanja-satker.*') ? 'rotate-180' : '' }}"></i>
+                        <i data-lucide="chevron-down" id="anggaranChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'rotate-180' : '' }}"></i>
                     </button>
                     
                     <div id="anggaranMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'show' : '' }}">
-                        <a href="{{ route('penilaian-belanja.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-belanja.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Penilaian Belanja Satker</span>
+                        @foreach($anggaranItems as $item)
+                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
                         </a>
-                        <a href="{{ route('belanja-satker.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('belanja-satker.index') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Belanja Satker Management</span>
-                        </a>
+                        @endforeach
                     </div>
                 </div>
+                @elseif(count($anggaranItems) == 1)
+                <a href="{{ route($anggaranItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($anggaranItems[0]['route']) ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">{{ $anggaranItems[0]['label'] }}</span>
+                </a>
+                @endif
             </nav>
         </aside>
 
@@ -392,8 +444,8 @@
                                 <i data-lucide="user" class="w-3.5 h-3.5"></i>
                             </div>
                             <div class="text-left hidden sm:block">
-                                <p class="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-none">Admin</p>
-                                <p class="text-[8px] text-slate-500 tracking-tight leading-none mt-0.5">Super Administrator</p>
+                                <p class="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-none">{{ auth()->user()->username }}</p>
+                                <p class="text-[8px] text-slate-500 tracking-tight leading-none mt-0.5">{{ ucwords(str_replace('_', ' ', auth()->user()->role)) }}</p>
                             </div>
                             <i data-lucide="chevron-down" class="w-3 h-3 text-slate-500 ml-0.5 transition-transform duration-200" id="profileChevron"></i>
                         </button>
