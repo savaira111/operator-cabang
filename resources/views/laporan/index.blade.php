@@ -500,13 +500,13 @@
                                         { content: no++, rowSpan: visibleModules.length, styles: { valign: 'middle', halign: 'center' } },
                                         { content: data.cabang, rowSpan: visibleModules.length, styles: { valign: 'middle' } },
                                         mod.name,
-                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        mod.pct + '%',
                                         { content: combinedCatatan, rowSpan: visibleModules.length, styles: { valign: 'middle' } }
                                     ]);
                                 } else {
                                     tableBody.push([
                                         mod.name,
-                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        mod.pct + '%',
                                     ]);
                                 }
                             });
@@ -516,14 +516,14 @@
                                     tableBody.push([
                                         no++,
                                         mod.name,
-                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        mod.pct + '%',
                                         { content: combinedCatatan, rowSpan: visibleModules.length, styles: { valign: 'middle' } }
                                     ]);
                                 } else {
                                     tableBody.push([
                                         no++,
                                         mod.name,
-                                        mod.evaluasi + ' / ' + mod.total + ' (' + mod.pct + '%)',
+                                        mod.pct + '%',
                                     ]);
                                 }
                             });

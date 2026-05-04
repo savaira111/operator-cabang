@@ -64,13 +64,7 @@ class ResikoController extends Controller
         }
         $validated['cabang_id'] = $userCabangId;
         $validated['tahun'] = date('Y');
-
-        $count = \App\Models\Resiko::count() + 1;
-        $validated['kode'] = 'WP. ' . $count;
-
-        // Optionally store legacy fields if necessary
-        // $validated['name'] = $validated['pernyataan_risiko'];
-        // $validated['status'] = 'medium';
+        $validated['kode'] = $validated['kode_penyebab_jenis'] . '.' . $validated['kode_penyebab_nomor'];
 
         \App\Models\Resiko::create($validated);
         return redirect()->route('resikos.index')->with('success', 'Data laporan pengendalian internal berhasil disimpan');
@@ -105,6 +99,8 @@ class ResikoController extends Controller
             'kode_penyebab_nomor' => 'required|integer',
             'kegiatan_pengendalian' => 'required|string',
         ]);
+
+        $validated['kode'] = $validated['kode_penyebab_jenis'] . '.' . $validated['kode_penyebab_nomor'];
 
         $resiko->update($validated);
         return redirect()->route('resikos.index')->with('success', 'Data laporan pengendalian internal berhasil diperbarui');
