@@ -17,9 +17,7 @@
 
     <form action="{{ route('rencana-tindak.store') }}" method="POST">
         @csrf
-        <div class="space-y-6">
-            
-            <div class="bg-slate-800/30 border border-slate-700/50 rounded-[2rem] p-8">
+        <div class="space-y-6"><div class="bg-slate-800/30 border border-slate-700/50 rounded-[2rem] p-8">
                 <h4 class="text-lg font-bold text-white mb-6 flex items-center">
                     <i data-lucide="link" class="w-5 h-5 mr-3 text-rose-400"></i>
                     Pilih Analisis Akar Masalah (Kode WP)
@@ -30,7 +28,11 @@
                     <select name="resiko_id" id="resiko_id" required class="w-full px-5 py-4 bg-slate-900/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer" onchange="updateResikoInfo()">
                         <option value="" selected disabled hidden>-- Pilih Kode Laporan --</option>
                         @foreach($resikos as $resiko)
-                            <option value="{{ $resiko->id }}">{{ $resiko->kode }}</option>
+                            @php
+                                $identifikasi = \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $resiko->pernyataan_risiko)->first();
+                                $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
+                            @endphp
+                            <option value="{{ $resiko->id }}">{{ $kodeRisiko }} - {{ $resiko->kode }} ({{ Str::limit($resiko->pernyataan_risiko, 40) }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -65,8 +67,7 @@
                     Formulir Rencana Tindak
                 </h4>
 
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Rencana Tindak Pengendalian</label>
                         <textarea name="rencana_tindak" required rows="3" class="w-full px-5 py-4 bg-slate-900/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none resize-none" placeholder="Tuliskan rencana tindak pengendalian..."></textarea>
                     </div>
@@ -159,3 +160,5 @@
     }
 </script>
 @endsection
+
+

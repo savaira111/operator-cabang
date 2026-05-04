@@ -18,9 +18,7 @@
 
     <form action="{{ route('pemantauan-peristiwa.store') }}" method="POST">
         @csrf
-        <div class="space-y-6">
-
-            <!-- SELECT KODE & KODE PENYEBAB -->
+        <div class="space-y-6"><!-- SELECT KODE & KODE PENYEBAB -->
             <div class="border border-slate-700/50 p-6 rounded-2xl bg-slate-800/20 mb-6">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pilih Data Pemantauan (Kode & Kode Penyebab)</label>
                 <select name="pemantauan_kegiatan_id" id="pemantauan_kegiatan_id" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none cursor-pointer">
@@ -29,13 +27,15 @@
                         @php
                             $resiko = $kegiatan->rencanaTindak->resiko;
                             $kodePenyebab = ($resiko->kode_penyebab_jenis ?? '-') . '.' . ($resiko->kode_penyebab_nomor ?? '-');
+                            $identifikasi = $resiko ? \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $resiko->pernyataan_risiko)->first() : null;
+                            $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
                         @endphp
                         <option value="{{ $kegiatan->id }}" 
                             data-kode="{{ $resiko->kode ?? '-' }}"
                             data-kodepenyebab="{{ $kodePenyebab }}"
                             data-pernyataan="{{ $resiko->pernyataan_risiko ?? '-' }}"
                         >
-                            [{{ $resiko->kode ?? '-' }} | {{ $kodePenyebab }}] - {{ Str::limit($resiko->pernyataan_risiko, 80) }}
+                            [{{ $kodeRisiko }} | {{ $kodePenyebab }}] - {{ Str::limit($resiko->pernyataan_risiko, 80) }}
                         </option>
                     @endforeach
                 </select>
@@ -121,3 +121,5 @@
     });
 </script>
 @endsection
+
+

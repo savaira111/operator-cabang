@@ -24,13 +24,17 @@
 
     <form action="{{ route('rencana-belum-terealisasi.store') }}" method="POST">
         @csrf
-        <div class="space-y-10">
-            <!-- SELECTION -->
+        <div class="space-y-10"><!-- SELECTION -->
             <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Pilih Kode (Filter 5)</label>
                 <select name="rencana_tindak_pengendalian_id" id="kode_select" required class="w-full px-5 py-4 bg-[#111827] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none cursor-pointer" onchange="updateFields()">
                     <option value="" selected disabled hidden>-- Pilih Kode --</option>
                     @foreach($rencanaTindaks as $rtp)
+                        @php
+                            $resiko = $rtp->resiko;
+                            $identifikasi = $resiko ? \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $resiko->pernyataan_risiko)->first() : null;
+                            $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
+                        @endphp
                         <option value="{{ $rtp->id }}"
                             data-rencana="{{ $rtp->rencana_tindak }}"
                             data-waktu="{{ $rtp->waktu_pelaksanaan }}"
@@ -38,7 +42,7 @@
                             data-penyebab="{{ $rtp->resiko->kode_penyebab_jenis }}{{ $rtp->resiko->kode_penyebab_nomor }}"
                             data-pj="{{ $rtp->penanggung_jawab }}"
                         >
-                            {{ $rtp->resiko->kode }} - {{ Str::limit($rtp->rencana_tindak, 80) }}
+                            [{{ $kodeRisiko }}] - {{ $rtp->resiko->kode }} - {{ Str::limit($rtp->rencana_tindak, 80) }}
                         </option>
                     @endforeach
                 </select>
@@ -46,8 +50,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <!-- AUTO-FILLED INFO -->
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1 italic">Rencana Kegiatan Pengendalian</label>
                         <textarea id="ro_rencana" rows="3" class="w-full px-5 py-4 bg-slate-800/10 rounded-2xl border border-slate-800 text-slate-500 text-sm italic resize-none" readonly placeholder="Otomatis..."></textarea>
                     </div>
@@ -63,8 +66,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1 italic">Pernyataan Risiko</label>
                         <textarea id="ro_risiko" rows="3" class="w-full px-5 py-4 bg-slate-800/10 rounded-2xl border border-slate-800 text-slate-500 text-sm italic resize-none" readonly placeholder="Otomatis..."></textarea>
                     </div>
@@ -105,3 +107,5 @@
     }
 </script>
 @endsection
+
+

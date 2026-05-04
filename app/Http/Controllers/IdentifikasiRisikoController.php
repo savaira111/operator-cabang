@@ -20,7 +20,8 @@ class IdentifikasiRisikoController extends Controller
 
     public function create()
     {
-        return view('identifikasi_risiko.create');
+        $master_risikos = \App\Models\MasterRiskCode::all();
+        return view('identifikasi_risiko.create', compact('master_risikos'));
     }
 
     public function store(Request $request)
@@ -55,7 +56,8 @@ class IdentifikasiRisikoController extends Controller
 
     public function edit(IdentifikasiRisiko $identifikasi_risiko)
     {
-        return view('identifikasi_risiko.edit', compact('identifikasi_risiko'));
+        $master_risikos = \App\Models\MasterRiskCode::all();
+        return view('identifikasi_risiko.edit', compact('identifikasi_risiko', 'master_risikos'));
     }
 
     public function update(Request $request, IdentifikasiRisiko $identifikasi_risiko)

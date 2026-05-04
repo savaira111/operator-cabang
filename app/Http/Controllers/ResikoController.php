@@ -24,6 +24,7 @@ class ResikoController extends Controller
     {
         $userCabangId = auth()->user()->cabang_id;
         $cabangs = \App\Models\Cabang::all();
+        $master_penyebabs = \App\Models\MasterCauseCode::all();
         $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')
             ->when($userCabangId, function($q) use ($userCabangId) {
                 return $q->whereHas('identifikasiRisiko', function($sq) use ($userCabangId) {
@@ -31,7 +32,7 @@ class ResikoController extends Controller
                 });
             })
             ->get();
-        return view('resikos.create', compact('cabangs', 'analisis_risikos'));
+        return view('resikos.create', compact('cabangs', 'analisis_risikos', 'master_penyebabs'));
     }
 
     public function show(\App\Models\Resiko $resiko)
@@ -50,7 +51,7 @@ class ResikoController extends Controller
             'why_4' => 'nullable|string',
             'why_5' => 'nullable|string',
             'akar_penyebab' => 'required|string',
-            'kode_penyebab_jenis' => 'required|string|in:MN,MY,MD,MR,MC,EX',
+            'kode_penyebab_jenis' => 'required|string|exists:master_cause_codes,kode',
             'kode_penyebab_nomor' => 'required|integer',
             'kegiatan_pengendalian' => 'required|string',
         ]);
@@ -79,6 +80,7 @@ class ResikoController extends Controller
     {
         $userCabangId = auth()->user()->cabang_id;
         $cabangs = \App\Models\Cabang::all();
+        $master_penyebabs = \App\Models\MasterCauseCode::all();
         $analisis_risikos = \App\Models\AnalisisRisiko::with('identifikasiRisiko')
             ->when($userCabangId, function($q) use ($userCabangId) {
                 return $q->whereHas('identifikasiRisiko', function($sq) use ($userCabangId) {
@@ -86,7 +88,7 @@ class ResikoController extends Controller
                 });
             })
             ->get();
-        return view('resikos.edit', compact('resiko', 'cabangs', 'analisis_risikos'));
+        return view('resikos.edit', compact('resiko', 'cabangs', 'analisis_risikos', 'master_penyebabs'));
     }
 
     public function update(Request $request, \App\Models\Resiko $resiko)
@@ -99,7 +101,7 @@ class ResikoController extends Controller
             'why_4' => 'nullable|string',
             'why_5' => 'nullable|string',
             'akar_penyebab' => 'required|string',
-            'kode_penyebab_jenis' => 'required|string|in:MN,MY,MD,MR,MC,EX',
+            'kode_penyebab_jenis' => 'required|string|exists:master_cause_codes,kode',
             'kode_penyebab_nomor' => 'required|integer',
             'kegiatan_pengendalian' => 'required|string',
         ]);

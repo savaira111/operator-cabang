@@ -18,20 +18,23 @@
 
     <form action="{{ route('evaluasi-risiko.store') }}" method="POST">
         @csrf
-        <div class="space-y-10">
-            <!-- SELECTION -->
+        <div class="space-y-10"><!-- SELECTION -->
             <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Pilih Kode (Filter 4)</label>
                 <select name="resiko_id" id="kode_select" required class="w-full px-5 py-4 bg-[#111827] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none cursor-pointer" onchange="updateFields()">
                     <option value="" selected disabled hidden>-- Pilih Kode --</option>
                     @foreach($resikos as $r)
+                        @php
+                            $identifikasi = \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $r->pernyataan_risiko)->first();
+                            $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
+                        @endphp
                         <option value="{{ $r->id }}"
                             data-risiko="{{ $r->pernyataan_risiko }}"
                             data-penyebab="{{ $r->kode_penyebab }}"
                             data-direspons="{{ $r->risiko_direspons }}"
                             data-aktual="{{ $r->risiko_aktual }}"
                         >
-                            {{ $r->kode }} - {{ Str::limit($r->pernyataan_risiko, 100) }}
+                            [{{ $kodeRisiko }}] - {{ $r->kode }} - {{ Str::limit($r->pernyataan_risiko, 100) }}
                         </option>
                     @endforeach
                 </select>
@@ -39,8 +42,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <!-- AUTO-FILLED INFO -->
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1 italic">Pernyataan Risiko</label>
                         <textarea id="ro_risiko" rows="3" class="w-full px-5 py-4 bg-slate-800/10 rounded-2xl border border-slate-800 text-slate-500 text-sm italic resize-none" readonly placeholder="Otomatis..."></textarea>
                     </div>
@@ -50,8 +52,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-6">
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-6"><div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-3 ml-1 italic text-blue-400/60">Risiko yang Direspons</label>
                             <input type="text" id="ro_direspons" class="w-full px-5 py-4 bg-blue-500/5 rounded-2xl border border-blue-500/10 text-blue-400 font-black text-center text-xs" readonly placeholder="-">
@@ -97,3 +98,5 @@
     }
 </script>
 @endsection
+
+

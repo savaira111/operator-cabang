@@ -18,9 +18,7 @@
 
     <form action="{{ route('pemantauan-level.store') }}" method="POST">
         @csrf
-        <div class="space-y-6">
-
-            <!-- SELECT ANALISIS RISIKO -->
+        <div class="space-y-6"><!-- SELECT ANALISIS RISIKO -->
             <div class="border border-slate-700/50 p-6 rounded-2xl bg-slate-800/20 mb-6">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pilih Pernyataan Risiko (Filter 2)</label>
                 <select name="analisis_risiko_id" id="analisis_risiko_id" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none cursor-pointer">
@@ -34,7 +32,7 @@
                             data-d_aktual="{{ $ar->skor_dampak_residu }}"
                             data-n_aktual="{{ $ar->level_risiko_residu ?? '-' }}"
                         >
-                            {{ Str::limit($ar->identifikasiRisiko->pernyataan_risiko, 100) }}
+                            [{{ $ar->identifikasiRisiko->kode_risiko ?? '-' }}] - {{ Str::limit($ar->identifikasiRisiko->pernyataan_risiko, 100) }}
                         </option>
                     @endforeach
                 </select>
@@ -128,3 +126,5 @@
     });
 </script>
 @endsection
+
+

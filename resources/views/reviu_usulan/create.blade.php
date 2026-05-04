@@ -18,17 +18,18 @@
 
     <form action="{{ route('reviu-usulan.store') }}" method="POST">
         @csrf
-        <div class="space-y-6">
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- KODE SELECTION -->
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pilih Kode Risiko (Filter 4)</label>
                         <select name="resiko_id" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none cursor-pointer">
                             <option value="" selected disabled hidden>-- Pilih Kode --</option>
                             @foreach($resikos as $r)
-                                <option value="{{ $r->id }}">{{ $r->kode }} - {{ Str::limit($r->pernyataan_risiko, 50) }}</option>
+                                @php
+                                    $identifikasi = \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $r->pernyataan_risiko)->first();
+                                    $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
+                                @endphp
+                                <option value="{{ $r->id }}">{{ $kodeRisiko }} - {{ $r->kode }} - {{ Str::limit($r->pernyataan_risiko, 50) }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -40,8 +41,7 @@
                 </div>
 
                 <!-- UNIT/PEGAWAI INFO -->
-                <div class="space-y-6">
-                    <div>
+                <div class="space-y-6"><div>
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Unit Pemilik Risiko Pengusul (Pegawai)</label>
                         <input type="text" name="unit_pemilik_pengusul" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" placeholder="Nama Pegawai / Unit...">
                     </div>
@@ -111,3 +111,5 @@
     document.addEventListener('DOMContentLoaded', toggleAlasan);
 </script>
 @endsection
+
+

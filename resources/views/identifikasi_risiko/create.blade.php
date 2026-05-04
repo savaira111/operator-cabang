@@ -27,11 +27,34 @@
         <div class="space-y-6">
 
             <div class="grid grid-cols-2 gap-6">
-                <div class="col-span-2">
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode Risiko</label>
-                    <input type="text" name="kode_risiko" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: R-01">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Kode Risiko</label>
+                    <select id="kode_risiko_jenis" onchange="updateKodeRisiko()" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                        <option value="" disabled selected class="bg-slate-900 text-slate-400">Pilih kode risiko...</option>
+                        @foreach($master_risikos as $master)
+                            <option value="{{ $master->kode }}" class="bg-slate-900 text-white">{{ $master->kode }} - {{ $master->nama_risiko }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nomor Kode Risiko</label>
+                    <input type="number" id="kode_risiko_nomor" oninput="updateKodeRisiko()" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
                 </div>
             </div>
+            <input type="hidden" name="kode_risiko" id="kode_risiko_hidden">
+            <script>
+                function updateKodeRisiko() {
+                    const jenis = document.getElementById('kode_risiko_jenis').value;
+                    const nomor = document.getElementById('kode_risiko_nomor').value;
+                    if (jenis && nomor) {
+                        document.getElementById('kode_risiko_hidden').value = jenis + '.' + nomor;
+                    } else if (jenis) {
+                        document.getElementById('kode_risiko_hidden').value = jenis;
+                    } else {
+                        document.getElementById('kode_risiko_hidden').value = '';
+                    }
+                }
+            </script>
 
             <div class="grid grid-cols-2 gap-6">
                 <div>

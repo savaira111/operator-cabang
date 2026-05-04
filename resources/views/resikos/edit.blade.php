@@ -31,16 +31,13 @@
     <form action="{{ route('resikos.update', $resiko) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="space-y-6">
-
-
-            <div>
+        <div class="space-y-6"><div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Pernyataan Risiko</label>
-                <select name="pernyataan_risiko" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
+                <select name="pernyataan_risiko" id="pernyataan_risiko_select" onchange="updateGabunganKode()" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
                     <option value="" disabled hidden>-- Pilih Risiko Prioritas --</option>
                     @foreach($analisis_risikos as $analisis)
                         @if($analisis->identifikasiRisiko)
-                            <option value="{{ $analisis->identifikasiRisiko->pernyataan_risiko }}" {{ ($resiko->pernyataan_risiko ?? $resiko->name) == $analisis->identifikasiRisiko->pernyataan_risiko ? 'selected' : '' }}>
+                            <option value="{{ $analisis->identifikasiRisiko->pernyataan_risiko }}" data-kode-risiko="{{ $analisis->identifikasiRisiko->kode_risiko ?? '-' }}" {{ ($resiko->pernyataan_risiko ?? $resiko->name) == $analisis->identifikasiRisiko->pernyataan_risiko ? 'selected' : '' }}>
                                 [{{ $analisis->identifikasiRisiko->kode_risiko ?? '-' }}] {{ $analisis->identifikasiRisiko->pernyataan_risiko }}
                             </option>
                         @endif
@@ -79,19 +76,20 @@
             <div class="grid grid-cols-2 gap-6 border border-slate-700/50 p-6 rounded-2xl bg-slate-800/20">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Jenis Kode Penyebab</label>
-                    <select name="kode_penyebab_jenis" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
+                    <select name="kode_penyebab_jenis" id="kode_penyebab_jenis" onchange="updateGabunganKode()" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer">
                         <option value="" selected disabled hidden>-- Pilih Jenis --</option>
-                        <option value="MN" {{ $resiko->kode_penyebab_jenis == 'MN' ? 'selected' : '' }}>Orang (Man) : MN</option>
-                        <option value="MY" {{ $resiko->kode_penyebab_jenis == 'MY' ? 'selected' : '' }}>Dana (Money) : MY</option>
-                        <option value="MD" {{ $resiko->kode_penyebab_jenis == 'MD' ? 'selected' : '' }}>Metode (Method) : MD</option>
-                        <option value="MR" {{ $resiko->kode_penyebab_jenis == 'MR' ? 'selected' : '' }}>Bahan (Material) : MR</option>
-                        <option value="MC" {{ $resiko->kode_penyebab_jenis == 'MC' ? 'selected' : '' }}>Mesin (Machine) : MC</option>
-                        <option value="EX" {{ $resiko->kode_penyebab_jenis == 'EX' ? 'selected' : '' }}>Eksternal : EX</option>
+                        @foreach($master_penyebabs as $master)
+                            <option value="{{ $master->kode }}" {{ $resiko->kode_penyebab_jenis == $master->kode ? 'selected' : '' }}>{{ $master->nama_penyebab }} : {{ $master->kode }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nomor Kode Penyebab</label>
-                    <input type="number" name="kode_penyebab_nomor" value="{{ $resiko->kode_penyebab_nomor }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
+                    <input type="number" name="kode_penyebab_nomor" id="kode_penyebab_nomor" value="{{ $resiko->kode_penyebab_nomor }}" oninput="updateGabunganKode()" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Hasil Gabungan Kode</label>
+                    <input type="text" id="hasil_gabungan_kode" readonly class="w-full px-5 py-4 bg-slate-900/40 rounded-2xl border border-slate-800 text-rose-400 font-bold focus:ring-0 outline-none placeholder:text-slate-700" placeholder="Otomatis terisi...">
                 </div>
             </div>
 
@@ -108,4 +106,41 @@
         </div>
     </form>
 </div>
+
+<script>
+    function updateGabunganKode() {
+        const selectRisiko = document.getElementById('pernyataan_risiko_select');
+        let kodeRisiko = '';
+        if (selectRisiko && selectRisiko.selectedIndex >= 0) {
+            const option = selectRisiko.options[selectRisiko.selectedIndex];
+            kodeRisiko = option.getAttribute('data-kode-risiko') || '';
+        }
+
+        const kodePenyebabJenis = document.getElementById('kode_penyebab_jenis').value || '';
+        const kodePenyebabNomor = document.getElementById('kode_penyebab_nomor').value || '';
+        
+        let kodePenyebab = '';
+        if (kodePenyebabJenis && kodePenyebabNomor) {
+            kodePenyebab = kodePenyebabJenis + '.' + kodePenyebabNomor;
+        } else if (kodePenyebabJenis) {
+            kodePenyebab = kodePenyebabJenis;
+        }
+
+        const hasilGabungan = document.getElementById('hasil_gabungan_kode');
+        if (kodeRisiko && kodePenyebab) {
+            hasilGabungan.value = kodeRisiko + ' - ' + kodePenyebab;
+        } else if (kodeRisiko) {
+            hasilGabungan.value = kodeRisiko;
+        } else if (kodePenyebab) {
+            hasilGabungan.value = kodePenyebab;
+        } else {
+            hasilGabungan.value = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateGabunganKode();
+    });
+</script>
 @endsection
+

@@ -26,8 +26,7 @@
         @csrf
         @method('PUT')
         <div class="space-y-10">
-            <!-- SECTION 1: IDENTIFIKASI -->
-            <div class="space-y-6">
+            <!-- SECTION 1: IDENTIFIKASI --><div class="space-y-6">
                 <h4 class="text-xs font-black text-blue-400 uppercase tracking-[0.2em] flex items-center">
                     <span class="w-8 h-px bg-blue-500/30 mr-3"></span>
                     1. Referensi Identifikasi
@@ -217,3 +216,4 @@ calculateRisk('frekuensi', 'dampak', 'level_risiko');
 calculateRisk('skor_probabilitas_residu', 'skor_dampak_residu', 'level_risiko_residu');
 </script>
 @endsection
+

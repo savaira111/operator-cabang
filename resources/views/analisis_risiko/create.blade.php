@@ -37,8 +37,7 @@
 
             <form action="{{ route('analisis-risiko.store') }}" method="POST" class="relative z-10">
                 @csrf
-                <div class="space-y-8 md:space-y-12">
-                    <!-- SECTION 1: IDENTIFIKASI -->
+                <div class="space-y-8 md:space-y-12"><!-- SECTION 1: IDENTIFIKASI -->
                     <div
                         class="p-0 md:p-0 bg-transparent md:bg-transparent rounded-none md:rounded-none border-none md:border-none space-y-6">
                         <div class="flex items-center gap-3">
@@ -55,7 +54,7 @@
                                     class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Referensi
                                     Identifikasi</label>
                                 <div class="relative group/select">
-                                    <select name="identifikasi_id" id="identifikasi_id" required
+                                    <select name="identifikasi_risiko_id" id="identifikasi_risiko_id" required
                                         class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none appearance-none cursor-pointer text-xs md:text-sm">
                                         <option value="" selected disabled hidden>-- Pilih Kode Risiko --</option>
                                         @foreach($identifikasi_risikos as $risiko)
@@ -84,9 +83,9 @@
                             <label
                                 class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Pernyataan
                                 Risiko</label>
-                            <textarea id="pernyataan_risiko" readonly rows="2"
-                                class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/40 rounded-xl md:rounded-2xl border border-slate-800/50 text-slate-400 outline-none resize-none text-xs md:text-sm leading-relaxed"
-                                placeholder="-"></textarea>
+                            <div id="pernyataan_preview" class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/40 rounded-xl md:rounded-2xl border border-slate-800/50 text-slate-400 text-xs md:text-sm min-h-[58px] flex items-center">
+                                -
+                            </div>
                         </div>
                     </div>
 
@@ -106,32 +105,31 @@
                                 <label
                                     class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Kemungkinan
                                     (1-5)</label>
-                                <input type="number" name="melekat_kemungkinan" id="melekat_kemungkinan" min="1" max="5"
-                                    required
-                                    class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none text-xs md:text-sm"
-                                    placeholder="1-5">
+                                <select name="frekuensi" id="frekuensi" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none cursor-pointer appearance-none text-xs md:text-sm">
+                                    <option value="" disabled selected hidden>-- Pilih Probabilitas --</option>
+                                    <option value="1">1 - Hampir tidak terjadi</option>
+                                    <option value="2">2 - Jarang terjadi</option>
+                                    <option value="3">3 - Kadang terjadi</option>
+                                    <option value="4">4 - Sering terjadi</option>
+                                    <option value="5">5 - Hampir pasti terjadi</option>
+                                </select>
                             </div>
                             <div class="md:col-span-4 space-y-1.5 md:space-y-2">
                                 <label
                                     class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Dampak
                                     (1-5)</label>
-                                <input type="number" name="melekat_dampak" id="melekat_dampak" min="1" max="5" required
-                                    class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none text-xs md:text-sm"
-                                    placeholder="1-5">
+                                <select name="dampak" id="dampak" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none cursor-pointer appearance-none text-xs md:text-sm">
+                                    <option value="" disabled selected hidden>-- Pilih Dampak --</option>
+                                    <option value="1">1 - Tidak Signifikan</option>
+                                    <option value="2">2 - Minor</option>
+                                    <option value="3">3 - Moderat</option>
+                                    <option value="4">4 - Signifikan</option>
+                                    <option value="5">5 - Sangat Signifikan</option>
+                                </select>
                             </div>
                             <div class="md:col-span-4">
-                                <div id="melekat_result_container"
-                                    class="h-full flex flex-col justify-center p-4 md:p-6 bg-slate-900/40 rounded-xl md:rounded-2xl border border-slate-800/50 transition-all">
-                                    <p
-                                        class="text-[9px] md:text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">
-                                        Besaran Risiko</p>
-                                    <div class="flex items-end gap-2">
-                                        <span id="melekat_skor"
-                                            class="text-2xl md:text-4xl font-black text-white leading-none">0</span>
-                                        <span id="melekat_level"
-                                            class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Low</span>
-                                    </div>
-                                </div>
+                                    <p class="text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-2">Level Risiko (Melekat)</p>
+                                    <input type="text" name="level_risiko" id="level_risiko" readonly class="w-full px-5 py-4 bg-slate-900/40 rounded-xl md:rounded-2xl border border-slate-800/50 text-white focus:ring-0 outline-none font-bold" placeholder="Otomatis terisi...">
                             </div>
                         </div>
                     </div>
@@ -147,76 +145,89 @@
                             <div class="flex-1 h-px bg-gradient-to-r from-[#D2A039]/30 to-transparent"></div>
                         </div>
 
-                        <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div class="space-y-1.5 md:space-y-2">
-                                <label
-                                    class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Uraian
-                                    Pengendalian</label>
-                                <textarea name="pengendalian_uraian" rows="2"
-                                    class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white outline-none focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all resize-none text-xs md:text-sm leading-relaxed"
-                                    placeholder="Jelaskan pengendalian yang telah diimplementasikan..."></textarea>
+                                <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Ada / Belum Ada</label>
+                                <select name="ada_belum_ada" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white outline-none focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all appearance-none cursor-pointer text-xs md:text-sm">
+                                    <option value="Ada">Ada</option>
+                                    <option value="Belum Ada">Belum Ada</option>
+                                </select>
                             </div>
                             <div class="space-y-1.5 md:space-y-2">
-                                <label
-                                    class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Apakah
-                                    Sudah Memadai?</label>
-                                <div class="relative group/select">
-                                    <select name="pengendalian_memadai" required
-                                        class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white outline-none focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all appearance-none cursor-pointer text-xs md:text-sm">
-                                        <option value="Ya">Ya, Sudah Memadai</option>
-                                        <option value="Tidak">Tidak, Belum Memadai</option>
-                                    </select>
-                                    <div
-                                        class="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-slate-500 group-hover/select:text-[#D2A039]">
-                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                                    </div>
-                                </div>
+                                <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Memadai / Belum Memadai</label>
+                                <select name="memadai_belum_memadai" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white outline-none focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all appearance-none cursor-pointer text-xs md:text-sm">
+                                    <option value="Memadai">Memadai</option>
+                                    <option value="Belum Memadai">Belum Memadai</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 md:space-y-2 md:col-span-2">
+                                <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Uraian Pengendalian</label>
+                                <textarea name="uraian_pengendalian" rows="2" required class="w-full px-4 py-3 md:px-5 md:py-4 bg-slate-900/60 rounded-xl md:rounded-2xl border border-slate-800 text-white outline-none focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all resize-none text-xs md:text-sm leading-relaxed" placeholder="Jelaskan pengendalian yang telah diimplementasikan..."></textarea>
                             </div>
                         </div>
                     </div>
 
                     <!-- SECTION 4: RISIKO RESIDU -->
-                    <option value="4">4 - Sering terjadi</option>
-                    <option value="5">5 - Hampir pasti terjadi</option>
-                    </select>
                     <div
-                        class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-[#D2A039] transition-colors">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
+                        class="p-4 md:p-0 bg-white/5 md:bg-transparent rounded-2xl md:rounded-none border border-white/5 md:border-none space-y-6">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-lg bg-[#D2A039]/10 border border-[#D2A039]/30 text-[#D2A039] text-[10px] md:text-xs font-bold shrink-0">04</span>
+                            <h4 class="text-[9px] md:text-xs font-black text-[#D2A039] uppercase tracking-[0.2em]">Skor Risiko Residu (Setelah Pengendalian)</h4>
+                            <div class="flex-1 h-px bg-gradient-to-r from-[#D2A039]/30 to-transparent"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                            <div class="space-y-1.5 md:space-y-2">
+                                <label
+                                    class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Skor Probabilitas (Residu)</label>
+                                <div class="relative group/select">
+                                    <select name="skor_probabilitas_residu" id="skor_probabilitas_residu"
+                                        class="w-full px-5 py-4 bg-slate-900/60 rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none cursor-pointer appearance-none">
+                                        <option value="" selected disabled hidden>-- Pilih Probabilitas --</option>
+                                        <option value="1">1 - Hampir tidak terjadi</option>
+                                        <option value="2">2 - Jarang terjadi</option>
+                                        <option value="3">3 - Kadang terjadi</option>
+                                        <option value="4">4 - Sering terjadi</option>
+                                        <option value="5">5 - Hampir pasti terjadi</option>
+                                    </select>
+                                    <div
+                                        class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-[#D2A039] transition-colors">
+                                        <i data-lucide="zap" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5 md:space-y-2">
+                                <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Skor Dampak (Residu)</label>
+                                <div class="relative group/select">
+                                    <select name="skor_dampak_residu" id="skor_dampak_residu"
+                                        class="w-full px-5 py-4 bg-slate-900/60 rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none cursor-pointer appearance-none">
+                                        <option value="" selected disabled hidden>-- Pilih Dampak --</option>
+                                        <option value="1">1 - Tidak Signifikan</option>
+                                        <option value="2">2 - Minor</option>
+                                        <option value="3">3 - Moderat</option>
+                                        <option value="4">4 - Signifikan</option>
+                                        <option value="5">5 - Sangat Signifikan</option>
+                                    </select>
+                                    <div
+                                        class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-[#D2A039] transition-colors">
+                                        <i data-lucide="target" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5 md:space-y-2">
+                                <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Level Risiko Residu</label>
+                                <div class="relative">
+                                    <input type="text" name="level_risiko_residu" id="level_risiko_residu" readonly
+                                        class="w-full px-5 py-4 bg-slate-900/40 rounded-2xl border border-slate-800 text-white focus:ring-0 outline-none font-bold placeholder:text-slate-700"
+                                        placeholder="Otomatis terisi...">
+                                    <div class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600">
+                                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-        </div>
-        <div class="space-y-2">
-            <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Dampak Residu</label>
-            <div class="relative group/select">
-                <select name="skor_dampak_residu" id="skor_dampak_residu"
-                    class="w-full px-5 py-4 bg-slate-900/60 rounded-2xl border border-slate-800 text-white focus:ring-4 focus:ring-[#D2A039]/10 focus:border-[#D2A039]/50 transition-all outline-none cursor-pointer appearance-none">
-                    <option value="" selected disabled hidden>-- Pilih Dampak --</option>
-                    <option value="1">1 - Tidak Signifikan</option>
-                    <option value="2">2 - Minor</option>
-                    <option value="3">3 - Moderat</option>
-                    <option value="4">4 - Signifikan</option>
-                    <option value="5">5 - Sangat Signifikan</option>
-                </select>
-                <div
-                    class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover/select:text-[#D2A039] transition-colors">
-                    <i data-lucide="target" class="w-4 h-4"></i>
-                </div>
-            </div>
-        </div>
-        <div class="space-y-2 sm:col-span-2 md:col-span-1">
-            <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Level Risiko
-                Residu</label>
-            <div class="relative">
-                <input type="text" name="level_risiko_residu" id="level_risiko_residu" readonly
-                    class="w-full px-5 py-4 bg-slate-900/40 rounded-2xl border border-slate-800 text-white focus:ring-0 outline-none font-bold placeholder:text-slate-700"
-                    placeholder="Otomatis terisi...">
-                <div class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600">
-                    <i data-lucide="shield-check" class="w-4 h-4"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
 
     <div class="pt-10 flex flex-col sm:flex-row items-center gap-4 border-t border-[#D2A039]/10 md:pb-0 pb-20">
         <button type="submit"
@@ -282,12 +293,16 @@
                     const info = getLevelInfo(score);
                     resultInput.value = `${score} - ${info.label}`;
 
-                    // Reset classes
-                    resultInput.className = "w-full px-5 py-4 rounded-2xl border font-bold transition-all duration-300 outline-none focus:ring-0";
+                    resultInput.classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50', 'shadow-[0_0_15px_rgba(239,68,68,0.2)]',
+                                               'bg-orange-500/20', 'text-orange-400', 'border-orange-500/50', 'shadow-[0_0_15px_rgba(249,115,22,0.2)]',
+                                               'bg-yellow-500/20', 'text-yellow-400', 'border-yellow-500/50', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]',
+                                               'bg-green-500/20', 'text-green-400', 'border-green-500/50', 'shadow-[0_0_15_rgba(34,197,94,0.2)]',
+                                               'bg-blue-500/20', 'text-blue-400', 'border-blue-500/50', 'shadow-[0_0_15px_rgba(59,130,246,0.2)]',
+                                               'bg-slate-900/40', 'text-white', 'border-slate-800/50');
 
-                    // Add new classes
                     const classes = info.class.split(' ');
                     resultInput.classList.add(...classes);
+                    resultInput.classList.add('border');
                 }
             }
 

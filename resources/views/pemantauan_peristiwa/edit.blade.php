@@ -19,9 +19,7 @@
     <form action="{{ route('pemantauan-peristiwa.update', $pemantauanPeristiwa) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="space-y-6">
-
-            <!-- SELECT KODE & KODE PENYEBAB (READONLY IN EDIT) -->
+        <div class="space-y-6"><!-- SELECT KODE & KODE PENYEBAB (READONLY IN EDIT) -->
             <div class="border border-slate-700/50 p-6 rounded-2xl bg-slate-800/20 mb-6 opacity-80 pointer-events-none">
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Data Pemantauan (Kode & Kode Penyebab)</label>
                 <select name="pemantauan_kegiatan_id" id="pemantauan_kegiatan_id" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white outline-none" readonly>
@@ -29,9 +27,11 @@
                         @php
                             $resiko = $kegiatan->rencanaTindak->resiko;
                             $kodePenyebab = ($resiko->kode_penyebab_jenis ?? '-') . '.' . ($resiko->kode_penyebab_nomor ?? '-');
+                            $identifikasi = $resiko ? \App\Models\IdentifikasiRisiko::where('pernyataan_risiko', $resiko->pernyataan_risiko)->first() : null;
+                            $kodeRisiko = $identifikasi ? $identifikasi->kode_risiko : '-';
                         @endphp
                         <option value="{{ $kegiatan->id }}" {{ $pemantauanPeristiwa->pemantauan_kegiatan_id == $kegiatan->id ? 'selected' : '' }}>
-                            [{{ $resiko->kode ?? '-' }} | {{ $kodePenyebab }}] - {{ Str::limit($resiko->pernyataan_risiko, 80) }}
+                            [{{ $kodeRisiko }} | {{ $kodePenyebab }}] - {{ Str::limit($resiko->pernyataan_risiko, 80) }}
                         </option>
                     @endforeach
                 </select>
@@ -101,3 +101,5 @@
     </form>
 </div>
 @endsection
+
+
