@@ -13,9 +13,9 @@ class ZiDataFillController extends Controller
     {
         $branchId = auth()->user()->cabang_id;
         $selectedPeriod = $request->get('period');
-        $selectedYear = $request->get('tahun');
+        $selectedYear = $request->get('tahun', date('Y'));
 
-        if (!$selectedPeriod || !$selectedYear) {
+        if (!$selectedPeriod) {
             $monitorings = collect();
             return view('zi_data_fill.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
         }
@@ -55,6 +55,20 @@ class ZiDataFillController extends Controller
             });
         }
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                  ->orWhereHas('children', function($q) use ($search) {
+                      $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                        ->orWhereHas('children', function($q) use ($search) {
+                            $q->where('rincian_kegiatan', 'LIKE', '%' . $search . '%')
+                              ->orWhere('indikator_output', 'LIKE', '%' . $search . '%');
+                        });
+                  });
+            });
+        }
+
         $roots = $query->orderBy('nomor')->get();
 
         // If we have both a global template and a branch copy for the same nomor, prioritize the branch copy
@@ -68,7 +82,7 @@ class ZiDataFillController extends Controller
             $monitorings = $roots;
         }
 
-        return view('zi_data_fill.index', compact('monitorings'));
+        return view('zi_data_fill.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
     }
 
     public function edit($id)

@@ -11,9 +11,9 @@ class ZiDataManageController extends Controller
     public function index(Request $request)
     {
         $selectedPeriod = $request->get('period');
-        $selectedYear = $request->get('tahun');
+        $selectedYear = $request->get('tahun', date('Y'));
 
-        if (!$selectedPeriod || !$selectedYear) {
+        if (!$selectedPeriod) {
             $monitorings = collect();
             return view('zi_data_manage.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
         }
@@ -30,6 +30,20 @@ class ZiDataManageController extends Controller
                 }
             ])
             ->whereNull('parent_id');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                  ->orWhereHas('children', function($q) use ($search) {
+                      $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                        ->orWhereHas('children', function($q) use ($search) {
+                            $q->where('rincian_kegiatan', 'LIKE', '%' . $search . '%')
+                              ->orWhere('indikator_output', 'LIKE', '%' . $search . '%');
+                        });
+                  });
+            });
+        }
 
         if ($selectedYear) {
             $query->where('tahun', $selectedYear);

@@ -16,13 +16,13 @@
                 <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                     <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
                 </div>
-                <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output...">
+                <input type="text" name="search" value="{{ request('search') }}" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output...">
             </div>
 
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <select name="period" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-40 appearance-none cursor-pointer">
                     <option value="">Pilih Bulan</option>
-                    @foreach(['BO3', 'BO6', 'BO9', 'B12'] as $p)
+                    @foreach(['B03', 'B06', 'B09', 'B12'] as $p)
                         <option value="{{ $p }}" {{ ($selectedPeriod ?? '') == $p ? 'selected' : '' }}>{{ $p }}</option>
                     @endforeach
                 </select>
@@ -73,7 +73,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-800/40">
-                @foreach($monitorings as $item)
+                @forelse($monitorings as $item)
                     {{-- Row Sasaran Indikatif (SS2) --}}
                     @if($item->tipe == 'SS2')
                         <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
@@ -88,13 +88,13 @@
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
                                     <form action="{{ route('zi-monitoring.destroy', $item->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all" onclick="return confirm('Hapus data ini?')" title="Hapus">
-                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                         @csrf
+                                         @method('DELETE')
+                                         <button type="submit" class="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all" onclick="return confirm('Hapus data ini?')" title="Hapus">
+                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                         </button>
+                                     </form>
+                                 </div>
                             </td>
                         </tr>
                     @endif
@@ -231,7 +231,21 @@
                             @endif
                         @endforeach
                     @endforeach
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="15" class="px-6 py-20 text-center">
+                            <div class="flex flex-col items-center justify-center space-y-4">
+                                <div class="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center border border-slate-700/50">
+                                    <i data-lucide="clipboard-x" class="w-8 h-8 text-slate-600"></i>
+                                </div>
+                                <div class="text-center">
+                                    <h4 class="text-lg font-bold text-slate-400 uppercase tracking-widest italic">Data periode tersebut tidak ada</h4>
+                                    <p class="text-slate-500 text-sm mt-1">Silakan sesuaikan filter bulan dan tahun Anda.</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

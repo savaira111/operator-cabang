@@ -10,17 +10,48 @@
 </div>
 
 <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
-<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-    <div class="relative group w-full max-w-md">
-        <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-            <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+    <form action="{{ route('zi-monitoring.index') }}" method="GET" class="flex flex-col lg:flex-row items-center gap-4 w-full">
+        <div class="relative group w-full max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+            </div>
+            <input type="text" name="search" value="{{ request('search') }}" onkeyup="filterTable()" id="searchInput" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
         </div>
-        <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
-    </div>
 
-    <div class="flex items-center space-x-3 w-full sm:w-auto">
-        {{-- Button Create New dihapus sesuai permintaan --}}
+        <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+            <select name="bulan" onchange="this.form.submit()" class="px-5 py-4 bg-[#111827] rounded-2xl border border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-widest outline-none focus:border-blue-500 transition-all cursor-pointer min-w-[140px]">
+                <option value="">Semua Bulan</option>
+                @foreach(['B03', 'B06', 'B09', 'B12'] as $m)
+                    <option value="{{ $m }}" {{ request('bulan') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                @endforeach
+            </select>
+
+            <select name="tahun" onchange="this.form.submit()" class="px-5 py-4 bg-[#111827] rounded-2xl border border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-widest outline-none focus:border-blue-500 transition-all cursor-pointer min-w-[120px]">
+                @for($y = date('Y') + 1; $y >= 2024; $y--)
+                    <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                @endfor
+            </select>
+
+            <div class="flex items-center gap-2">
+                <button type="submit" class="p-4 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-xl shadow-blue-500/20 transition-all active:scale-90">
+                    <i data-lucide="filter" class="w-5 h-5"></i>
+                </button>
+                <a href="{{ route('zi-monitoring.index') }}" class="p-4 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded-2xl transition-all active:scale-90">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+
+    @if($monitorings->count() > 0 && ($bulan || $tahun))
+    <div class="flex items-center px-6 py-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl backdrop-blur-sm animate-in fade-in slide-in-from-right-4 duration-500">
+        <div class="flex flex-col">
+            <span class="text-[9px] font-black text-blue-400/60 uppercase tracking-[0.2em]">Periode Data</span>
+            <span class="text-sm font-black text-blue-400 tracking-tight">{{ $bulan ?: 'Tahunan' }} {{ $tahun }}</span>
+        </div>
     </div>
+    @endif
 </div>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
@@ -51,7 +82,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-800/40">
-                @foreach($monitorings as $item)
+                @forelse($monitorings as $item)
                     {{-- Row Sasaran Indikatif (SS2) --}}
                     @if($item->tipe == 'SS2')
                         <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
@@ -230,7 +261,21 @@
                             @endif
                         @endforeach
                     @endforeach
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="15" class="px-6 py-32 text-center">
+                        <div class="flex flex-col items-center justify-center space-y-4">
+                            <div class="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center border border-slate-700 shadow-2xl">
+                                <i data-lucide="database-zap" class="w-12 h-12 text-slate-600"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-xl font-black text-white uppercase tracking-tighter">Data periode tersebut tidak ada</h4>
+                                <p class="text-slate-500 text-sm max-w-xs mx-auto italic">Silakan pilih periode lain atau sesuaikan filter Anda.</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

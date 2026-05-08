@@ -9,14 +9,68 @@ use Illuminate\Support\Facades\Storage;
 
 class ZiMonitoringController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $monitorings = ZiMonitoring::with(['cabang', 'children.children.files', 'children.files', 'files'])
-            ->whereNull('parent_id')
-            ->orderBy('nomor')
-            ->get();
+        $bulan = $request->get('bulan');
+        $tahun = $request->get('tahun', date('Y'));
 
-        return view('zi_monitoring.index', compact('monitorings'));
+        $query = ZiMonitoring::with([
+            'cabang', 
+            'files' => function($q) use ($bulan) {
+                if ($bulan) $q->where('period', $bulan);
+            },
+            'children' => function($q) use ($bulan) {
+                if ($bulan) {
+                    $q->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%')
+                      ->orWhereHas('children', function($sq) use ($bulan) {
+                          $sq->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%');
+                      });
+                }
+            },
+            'children.files' => function($q) use ($bulan) {
+                if ($bulan) $q->where('period', $bulan);
+            },
+            'children.children' => function($q) use ($bulan) {
+                if ($bulan) {
+                    $q->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%');
+                }
+            },
+            'children.children.files' => function($q) use ($bulan) {
+                if ($bulan) $q->where('period', $bulan);
+            }
+        ])
+        ->whereNull('parent_id')
+        ->where('tahun', $tahun);
+
+        if ($bulan) {
+            $query->where(function($q) use ($bulan) {
+                $q->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%')
+                  ->orWhereHas('children', function($sq) use ($bulan) {
+                      $sq->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%')
+                        ->orWhereHas('children', function($sq2) use ($bulan) {
+                            $sq2->where('waktu_pelaksanaan', 'like', '%' . $bulan . '%');
+                        });
+                  });
+            });
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                  ->orWhereHas('children', function($q) use ($search) {
+                      $q->where('sasaran_kegiatan', 'LIKE', '%' . $search . '%')
+                        ->orWhereHas('children', function($q) use ($search) {
+                            $q->where('rincian_kegiatan', 'LIKE', '%' . $search . '%')
+                              ->orWhere('indikator_output', 'LIKE', '%' . $search . '%');
+                        });
+                  });
+            });
+        }
+
+        $monitorings = $query->orderBy('nomor')->get();
+
+        return view('zi_monitoring.index', compact('monitorings', 'bulan', 'tahun'));
     }
 
     public function create()
