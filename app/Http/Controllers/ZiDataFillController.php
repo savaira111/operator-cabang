@@ -9,12 +9,29 @@ use Illuminate\Support\Facades\Storage;
 
 class ZiDataFillController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $branchId = auth()->user()->cabang_id;
+        $selectedPeriod = $request->get('period');
+        $selectedYear = $request->get('tahun');
+
+        if (!$selectedPeriod || !$selectedYear) {
+            $monitorings = collect();
+            return view('zi_data_fill.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
+        }
         
         // Get all root monitorings that are either global OR belong to this specific branch
-        $query = ZiMonitoring::with(['cabang', 'children'])
+        $query = ZiMonitoring::with([
+                'cabang', 
+                'children' => function($q) use ($selectedPeriod) {
+                    $q->whereHas('children', function($q2) use ($selectedPeriod) {
+                        $q2->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                    });
+                },
+                'children.children' => function($q) use ($selectedPeriod) {
+                    $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                }
+            ])
             ->whereNull('parent_id')
             ->where(function($q) use ($branchId) {
                 $q->whereNull('cabang_id');
@@ -22,6 +39,21 @@ class ZiDataFillController extends Controller
                     $q->orWhere('cabang_id', $branchId);
                 }
             });
+
+        if ($selectedYear) {
+            $query->where('tahun', $selectedYear);
+        }
+
+        if ($selectedPeriod) {
+            $query->where(function($q) use ($selectedPeriod) {
+                $q->whereHas('children', function($q) use ($selectedPeriod) {
+                    $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%')
+                      ->orWhereHas('children', function($q) use ($selectedPeriod) {
+                          $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                      });
+                });
+            });
+        }
 
         $roots = $query->orderBy('nomor')->get();
 

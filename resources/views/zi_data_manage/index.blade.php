@@ -10,21 +10,40 @@
 </div>
 
 <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <div class="relative group w-full max-w-md">
-            <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+    <form action="{{ route('zi-data-manage.index') }}" method="GET" class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8 w-full">
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div class="relative group w-full sm:w-64">
+                <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+                </div>
+                <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output...">
             </div>
-            <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <select name="period" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-40 appearance-none cursor-pointer">
+                    <option value="">Pilih Bulan</option>
+                    @foreach(['BO3', 'BO6', 'BO9', 'B12'] as $p)
+                        <option value="{{ $p }}" {{ ($selectedPeriod ?? '') == $p ? 'selected' : '' }}>{{ $p }}</option>
+                    @endforeach
+                </select>
+
+                <select name="tahun" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-32 appearance-none cursor-pointer">
+                    <option value="">Pilih Tahun</option>
+                    @php $currentYear = date('Y'); @endphp
+                    @for($y = $currentYear; $y >= $currentYear - 2; $y--)
+                        <option value="{{ $y }}" {{ ($selectedYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endfor
+                </select>
+            </div>
         </div>
 
-        <div class="flex items-center space-x-3 w-full sm:w-auto">
+        <div class="flex items-center space-x-3 w-full lg:w-auto">
             <a href="{{ route('zi-monitoring.create') }}" class="flex-1 sm:flex-none px-6 py-4 bg-emerald-500 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-all duration-300 shadow-xl shadow-emerald-500/20 active:scale-95 group">
                 <i data-lucide="plus-circle" class="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform"></i>
                 Tambah Data ZI
             </a>
         </div>
-    </div>
+    </form>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
     <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;">

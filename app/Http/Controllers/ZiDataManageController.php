@@ -8,14 +8,48 @@ use Illuminate\Http\Request;
 
 class ZiDataManageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $monitorings = ZiMonitoring::with(['cabang', 'children'])
-            ->whereNull('parent_id')
-            ->orderBy('nomor')
-            ->get();
+        $selectedPeriod = $request->get('period');
+        $selectedYear = $request->get('tahun');
 
-        return view('zi_data_manage.index', compact('monitorings'));
+        if (!$selectedPeriod || !$selectedYear) {
+            $monitorings = collect();
+            return view('zi_data_manage.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
+        }
+
+        $query = ZiMonitoring::with([
+                'cabang', 
+                'children' => function($q) use ($selectedPeriod) {
+                    $q->whereHas('children', function($q2) use ($selectedPeriod) {
+                        $q2->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                    });
+                },
+                'children.children' => function($q) use ($selectedPeriod) {
+                    $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                }
+            ])
+            ->whereNull('parent_id');
+
+        if ($selectedYear) {
+            $query->where('tahun', $selectedYear);
+        }
+
+        if ($selectedPeriod) {
+            // Only show roots that have children OR grandchildren matching the period
+            $query->where(function($q) use ($selectedPeriod) {
+                $q->whereHas('children', function($q) use ($selectedPeriod) {
+                    $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%')
+                      ->orWhereHas('children', function($q) use ($selectedPeriod) {
+                          $q->where('waktu_pelaksanaan', 'LIKE', '%' . $selectedPeriod . '%');
+                      });
+                });
+            });
+        }
+
+        $monitorings = $query->orderBy('nomor')->get();
+
+        return view('zi_data_manage.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
     }
 
     public function show($id)

@@ -12,6 +12,7 @@ class ZiMonitoring extends Model
     protected $fillable = [
         'cabang_id',
         'parent_id',
+        'tahun',
         'tipe',
         'nomor',
         'sasaran_kegiatan',

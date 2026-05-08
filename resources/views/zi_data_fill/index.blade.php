@@ -10,14 +10,33 @@
 </div>
 
 <div class="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
-<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-    <div class="relative group w-full max-w-md">
-        <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-            <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+    <form action="{{ route('zi-data-fill.index') }}" method="GET" class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8 w-full">
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div class="relative group w-full sm:w-64">
+                <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+                </div>
+                <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output...">
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <select name="period" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-40 appearance-none cursor-pointer">
+                    <option value="">Pilih Bulan</option>
+                    @foreach(['BO3', 'BO6', 'BO9', 'B12'] as $p)
+                        <option value="{{ $p }}" {{ ($selectedPeriod ?? '') == $p ? 'selected' : '' }}>{{ $p }}</option>
+                    @endforeach
+                </select>
+
+                <select name="tahun" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-32 appearance-none cursor-pointer">
+                    <option value="">Pilih Tahun</option>
+                    @php $currentYear = date('Y'); @endphp
+                    @for($y = $currentYear; $y >= $currentYear - 2; $y--)
+                        <option value="{{ $y }}" {{ ($selectedYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endfor
+                </select>
+            </div>
         </div>
-        <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block pl-14 p-4 transition-all shadow-inner" placeholder="Cari indikator output atau sasaran...">
-    </div>
-</div>
+    </form>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
     <div class="overflow-x-auto">

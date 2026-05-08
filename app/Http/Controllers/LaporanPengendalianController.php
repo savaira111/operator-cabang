@@ -30,6 +30,9 @@ class LaporanPengendalianController extends Controller
         return view('laporan_pengendalians.create', compact('cabangs'));
     }
 
+    public function store(Request $request)
+    {
+
         $userCabangId = auth()->user()->cabang_id 
             ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->username . '%')->first()?->id
             ?: \App\Models\Cabang::where('name', 'like', '%' . auth()->user()->name . '%')->first()?->id;

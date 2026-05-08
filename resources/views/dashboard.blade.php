@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Stat Card 1: Users -->
+    @if(auth()->user()?->hasPermission('manajemen_pengguna'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-[#D2A039]/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-[#D2A039]/10 border border-[#D2A039]/20 rounded-2xl flex items-center justify-center text-[#D2A039] group-hover:bg-[#D2A039]/20 transition-all">
@@ -16,8 +16,10 @@
         <h3 class="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] mb-1">Total Pengguna</h3>
         <p class="text-3xl font-black text-white tracking-tighter">{{ number_format($userCount) }}</p>
     </div>
+    @endif
 
     <!-- Stat Card 2: Branches -->
+    @if(auth()->user()?->hasPermission('manajemen_cabang'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 transition-all">
@@ -28,9 +30,10 @@
         <h3 class="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] mb-1">Cabang Aktif</h3>
         <p class="text-3xl font-black text-white tracking-tighter">{{ number_format($cabangCount) }}</p>
     </div>
+    @endif
 
     <!-- Stat Card 3: LPI -->
-    @if(auth()->user()?->role !== 'operator cabang')
+    @if(auth()->user()?->hasPermission('lpi_laporan_internal'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-rose-500/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-rose-500/10 border border-rose-500/10 rounded-2xl flex items-center justify-center text-rose-400 group-hover:bg-rose-500/20 transition-all">
@@ -44,6 +47,7 @@
     @endif
 
     <!-- Stat Card 4: Tahanan -->
+    @if(auth()->user()?->hasPermission('tahanan_management'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-indigo-500/10 border border-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 transition-all">
@@ -54,30 +58,35 @@
         <h3 class="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] mb-1">Data Tahanan</h3>
         <p class="text-3xl font-black text-white tracking-tighter">{{ number_format($tahananCount) }}</p>
     </div>
+    @endif
 
     <!-- Stat Card 5: ZI -->
+    @if(auth()->user()?->hasPermission('zi_manajemen_data') || auth()->user()?->hasPermission('zi_input_data'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 group-hover:bg-amber-500/20 transition-all">
                 <i data-lucide="award" class="w-6 h-6"></i>
             </div>
-            <span class="text-[10px] font-black text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/10 uppercase tracking-widest">Monitoring</span>
+            <span class="text-[10px] font-black text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-emerald-500/10 uppercase tracking-widest">Monitoring</span>
         </div>
         <h3 class="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] mb-1">Zona Integritas</h3>
         <p class="text-3xl font-black text-white tracking-tighter">{{ number_format($ziCount) }}</p>
     </div>
+    @endif
 
     <!-- Stat Card 6: Anggaran -->
+    @if(auth()->user()?->hasPermission('belanja_management'))
     <div class="p-6 bg-[#031121] border border-[#D2A039]/20 rounded-[2.5rem] hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300 group">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-cyan-500/10 border border-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20 transition-all">
                 <i data-lucide="shopping-cart" class="w-6 h-6"></i>
             </div>
-            <span class="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/10 uppercase tracking-widest">Realisasi</span>
+            <span class="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-emerald-500/10 uppercase tracking-widest">Realisasi</span>
         </div>
         <h3 class="text-slate-500 text-[11px] font-black uppercase tracking-[0.2em] mb-1">Penyerapan Anggaran</h3>
         <p class="text-xl font-black text-white tracking-tighter">Rp {{ number_format($anggaranTotal, 0, ',', '.') }}</p>
     </div>
+    @endif
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
