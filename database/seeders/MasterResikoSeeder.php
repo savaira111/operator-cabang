@@ -13,16 +13,16 @@ class MasterResikoSeeder extends Seeder
      */
     public function run(): void
     {
+        // Clear existing data to remove unwanted codes
+        MasterRiskCode::truncate();
+
         // Dummy data for Master Risk Codes
         $riskCodes = [
-            ['kode' => 'WP', 'nama_risiko' => 'Wajib Pajak'],
-            ['kode' => 'SEK', 'nama_risiko' => 'Sekretariat'],
-            ['kode' => 'MIP', 'nama_risiko' => 'Manajemen Informasi Perpajakan'],
-            ['kode' => 'UPT', 'nama_risiko' => 'Unit Pelaksana Teknis'],
+            ['kode' => 'WP11', 'nama_risiko' => 'Wajib Pajak'],
         ];
 
         foreach ($riskCodes as $risk) {
-            MasterRiskCode::updateOrCreate(['kode' => $risk['kode']], $risk);
+            MasterRiskCode::create($risk);
         }
 
         // Dummy data for Master Cause Codes

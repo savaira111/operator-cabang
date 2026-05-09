@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Cabang')
-@section('page_title', 'Tambah Cabang Baru')
+@section('title', 'Tambah UPT')
+@section('page_title', 'Tambah UPT Baru')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-2xl p-10 shadow-2xl">
@@ -11,8 +11,8 @@
                 <i data-lucide="building-2" class="w-6 h-6 md:w-7 md:h-7"></i>
             </div>
             <div>
-                <h3 class="text-2xl font-black text-white tracking-tight">Tambah Cabang Baru</h3>
-                <p class="text-slate-500 text-sm mt-1">Registrasikan area operasional kantor cabang baru.</p>
+                <h3 class="text-2xl font-black text-white tracking-tight">Tambah UPT Baru</h3>
+                <p class="text-slate-500 text-sm mt-1">Registrasikan area operasional kantor UPT baru.</p>
             </div>
         </div>
         
@@ -27,16 +27,16 @@
         <div class="space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode Cabang</label>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode UPT</label>
                     <input type="text" name="kode_cabang" value="{{ $nextCode }}" readonly required class="w-full px-5 py-4 bg-slate-800/30 rounded-2xl border border-slate-700/50 text-slate-400 font-bold focus:outline-none cursor-not-allowed transition-all">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Cabang</label>
-                    <input type="text" name="name" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: Cabang Bandung Raya">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama UPT</label>
+                    <input type="text" name="name" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: UPT Bandung Raya">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kepala Cabang</label>
-                    <input type="text" name="kepala_cabang" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Nama Lengkap Kepala Cabang">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kepala UPT</label>
+                    <input type="text" name="kepala_cabang" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Nama Lengkap Kepala UPT">
                 </div>
             </div>
 
@@ -58,17 +58,17 @@
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Alamat Lengkap</label>
-                <textarea name="alamat" rows="3" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Masukkan alamat lengkap kantor cabang..."></textarea>
+                <textarea name="alamat" rows="3" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Masukkan alamat lengkap kantor UPT..."></textarea>
             </div>
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Deskripsi Tambahan</label>
-                <textarea name="description" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Keterangan singkat mengenai operasional cabang..."></textarea>
+                <textarea name="description" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Keterangan singkat mengenai operasional UPT..."></textarea>
             </div>
             
             <div class="pt-6 flex space-x-4">
                 <button type="submit" class="px-10 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
-                    Simpan Cabang
+                    Simpan UPT
                 </button>
             </div>
         </div>

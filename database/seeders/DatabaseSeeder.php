@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             CabangSeeder::class,
             UserSeeder::class,
             MasterResikoSeeder::class,
-            ResikoSeeder::class,
             RisikoDummySeeder::class,
             ZiMonitoringSeeder::class,
         ]);

@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Cabang Management')
-@section('page_title', 'Management Cabang')
+@section('title', 'UPT Management')
+@section('page_title', 'Management UPT')
 
 @section('content')
 <div class="flex items-center justify-between mb-8">
     <div>
-        <h3 class="text-3xl font-black text-white tracking-tighter">Daftar Cabang</h3>
-        <p class="text-slate-500 text-sm mt-1">Kelola data seluruh kantor cabang operasional.</p>
+        <h3 class="text-3xl font-black text-white tracking-tighter">Daftar UPT</h3>
+        <p class="text-slate-500 text-sm mt-1">Kelola data seluruh kantor UPT operasional.</p>
     </div>
     <a href="{{ route('cabangs.create') }}" class="px-6 py-3 bg-indigo-500 text-white font-bold rounded-2xl flex items-center hover:bg-indigo-600 transition-all duration-300 shadow-xl shadow-indigo-500/30 active:scale-95">
         <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-        Tambah Cabang
+        Tambah UPT
     </a>
 </div>
 
@@ -19,7 +19,7 @@
     <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
         <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors"></i>
     </div>
-    <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 block pl-14 p-4 transition-all" placeholder="Cari cabang atau kepala cabang...">
+    <input type="text" id="searchInput" onkeyup="filterTable()" class="w-full bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 block pl-14 p-4 transition-all" placeholder="Cari UPT atau kepala UPT...">
 </div>
 
 <script>
@@ -48,8 +48,8 @@ function filterTable() {
                 <tr class="bg-slate-800/40 border-b border-slate-800/60">
                     <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">No</th>
                     <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">Kode</th>
-                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Nama Cabang</th>
-                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Kepala Cabang</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Nama UPT</th>
+                    <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">Kepala UPT</th>
                     <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest hidden md:table-cell">Wilayah</th>
                     <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest hidden lg:table-cell">Alamat</th>
                     <th class="px-4 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right whitespace-nowrap">Aksi</th>

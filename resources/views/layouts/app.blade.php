@@ -268,7 +268,7 @@
                     <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                         <i data-lucide="building-2" class="w-4 h-4"></i>
                     </span>
-                    <span class="text-[13px] font-semibold tracking-wide">Manajemen Cabang</span>
+                    <span class="text-[13px] font-semibold tracking-wide">Manajemen UPT</span>
                 </a>
                 @endif
 
@@ -390,7 +390,10 @@
                 @php
                     $anggaranItems = [];
                     if(auth()->user()?->hasPermission('belanja_penilaian')) $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Belanja'];
-                    if(auth()->user()?->hasPermission('belanja_management')) $anggaranItems[] = ['route' => 'belanja-satker.index', 'label' => 'Belanja Satker Management'];
+                    if(auth()->user()?->hasPermission('belanja_management')) {
+                        $label = auth()->user()->role === 'operator cabang' ? 'Penyerapan Anggaran' : 'Belanja Satker Management';
+                        $anggaranItems[] = ['route' => 'belanja-satker.index', 'label' => $label];
+                    }
                 @endphp
 
                 @if(count($anggaranItems) > 1)
@@ -410,7 +413,7 @@
                             <span class="text-[12px] tracking-wide">Penilaian Belanja Satker</span>
                         </a>
                         <a href="{{ route('belanja-satker.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('belanja-satker.index') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Belanja Satker Management</span>
+                            <span class="text-[12px] tracking-wide">{{ auth()->user()->role === 'operator cabang' ? 'Penyerapan Anggaran' : 'Belanja Satker Management' }}</span>
                         </a>
                     </div>
                 </div>

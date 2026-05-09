@@ -62,7 +62,7 @@ class CabangSeeder extends Seeder
 
         $counter = 1;
         $generateKode = function() use (&$counter) {
-            $kode = 'K' . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $kode = 'UPT' . str_pad($counter, 2, '0', STR_PAD_LEFT);
             $counter++;
             return $kode;
         };

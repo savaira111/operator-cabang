@@ -38,21 +38,35 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nomor Kode Risiko</label>
-                    <input type="number" id="kode_risiko_nomor" oninput="updateKodeRisiko()" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
+                    <select id="kode_risiko_nomor" onchange="updateKodeRisiko()" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                        <option value="" disabled selected class="bg-slate-900 text-slate-400">Pilih nomor...</option>
+                        @for($i=1; $i<=40; $i++)
+                            <option value="{{ $i }}" class="bg-slate-900 text-white">{{ $i }}</option>
+                        @endfor
+                    </select>
                 </div>
             </div>
             <input type="hidden" name="kode_risiko" id="kode_risiko_hidden">
             <script>
                 function updateKodeRisiko() {
                     const jenis = document.getElementById('kode_risiko_jenis').value;
+                    const kategoriSelect = document.getElementById('kategori_risiko_select');
                     const nomor = document.getElementById('kode_risiko_nomor').value;
-                    if (jenis && nomor) {
-                        document.getElementById('kode_risiko_hidden').value = jenis + '.' + nomor;
-                    } else if (jenis) {
-                        document.getElementById('kode_risiko_hidden').value = jenis;
-                    } else {
-                        document.getElementById('kode_risiko_hidden').value = '';
+                    
+                    let kategoriIndex = '';
+                    if (kategoriSelect && kategoriSelect.selectedIndex > 0) {
+                        kategoriIndex = kategoriSelect.selectedIndex;
                     }
+
+                    let code = jenis;
+                    if (kategoriIndex) {
+                        code = code + '.' + kategoriIndex;
+                    }
+                    if (nomor) {
+                        code = code + '.' + nomor;
+                    }
+                    
+                    document.getElementById('kode_risiko_hidden').value = code;
                 }
             </script>
 
@@ -90,7 +104,7 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kategori Risiko</label>
                     <div class="relative group">
-                        <select name="kategori_risiko" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
+                        <select name="kategori_risiko" id="kategori_risiko_select" onchange="updateKodeRisiko()" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none appearance-none cursor-pointer">
                             <option value="" disabled selected class="bg-slate-900 text-slate-400">Pilih kategori risiko...</option>
                             <option value="Risiko Bencana" class="bg-slate-900 text-white">Risiko Bencana</option>
                             <option value="Risiko Kebijakan" class="bg-slate-900 text-white">Risiko Kebijakan</option>

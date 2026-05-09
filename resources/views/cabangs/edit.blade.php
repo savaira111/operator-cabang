@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Ubah Cabang')
-@section('page_title', 'Ubah Data Cabang')
+@section('title', 'Ubah UPT')
+@section('page_title', 'Ubah Data UPT')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-2xl p-10 shadow-2xl">
@@ -12,8 +12,8 @@
                     <i data-lucide="building-2" class="w-6 h-6 md:w-7 md:h-7"></i>
                 </div>
                 <div>
-                    <h3 class="text-xl md:text-2xl font-black text-white tracking-tight">Ubah Cabang</h3>
-                    <p class="text-slate-500 text-xs md:text-sm mt-1">Perbarui informasi operasional kantor cabang.</p>
+                    <h3 class="text-xl md:text-2xl font-black text-white tracking-tight">Ubah UPT</h3>
+                    <p class="text-slate-500 text-xs md:text-sm mt-1">Perbarui informasi operasional kantor UPT.</p>
                 </div>
             </div>
             <div class="flex items-center self-start sm:self-center px-4 py-2.5 bg-slate-800/80 rounded-2xl border border-slate-700/50 shrink-0">
@@ -34,16 +34,16 @@
         <div class="space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode Cabang</label>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kode UPT</label>
                     <input type="text" name="kode_cabang" value="{{ $cabang->kode_cabang }}" readonly required class="w-full px-5 py-4 bg-slate-800/30 rounded-2xl border border-slate-700/50 text-slate-400 font-bold focus:outline-none cursor-not-allowed transition-all">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama Cabang</label>
-                    <input type="text" name="name" value="{{ $cabang->name }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: Cabang Jakarta Pusat">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Nama UPT</label>
+                    <input type="text" name="name" value="{{ $cabang->name }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Contoh: UPT Jakarta Pusat">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kepala Cabang</label>
-                    <input type="text" name="kepala_cabang" value="{{ $cabang->kepala_cabang }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Nama Lengkap Kepala Cabang">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Kepala UPT</label>
+                    <input type="text" name="kepala_cabang" value="{{ $cabang->kepala_cabang }}" required class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" placeholder="Nama Lengkap Kepala UPT">
                 </div>
             </div>
 
@@ -65,17 +65,17 @@
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Alamat Lengkap</label>
-                <textarea name="alamat" rows="3" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Masukkan alamat lengkap kantor cabang...">{{ $cabang->alamat }}</textarea>
+                <textarea name="alamat" rows="3" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Masukkan alamat lengkap kantor UPT...">{{ $cabang->alamat }}</textarea>
             </div>
 
             <div>
                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Deskripsi Tambahan</label>
-                <textarea name="description" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Keterangan singkat mengenai operasional cabang...">{{ $cabang->description }}</textarea>
+                <textarea name="description" rows="2" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none" placeholder="Keterangan singkat mengenai operasional UPT...">{{ $cabang->description }}</textarea>
             </div>
             
             <div class="pt-6 flex space-x-4">
                 <button type="submit" class="px-10 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
-                    Perbarui Cabang
+                    Perbarui UPT
                 </button>
             </div>
         </div>

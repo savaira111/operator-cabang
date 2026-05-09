@@ -46,7 +46,7 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Role Akses</label>
-                    <select name="role" required class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
+                    <select name="role" id="roleSelect" required class="w-full px-5 py-4 bg-[#1d2333] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer">
                         <option value="operator kanwil" {{ $user->role == 'operator kanwil' ? 'selected' : '' }} class="bg-[#111827]">Operator Kanwil</option>
                         <option value="operator cabang" {{ $user->role == 'operator cabang' ? 'selected' : '' }} class="bg-[#111827]">Operator Cabang</option>
                     </select>
@@ -78,7 +78,7 @@
                     @php
                         $available_permissions = [
                             'manajemen_pengguna' => ['label' => 'Manajemen Pengguna', 'icon' => 'users', 'group' => 'Utama'],
-                            'manajemen_cabang' => ['label' => 'Manajemen Cabang', 'icon' => 'building-2', 'group' => 'Utama'],
+                            'manajemen_cabang' => ['label' => 'Manajemen UPT', 'icon' => 'building-2', 'group' => 'Utama'],
                             
                             'lpi_rekap_pengendalian' => ['label' => 'LPI: Rekap Pengendalian', 'icon' => 'file-text', 'group' => 'Kelola LPI'],
                             'lpi_laporan_internal' => ['label' => 'LPI: Laporan Internal', 'icon' => 'clipboard-list', 'group' => 'Kelola LPI'],
@@ -196,6 +196,7 @@
                     const confirm = document.getElementById('password_confirmation');
                     const matchStatus = document.getElementById('match-status');
                     const helpDiv = document.getElementById('passwordHelp');
+                    const roleSelect = document.getElementById('roleSelect');
 
                     const rules = {
                         min: { regex: /.{8,}/, el: document.getElementById('rule-min') },
@@ -204,6 +205,19 @@
                         num: { regex: /[0-9]/, el: document.getElementById('rule-num') },
                         symbol: { regex: /[@$!%*#?&]/, el: document.getElementById('rule-symbol') }
                     };
+
+                    // Auto-select permissions for Operator Cabang
+                    roleSelect.addEventListener('change', function() {
+                        if (this.value === 'operator cabang') {
+                            const targetPermissions = ['lpi_laporan_internal', 'tahanan_management', 'zi_input_data', 'belanja_management'];
+                            const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
+                            checkboxes.forEach(cb => {
+                                if (targetPermissions.includes(cb.value)) {
+                                    cb.checked = true;
+                                }
+                            });
+                        }
+                    });
 
                     // Focus/Blur Animation
                     password.addEventListener('focus', () => {
@@ -281,7 +295,6 @@
 
                     password.addEventListener('input', validatePasswords);
                     confirm.addEventListener('input', validatePasswords);
-                </script>asswords);
                 </script>
             </div>
             
