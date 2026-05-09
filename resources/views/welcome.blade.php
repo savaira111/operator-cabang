@@ -76,29 +76,34 @@
             position: absolute;
             inset: -1px;
             border-radius: inherit;
-            border: 2px solid transparent;
-            mask-image: conic-gradient(from var(--cursor-angle) at center, transparent 0%, black 5%, black 20%, transparent 25%);
-            -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, transparent 0%, black 5%, black 20%, transparent 25%);
+            border: 1px solid transparent;
+            /* Using mask-composite to show ONLY the border area */
+            -webkit-mask: 
+                conic-gradient(from var(--cursor-angle) at center, transparent 0%, #000 2%, #000 8%, transparent 10%),
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: source-in, xor;
+            mask-composite: intersect, exclude;
             background: radial-gradient(circle at center, #D2A039 0%, #f9d77e 50%, transparent 100%) border-box;
             background-size: 200% 200%;
             opacity: var(--glow-opacity);
             transition: opacity 0.3s ease;
             pointer-events: none;
-            z-index: 10;
+            z-index: 30;
         }
 
         .border-glow-outer {
             position: absolute;
-            inset: -40px;
+            inset: -20px;
             border-radius: inherit;
-            mask-image: conic-gradient(from var(--cursor-angle) at center, black 5%, transparent 20%, transparent 80%, black 95%);
-            -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black 5%, transparent 20%, transparent 80%, black 95%);
-            background: radial-gradient(circle at center, rgba(210, 160, 57, 0.3) 0%, transparent 70%);
+            mask-image: conic-gradient(from var(--cursor-angle) at center, black 2%, transparent 15%, transparent 85%, black 98%);
+            -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black 2%, transparent 15%, transparent 85%, black 98%);
+            background: radial-gradient(circle at center, rgba(210, 160, 57, 0.15) 0%, transparent 70%);
             opacity: var(--glow-opacity);
             transition: opacity 0.3s ease;
             pointer-events: none;
             z-index: -1;
-            filter: blur(20px);
+            filter: blur(15px);
         }
 
         /* Top Loading Bar */
@@ -114,65 +119,49 @@
             box-shadow: 0 0 10px rgba(210,160,57,0.5);
         }
 
-        /* Mascot Card Styles (Accreditation Style) */
-        .mascot-card {
-            position: absolute;
-            bottom: -30px;
-            right: -30px;
-            z-index: 40;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            padding: 10px 16px;
-            border-radius: 20px;
+        /* New Visual Display Styles */
+        .visual-container {
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(210, 160, 57, 0.3);
-            animation: mascot-float 4s ease-in-out infinite;
-            pointer-events: auto;
+            justify-content: flex-end;
+            gap: 20px;
+            perspective: 1000px;
         }
-        .mascot-thumb {
-            width: 50px;
-            height: 50px;
-            background: #f0f4f8;
-            border-radius: 14px;
+        .hero-visual-item {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-visual-item:hover {
+            transform: translateY(-10px) rotateY(-5deg) scale(1.02);
+            z-index: 30;
+        }
+        .hero-visual-item img {
+            pointer-events: none;
+            user-select: none;
+        }
+        .logo-display {
+            width: 280px;
+            height: 280px;
+            border-radius: 40px;
+            background: #031121;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            border: 1px solid rgba(210, 160, 57, 0.2);
+            padding: 20px;
         }
-        .mascot-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.1);
-        }
-        .mascot-text {
+        .mascot-display {
+            width: 280px;
+            height: 340px;
+            border-radius: 40px;
+            background: #031121;
             display: flex;
-            flex-direction: column;
-        }
-        .mascot-title {
-            font-size: 11px;
-            font-weight: 800;
-            color: #061B30;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            line-height: 1.2;
-        }
-        .mascot-subtitle {
-            font-size: 9px;
-            font-weight: 600;
-            color: #D2A039;
-            margin-top: 2px;
-        }
-        @keyframes mascot-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-bottom: -40px; /* Offset for dynamic look */
         }
         @media (max-width: 1024px) {
-            .mascot-card {
+            .visual-container {
                 display: none;
             }
         }
@@ -238,27 +227,27 @@
                     </div>
                 </div>
 
-                <!-- Visual Element with Border Glow -->
-                <div class="relative hidden lg:block animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
-                    <div id="border-glow-target" class="border-glow-card relative inline-flex items-center justify-center p-1 shadow-2xl scale-[0.8] lg:scale-85 origin-right ml-auto translate-x-12">
+                <!-- Visual Element with Dual Display -->
+                <div class="visual-container animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
+                    <!-- Item 1: Sipinter Logo -->
+                    <div class="hero-visual-item border-glow-card logo-display shadow-2xl">
                         <div class="border-glow-border"></div>
                         <div class="border-glow-outer"></div>
-                        <img src="{{ asset('Logo_2.png') }}" alt="Sipinter Jabar" class="max-w-[300px] lg:max-w-[350px] h-auto rounded-[38px] drop-shadow-[0_0_15px_rgba(210,160,57,0.15)] z-20">
+                        <img src="{{ asset('Logo_2.png') }}" alt="Sipinter Jabar" class="w-full h-auto drop-shadow-[0_0_20px_rgba(210,160,57,0.3)] z-20">
                     </div>
                     
-                    <!-- Mascot Card Addition -->
-                    <div class="mascot-card animate-in fade-in slide-in-from-right-12 duration-1000 delay-500">
-                        <div class="mascot-thumb">
-                            <img src="{{ asset('mascot.png') }}" alt="Maskot Sipinter">
-                        </div>
-                        <div class="mascot-text">
-                            <div class="flex items-center gap-1.5">
-                                <span class="mascot-title">Integritas Pelayanan</span>
-                                <div class="bg-green-500 rounded-full p-0.5">
-                                    <i data-lucide="check" class="w-2 h-2 text-white stroke-[4]"></i>
-                                </div>
+                    <!-- Item 2: Mascot Entitas -->
+                    <div class="hero-visual-item border-glow-card mascot-display shadow-2xl">
+                        <div class="border-glow-border" style="--cursor-angle: 180deg;"></div>
+                        <!-- Outer glow removed for mascot as per request -->
+                        <img src="{{ asset('mascot.png') }}" alt="Maskot Sipinter" class="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.4)] z-20">
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/95 backdrop-blur-md rounded-xl border border-gold/30 shadow-2xl z-30 flex items-center gap-2 whitespace-nowrap">
+                            <span class="text-[9px] font-black text-[#061B30] uppercase tracking-tighter">Integritas Pelayanan</span>
+                            <div class="w-2.5 h-2.5 bg-green-500 rounded-full flex items-center justify-center">
+                                <i data-lucide="check" class="w-1.5 h-1.5 text-white stroke-[4]"></i>
                             </div>
-                            <span class="mascot-subtitle">Terakreditasi Unggul</span>
                         </div>
                     </div>
                 </div>
@@ -346,9 +335,9 @@
         
         animate();
 
-        // Border Glow Logic
-        const card = document.querySelector('#border-glow-target');
-        if (card) {
+        // Border Glow Logic for multiple items
+        const glowCards = document.querySelectorAll('.border-glow-card');
+        glowCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -364,7 +353,6 @@
                 let degrees = radians * (180 / Math.PI) + 90;
                 if (degrees < 0) degrees += 360;
                 
-                // Edge proximity logic simplified
                 const distToCenter = Math.sqrt(dx*dx + dy*dy);
                 const maxDist = Math.sqrt(cx*cx + cy*cy);
                 const proximity = Math.min(distToCenter / (maxDist * 0.7), 1);
@@ -380,7 +368,7 @@
             card.addEventListener('mouseleave', () => {
                 card.style.setProperty('--glow-opacity', '0');
             });
-        }
+        });
 
         // Top Loading Bar Logic
         window.addEventListener('beforeunload', function() {

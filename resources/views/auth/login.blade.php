@@ -113,6 +113,28 @@
             &copy; {{ date('Y') }} Kementerian Imigrasi dan Pemasyarakatan
         </p>
     </div>
+    
+    <!-- Floating Mascot -->
+    <div class="fixed bottom-8 right-8 hidden lg:block animate-in fade-in slide-in-from-right-10 duration-1000 delay-500 pointer-events-none">
+        <div class="relative group pointer-events-auto">
+            <!-- Background Glow -->
+            <div class="absolute inset-0 bg-[#D2A039]/10 blur-3xl rounded-full scale-110 group-hover:bg-[#D2A039]/20 transition-all duration-700"></div>
+            
+            <!-- Mascot Image -->
+            <img src="{{ asset('mascot.png') }}" alt="Maskot Sipinter" class="w-56 h-auto relative z-10 drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
+            
+            <!-- Floating Badge -->
+            <div class="absolute -bottom-2 -left-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-[#D2A039]/30 shadow-2xl z-20 flex items-center gap-2.5 transition-all duration-500 group-hover:translate-x-2">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-black text-[#061B30] uppercase tracking-widest leading-none">Integritas</span>
+                    <span class="text-[7px] font-bold text-[#D2A039] uppercase mt-0.5">Pelayanan</span>
+                </div>
+                <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/20">
+                    <i data-lucide="check" class="w-3 h-3 text-white stroke-[4]"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         lucide.createIcons();

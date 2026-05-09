@@ -6,33 +6,74 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
         $cabangId = $user->cabang_id;
+        $tahun = $request->get('tahun', date('Y'));
 
-        // Base counts with branch filter if applicable
-        $userCount = \App\Models\User::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
-        $cabangCount = \App\Models\Cabang::count(); // Usually for admin, but let's keep it for now
-        
-        $resikoCount = \App\Models\Resiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
+        // Restored Base counts
         $tahananCount = \App\Models\Tahanan::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
         $ziCount = \App\Models\ZiMonitoring::where('tipe', 'IO')
+            ->where('tahun', $tahun)
             ->where(function($q) use ($cabangId) {
                 $q->whereNull('cabang_id');
                 if ($cabangId) {
                     $q->orWhere('cabang_id', $cabangId);
                 }
             })->count();
-        $anggaranTotal = \App\Models\BelanjaSatker::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->sum('total');
+        $anggaranEvaluatedTotal = \App\Models\BelanjaSatker::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+            ->where('status_evaluasi', 'sesuai')
+            ->sum('total');
+
+        // New LPI Statistics
+        $totalLpiCount = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
+        $lpiApprovedCount = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+            ->where('status_evaluasi', 'sesuai')
+            ->count();
+
+        // Progress comparison for B03, B06, B09, B12
+        $periods = [
+            'B03' => ['Januari', 'Februari', 'Maret'],
+            'B06' => ['April', 'Mei', 'Juni'],
+            'B09' => ['Juli', 'Agustus', 'September'],
+            'B12' => ['Oktober', 'November', 'Desember']
+        ];
+        
+        $chartData = [];
+        foreach ($periods as $periodKey => $months) {
+            // ZI Progress
+            $ziAvg = \App\Models\ZiMonitoring::where('tipe', 'IO')
+                ->where('tahun', $tahun)
+                ->where('waktu_pelaksanaan', 'like', '%' . $periodKey . '%')
+                ->where(function($q) use ($cabangId) {
+                    $q->whereNull('cabang_id');
+                    if ($cabangId) {
+                        $q->orWhere('cabang_id', $cabangId);
+                    }
+                })
+                ->avg('prosentase') ?? 0;
+
+            // LPI Progress
+            $lpiAvg = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+                ->where('tahun', $tahun)
+                ->whereIn('bulan', $months)
+                ->avg('prosentase') ?? 0;
+
+            $chartData[$periodKey] = [
+                'zi' => round($ziAvg),
+                'lpi' => round($lpiAvg)
+            ];
+        }
 
         return view('dashboard', compact(
-            'userCount', 
-            'cabangCount', 
-            'resikoCount', 
             'tahananCount', 
             'ziCount', 
-            'anggaranTotal'
+            'anggaranEvaluatedTotal',
+            'totalLpiCount',
+            'lpiApprovedCount',
+            'chartData',
+            'tahun'
         ));
     }
 }
