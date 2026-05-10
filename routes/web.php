@@ -65,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'updateCause'])->name('master-resiko.update-cause');
     Route::delete('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'destroyCause'])->name('master-resiko.destroy-cause');
     
+    Route::resource('laporan-internal-excel', \App\Http\Controllers\LaporanInternalExcelController::class);
+    
     Route::get('/profile', function() {
         return view('profile');
     })->name('profile');
