@@ -36,15 +36,20 @@ class PemantauanKegiatanController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'rencana_tindak_pengendalian_id' => 'required|exists:rencana_tindak_pengendalians,id',
-            'realisasi_waktu' => 'required|string',
-            'hambatan_kendala' => 'required|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.rencana_tindak_pengendalian_id' => 'required|exists:rencana_tindak_pengendalians,id',
+            'rows.*.realisasi_waktu' => 'required|string',
+            'rows.*.hambatan_kendala' => 'required|string',
         ]);
 
-        PemantauanKegiatan::create($validated);
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            PemantauanKegiatan::create($rowData);
+            $count++;
+        }
 
-        return redirect()->route('pemantauan-kegiatan.index')->with('success', 'Data Pemantauan Kegiatan Pengendalian berhasil ditambahkan.');
+        return redirect()->route('pemantauan-kegiatan.index')->with('success', $count . ' Data Pemantauan Kegiatan Pengendalian berhasil ditambahkan.');
     }
 
     public function show(PemantauanKegiatan $pemantauanKegiatan)

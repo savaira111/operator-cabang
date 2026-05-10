@@ -36,18 +36,23 @@ class PemantauanPeristiwaController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'pemantauan_kegiatan_id' => 'required|exists:pemantauan_kegiatans,id',
-            'uraian_peristiwa' => 'required|string',
-            'waktu_kejadian' => 'required|string',
-            'tempat_kejadian' => 'required|string',
-            'skor_dampak' => 'required|integer|min:1|max:5',
-            'pemicu_peristiwa' => 'required|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.pemantauan_kegiatan_id' => 'required|exists:pemantauan_kegiatans,id',
+            'rows.*.uraian_peristiwa' => 'required|string',
+            'rows.*.waktu_kejadian' => 'required|string',
+            'rows.*.tempat_kejadian' => 'required|string',
+            'rows.*.skor_dampak' => 'required|integer|min:1|max:5',
+            'rows.*.pemicu_peristiwa' => 'required|string',
         ]);
 
-        PemantauanPeristiwa::create($validated);
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            PemantauanPeristiwa::create($rowData);
+            $count++;
+        }
 
-        return redirect()->route('pemantauan-peristiwa.index')->with('success', 'Data Pemantauan Peristiwa berhasil ditambahkan.');
+        return redirect()->route('pemantauan-peristiwa.index')->with('success', $count . ' Data Pemantauan Peristiwa berhasil ditambahkan.');
     }
 
     public function show(PemantauanPeristiwa $pemantauanPeristiwa)

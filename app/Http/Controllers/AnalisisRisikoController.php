@@ -31,21 +31,27 @@ class AnalisisRisikoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'identifikasi_risiko_id' => 'required|exists:identifikasi_risikos,id',
-            'frekuensi' => 'nullable|string',
-            'dampak' => 'nullable|string',
-            'level_risiko' => 'nullable|string',
-            'ada_belum_ada' => 'nullable|string',
-            'uraian_pengendalian' => 'nullable|string',
-            'memadai_belum_memadai' => 'nullable|string',
-            'skor_probabilitas_residu' => 'nullable|string',
-            'skor_dampak_residu' => 'nullable|string',
-            'level_risiko_residu' => 'nullable|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.identifikasi_risiko_id' => 'required|exists:identifikasi_risikos,id',
+            'rows.*.frekuensi' => 'nullable|string',
+            'rows.*.dampak' => 'nullable|string',
+            'rows.*.level_risiko' => 'nullable|string',
+            'rows.*.ada_belum_ada' => 'nullable|string',
+            'rows.*.uraian_pengendalian' => 'nullable|string',
+            'rows.*.memadai_belum_memadai' => 'nullable|string',
+            'rows.*.skor_probabilitas_residu' => 'nullable|string',
+            'rows.*.skor_dampak_residu' => 'nullable|string',
+            'rows.*.level_risiko_residu' => 'nullable|string',
         ]);
 
-        AnalisisRisiko::create($validated);
-        return redirect()->route('analisis-risiko.index')->with('success', 'Analisis Risiko berhasil ditambahkan.');
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            AnalisisRisiko::create($rowData);
+            $count++;
+        }
+
+        return redirect()->route('analisis-risiko.index')->with('success', $count . ' Analisis Risiko berhasil ditambahkan.');
     }
 
     public function show(AnalisisRisiko $analisis_risiko)

@@ -58,15 +58,20 @@ class EvaluasiRisikoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'resiko_id' => 'required|exists:resikos,id',
-            'pemilik_risiko' => 'required|string',
-            'keterangan' => 'required|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.resiko_id' => 'required|exists:resikos,id',
+            'rows.*.pemilik_risiko' => 'required|string',
+            'rows.*.keterangan' => 'required|string',
         ]);
 
-        EvaluasiRisiko::create($validated);
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            EvaluasiRisiko::create($rowData);
+            $count++;
+        }
 
-        return redirect()->route('evaluasi-risiko.index')->with('success', 'Data Evaluasi Risiko berhasil ditambahkan.');
+        return redirect()->route('evaluasi-risiko.index')->with('success', $count . ' Data Evaluasi Risiko berhasil ditambahkan.');
     }
 
     public function show(EvaluasiRisiko $evaluasiRisiko)

@@ -22,14 +22,19 @@ class RencanaBelumTerealisasiController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'rencana_tindak_pengendalian_id' => 'required|exists:rencana_tindak_pengendalians,id',
-            'keterangan' => 'required|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.rencana_tindak_pengendalian_id' => 'required|exists:rencana_tindak_pengendalians,id',
+            'rows.*.keterangan' => 'required|string',
         ]);
 
-        RencanaBelumTerealisasi::create($validated);
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            RencanaBelumTerealisasi::create($rowData);
+            $count++;
+        }
 
-        return redirect()->route('rencana-belum-terealisasi.index')->with('success', 'Data Rencana Kegiatan Belum Terealisasi berhasil ditambahkan.');
+        return redirect()->route('rencana-belum-terealisasi.index')->with('success', $count . ' Data Rencana Kegiatan Belum Terealisasi berhasil ditambahkan.');
     }
 
     public function show(RencanaBelumTerealisasi $rencanaBelumTerealisasi)

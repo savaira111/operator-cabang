@@ -30,21 +30,27 @@ class RencanaTindakPengendalianController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'resiko_id' => 'required|exists:resikos,id',
-            'rencana_tindak' => 'required|string',
-            'waktu_pelaksanaan' => 'required|string',
-            'penanggung_jawab' => 'required|string',
-            'respons_risiko' => 'nullable|string',
-            'klasifikasi_sub_unsur_spip' => 'nullable|string',
-            'indikator_keluaran' => 'nullable|string',
-            'frekuensi' => 'nullable|string',
-            'dampak' => 'nullable|string',
-            'level_risiko' => 'nullable|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.resiko_id' => 'required|exists:resikos,id',
+            'rows.*.rencana_tindak' => 'required|string',
+            'rows.*.waktu_pelaksanaan' => 'required|string',
+            'rows.*.penanggung_jawab' => 'required|string',
+            'rows.*.respons_risiko' => 'nullable|string',
+            'rows.*.klasifikasi_sub_unsur_spip' => 'nullable|string',
+            'rows.*.indikator_keluaran' => 'nullable|string',
+            'rows.*.frekuensi' => 'nullable|string',
+            'rows.*.dampak' => 'nullable|string',
+            'rows.*.level_risiko' => 'nullable|string',
         ]);
 
-        \App\Models\RencanaTindakPengendalian::create($validated);
-        return redirect()->route('rencana-tindak.index')->with('success', 'Rencana tindak pengendalian berhasil ditambahkan.');
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            \App\Models\RencanaTindakPengendalian::create($rowData);
+            $count++;
+        }
+
+        return redirect()->route('rencana-tindak.index')->with('success', $count . ' Rencana tindak pengendalian berhasil ditambahkan.');
     }
 
     public function show(\App\Models\RencanaTindakPengendalian $rencana_tindak)

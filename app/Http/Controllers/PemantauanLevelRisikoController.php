@@ -43,15 +43,20 @@ class PemantauanLevelRisikoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'analisis_risiko_id' => 'required|exists:analisis_risikos,id',
-            'deviasi' => 'nullable|string',
-            'rekomendasi' => 'nullable|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.analisis_risiko_id' => 'required|exists:analisis_risikos,id',
+            'rows.*.deviasi' => 'nullable|string',
+            'rows.*.rekomendasi' => 'nullable|string',
         ]);
 
-        PemantauanLevelRisiko::create($validated);
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            PemantauanLevelRisiko::create($rowData);
+            $count++;
+        }
 
-        return redirect()->route('pemantauan-level.index')->with('success', 'Data Pemantauan Level Risiko berhasil ditambahkan.');
+        return redirect()->route('pemantauan-level.index')->with('success', $count . ' Data Pemantauan Level Risiko berhasil ditambahkan.');
     }
 
     public function show(PemantauanLevelRisiko $pemantauanLevel)

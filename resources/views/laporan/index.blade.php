@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Laporan Monitoring Pengendalian')
 @section('page_title', 'Laporan Monitoring Pengendalian')
@@ -154,7 +154,7 @@
                                         <div class="w-full flex flex-col items-center">
                                             <div class="flex items-center gap-1 mb-1.5">
                                                 <span class="text-sm font-black text-emerald-400">{{ $scores['current_eval'] }}</span>
-                                                <span class="text-xs font-bold text-slate-600">/ {{ $scores['total'] }}</span>
+                                                <span class="text-xs font-bold text-slate-600">/ {{ $scores['total_eval'] }}</span>
                                             </div>
                                             <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-1.5">
                                                 <div class="bg-emerald-500 h-full rounded-full transition-all duration-1000" style="width: {{ $scores['pct_eval'] }}%"></div>
@@ -482,7 +482,7 @@
                             visibleModules.push({ 
                                 name: moduleName, 
                                 evaluasi: scores.current_eval, 
-                                total: scores.total,
+                                total: scores.total_eval,
                                 pct: scores.pct_eval,
                                 catatan: scores.catatan
                             });

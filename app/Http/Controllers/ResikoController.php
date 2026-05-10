@@ -43,31 +43,36 @@ class ResikoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'pernyataan_risiko' => 'required|string',
-            'why_1' => 'nullable|string',
-            'why_2' => 'nullable|string',
-            'why_3' => 'nullable|string',
-            'why_4' => 'nullable|string',
-            'why_5' => 'nullable|string',
-            'akar_penyebab' => 'required|string',
-            'kode_penyebab_jenis' => 'required|string|exists:master_cause_codes,kode',
-            'kode_penyebab_nomor' => 'required|integer',
-            'kegiatan_pengendalian' => 'required|string',
+        $request->validate([
+            'rows' => 'required|array',
+            'rows.*.pernyataan_risiko' => 'required|string',
+            'rows.*.why_1' => 'nullable|string',
+            'rows.*.why_2' => 'nullable|string',
+            'rows.*.why_3' => 'nullable|string',
+            'rows.*.why_4' => 'nullable|string',
+            'rows.*.why_5' => 'nullable|string',
+            'rows.*.akar_penyebab' => 'required|string',
+            'rows.*.kode_penyebab_jenis' => 'required|string|exists:master_cause_codes,kode',
+            'rows.*.kode_penyebab_nomor' => 'required|integer',
+            'rows.*.kegiatan_pengendalian' => 'required|string',
         ]);
         
-        // Use authenticated user's cabang_id or fallback
         $userCabangId = auth()->user()->cabang_id;
         if (!$userCabangId) {
             $defaultCabang = \App\Models\Cabang::first();
             $userCabangId = $defaultCabang ? $defaultCabang->id : null;
         }
-        $validated['cabang_id'] = $userCabangId;
-        $validated['tahun'] = date('Y');
-        $validated['kode'] = $validated['kode_penyebab_jenis'] . '.' . $validated['kode_penyebab_nomor'];
 
-        \App\Models\Resiko::create($validated);
-        return redirect()->route('resikos.index')->with('success', 'Data laporan pengendalian internal berhasil disimpan');
+        $count = 0;
+        foreach ($request->rows as $rowData) {
+            $rowData['cabang_id'] = $userCabangId;
+            $rowData['tahun'] = date('Y');
+            $rowData['kode'] = $rowData['kode_penyebab_jenis'] . '.' . $rowData['kode_penyebab_nomor'];
+            \App\Models\Resiko::create($rowData);
+            $count++;
+        }
+
+        return redirect()->route('resikos.index')->with('success', $count . ' Data laporan pengendalian internal berhasil disimpan');
     }
 
     public function edit(\App\Models\Resiko $resiko)
