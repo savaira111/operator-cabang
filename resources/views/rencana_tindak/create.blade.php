@@ -99,17 +99,31 @@
                             </div>
                             <div>
                                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Frekuensi</label>
-                                <input type="text" name="rows[0][frekuensi]" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: 1">
+                                <select name="rows[0][frekuensi]" class="frekuensi w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer appearance-none" required>
+                                    <option value="" disabled selected hidden>-- Pilih Probabilitas --</option>
+                                    <option value="1">1 - Hampir tidak terjadi</option>
+                                    <option value="2">2 - Jarang terjadi</option>
+                                    <option value="3">3 - Kadang terjadi</option>
+                                    <option value="4">4 - Sering terjadi</option>
+                                    <option value="5">5 - Hampir pasti terjadi</option>
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Dampak</label>
-                                <input type="text" name="rows[0][dampak]" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: Tinggi">
+                                <select name="rows[0][dampak]" class="dampak w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none cursor-pointer appearance-none" required>
+                                    <option value="" disabled selected hidden>-- Pilih Dampak --</option>
+                                    <option value="1">1 - Tidak Signifikan</option>
+                                    <option value="2">2 - Minor</option>
+                                    <option value="3">3 - Moderat</option>
+                                    <option value="4">4 - Signifikan</option>
+                                    <option value="5">5 - Sangat Signifikan</option>
+                                </select>
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">Level Risiko</label>
-                            <input type="text" name="rows[0][level_risiko]" class="w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" placeholder="Contoh: Sangat Tinggi">
+                            <input type="text" name="rows[0][level_risiko]" class="level_risiko w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none" readonly placeholder="Otomatis terisi...">
                         </div>
                     </div>
                 </div>
@@ -130,6 +144,35 @@
 </div>
 
 <script>
+    const matrix = {
+        5: { 1: 9, 2: 15, 3: 18, 4: 23, 5: 25 },
+        4: { 1: 6, 2: 12, 3: 16, 4: 19, 5: 24 },
+        3: { 1: 4, 2: 10, 3: 14, 4: 17, 5: 22 },
+        2: { 1: 2, 2: 7, 3: 11, 4: 13, 5: 21 },
+        1: { 1: 1, 2: 3, 3: 5, 4: 8, 5: 20 }
+    };
+
+    function getLevelInfo(score) {
+        if (score >= 20) return { label: 'Sangat Tinggi (5)', class: 'bg-red-500/20 text-red-400 border-red-500/50' };
+        if (score >= 16) return { label: 'Tinggi (4)', class: 'bg-orange-500/20 text-orange-400 border-orange-500/50' };
+        if (score >= 12) return { label: 'Sedang (3)', class: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50' };
+        if (score >= 6) return { label: 'Rendah (2)', class: 'bg-green-500/20 text-green-400 border-green-500/50' };
+        return { label: 'Sangat Rendah (1)', class: 'bg-blue-500/20 text-blue-400 border-blue-500/50' };
+    }
+
+    function calculateRisk(row) {
+        const frekVal = row.querySelector('.frekuensi').value;
+        const dampVal = row.querySelector('.dampak').value;
+        const levelInput = row.querySelector('.level_risiko');
+
+        if (frekVal && dampVal) {
+            const score = matrix[frekVal][dampVal];
+            const info = getLevelInfo(score);
+            levelInput.value = `${score} - ${info.label}`;
+            levelInput.className = `level_risiko w-full px-5 py-4 rounded-2xl border focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none font-bold text-sm ${info.class}`;
+        }
+    }
+
     let rowCount = 1;
 
     function updateRowNumbers() {
@@ -158,6 +201,9 @@
             if (name) {
                 input.setAttribute('name', name.replace(/rows\[\d+\]/, `rows[${rowCount}]`));
             }
+            if (input.classList.contains('level_risiko')) {
+                input.className = 'level_risiko w-full px-5 py-4 bg-slate-800/50 rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500 transition-all outline-none';
+            }
         });
 
         newRow.querySelector('.resiko-preview').classList.add('hidden');
@@ -166,6 +212,7 @@
         rowCount++;
         updateRowNumbers();
         lucide.createIcons();
+        attachRowEvents(newRow);
     }
 
     function removeRow(btn) {
@@ -190,5 +237,19 @@
             previewDiv.classList.add('hidden');
         }
     }
+
+    function attachRowEvents(row) {
+        ['frekuensi', 'dampak'].forEach(cls => {
+            const el = row.querySelector('.' + cls);
+            if(el) {
+                el.addEventListener('change', () => calculateRisk(row));
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        lucide.createIcons();
+        document.querySelectorAll('.row-item').forEach(attachRowEvents);
+    });
 </script>
 @endsection
