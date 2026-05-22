@@ -69,13 +69,17 @@
                             <span class="text-xs font-black text-indigo-400">{{ $tahanan->prosentase }}%</span>
                         </div>
                     </td>
-                    <td class="px-6 py-5">
-                        <div class="flex items-center justify-center">
-                            <a href="{{ route('penilaian-tahanan.edit', $tahanan) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Berikan Penilaian">
-                                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </td>
+                      <td class="px-6 py-5">
+                          <div class="flex items-center justify-center">
+                              @if(!auth()->user()->cabang_id)
+                              <a href="{{ route('penilaian-tahanan.edit', $tahanan) }}" class="p-3 bg-blue-500/10 text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg active:scale-90" title="Berikan Penilaian">
+                                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                              </a>
+                              @else
+                              <span class="text-xs text-slate-500">-</span>
+                              @endif
+                          </div>
+                      </td>
                 </tr>
                 @empty
                 <tr>

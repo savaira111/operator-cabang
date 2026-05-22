@@ -210,7 +210,7 @@
                 // Auto-select permissions for Operator Cabang
                 roleSelect.addEventListener('change', function() {
                     if (this.value === 'operator cabang') {
-                        const targetPermissions = ['lpi_laporan_internal', 'lpi_laporan_internal_excel', 'tahanan_management', 'zi_input_data', 'belanja_management'];
+                        const targetPermissions = ['lpi_laporan_internal', 'lpi_laporan_internal_excel', 'tahanan_management', 'tahanan_penilaian', 'zi_input_data', 'belanja_management'];
                         const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
                         checkboxes.forEach(cb => {
                             if (targetPermissions.includes(cb.value)) {

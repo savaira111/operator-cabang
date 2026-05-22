@@ -10,10 +10,16 @@
             <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Hierarchy Builder ZI</h3>
             <p class="text-slate-500 text-sm mt-2 tracking-tight">Bangun struktur monitoring mulai dari Sasaran, Kegiatan, hingga Indikator Output.</p>
         </div>
-        <a href="{{ route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
-            <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
-        </a>
+        <div class="flex flex-col items-end">
+            <a href="{{ route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
+            </a>
+            <div id="save-indicator" class="mt-2 flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500 opacity-0 transition-all">
+                <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+                <span>Data Tersimpan</span>
+            </div>
+        </div>
     </div>
 
     <form action="{{ route('zi-monitoring.store') }}" method="POST" enctype="multipart/form-data" id="hierarchyForm">
@@ -33,7 +39,7 @@
                         <select name="cabang_id" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
                             <option value="">Semua Cabang (Global)</option>
                             @foreach($cabangs as $c)
-                                <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                <option value="{{ $c->id }}" {{ old('cabang_id') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
                         </select>
                     @endif
@@ -41,9 +47,9 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Tipe Level Yang Dibuat</label>
                     <select name="tipe" id="tipe_select" required class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" onchange="updateView()">
-                        <option value="SS2">Sasaran Indikatif (SS2)</option>
-                        <option value="K">Kegiatan Utama (K)</option>
-                        <option value="IO">Indikator Output (IO) - Kolektif</option>
+                        <option value="SS2" {{ old('tipe') == 'SS2' ? 'selected' : '' }}>Sasaran Indikatif (SS2)</option>
+                        <option value="K" {{ old('tipe') == 'K' ? 'selected' : '' }}>Kegiatan Utama (K)</option>
+                        <option value="IO" {{ old('tipe', 'SS2') == 'IO' ? 'selected' : '' }}>Indikator Output (IO) - Kolektif</option>
                     </select>
                 </div>
             </div>
@@ -69,7 +75,7 @@
                         <select id="ss_id_select" name="ss_selection" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" onchange="updateKOptions()">
                             <option value="">-- Pilih Sasaran Indikatif (SS2) --</option>
                             @foreach($ss_parents as $ss)
-                                <option value="{{ $ss->id }}">{{ $ss->nomor }} - {{ $ss->sasaran_kegiatan }}</option>
+                                <option value="{{ $ss->id }}" {{ old('ss_selection') == $ss->id ? 'selected' : '' }}>{{ $ss->nomor }} - {{ $ss->sasaran_kegiatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -77,10 +83,10 @@
                     <div id="ss_new_container" class="hidden space-y-4 animate-in fade-in duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div class="md:col-span-1">
-                                <input type="text" name="new_ss_nomor" placeholder="No (ex: SS.1)" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                                <input type="text" name="new_ss_nomor" value="{{ old('new_ss_nomor') }}" placeholder="No (ex: SS.1)" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
                             </div>
                             <div class="md:col-span-3">
-                                <input type="text" name="new_ss_name" placeholder="Nama Sasaran Indikatif Baru..." class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                                <input type="text" name="new_ss_name" value="{{ old('new_ss_name') }}" placeholder="Nama Sasaran Indikatif Baru..." class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
                             </div>
                         </div>
                     </div>
@@ -106,17 +112,18 @@
                             <option value="">-- Pilih Kegiatan Utama --</option>
                             {{-- Filtered via JS --}}
                         </select>
+                        <input type="hidden" id="old_k_selection" value="{{ old('k_selection') }}">
                     </div>
 
                     <div id="k_new_container" class="hidden space-y-6 animate-in fade-in duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <input type="text" name="new_k_nomor" placeholder="No (ex: K.1)" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
-                            <input type="text" name="new_k_name" placeholder="Nama Kegiatan Baru..." class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none md:col-span-3">
+                            <input type="text" name="new_k_nomor" value="{{ old('new_k_nomor') }}" placeholder="No (ex: K.1)" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                            <input type="text" name="new_k_name" value="{{ old('new_k_name') }}" placeholder="Nama Kegiatan Baru..." class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none md:col-span-3">
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <input type="text" name="new_k_indikator" placeholder="Indikator" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
-                            <input type="text" name="new_k_target" placeholder="Target" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
-                            <input type="text" name="new_k_outcome" placeholder="Outcome" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                            <input type="text" name="new_k_indikator" value="{{ old('new_k_indikator') }}" placeholder="Indikator" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                            <input type="text" name="new_k_target" value="{{ old('new_k_target') }}" placeholder="Target" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
+                            <input type="text" name="new_k_outcome" value="{{ old('new_k_outcome') }}" placeholder="Outcome" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none">
                         </div>
                     </div>
                 </div>
@@ -128,40 +135,40 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Nomor (No)</label>
-                            <input type="text" name="nomor" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none" placeholder="Contoh: SS.1, K.2">
+                            <input type="text" name="nomor" value="{{ old('nomor') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none" placeholder="Contoh: SS.1, K.2">
                         </div>
                         <div class="md:col-span-3">
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Sasaran / Kegiatan Utama</label>
-                            <textarea name="sasaran_kegiatan" rows="1" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none"></textarea>
+                            <textarea name="sasaran_kegiatan" rows="1" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ old('sasaran_kegiatan') }}</textarea>
                         </div>
                     </div>
                     <div id="k_extra_fields" class="hidden mt-6 grid grid-cols-1 md:grid-cols-5 gap-6 animate-in slide-in-from-top-2 duration-300">
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Indikator</label>
-                            <input type="text" name="indikator" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
+                            <input type="text" name="indikator" value="{{ old('indikator') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
                         <div class="space-y-4">
                             <label class="block text-xs font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center">
                                 <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
                                 Keterangan Data Dukung
                             </label>
-                            <textarea name="io_entries[0][data_dukung]" rows="2" class="w-full bg-[#0f172a] border border-slate-700 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all shadow-inner outline-none resize-none" placeholder="Tuliskan jenis dokumen yang harus diupload..."></textarea>
+                            <textarea name="data_dukung" rows="2" class="w-full bg-[#0f172a] border border-slate-700 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all shadow-inner outline-none resize-none" placeholder="Tuliskan jenis dokumen yang harus diupload...">{{ old('data_dukung') }}</textarea>
                         </div>
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Target</label>
-                            <input type="text" name="target" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
+                            <input type="text" name="target" value="{{ old('target') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Outcome</label>
-                            <input type="text" name="outcome" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
+                            <input type="text" name="outcome" value="{{ old('outcome') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Pelaksana</label>
-                            <input type="text" name="pelaksana" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
+                            <input type="text" name="pelaksana" value="{{ old('pelaksana') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
                         <div>
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Koordinator</label>
-                            <input type="text" name="koordinator" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
+                            <input type="text" name="koordinator" value="{{ old('koordinator') }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none text-xs">
                         </div>
                     </div>
                 </div>
@@ -350,6 +357,155 @@
         btn.closest('.io-row').remove();
     }
 
-    document.addEventListener('DOMContentLoaded', updateView);
+    document.addEventListener('DOMContentLoaded', function() {
+        updateView();
+        
+        // Handle SS Selection Mode restoration
+        const oldSSMode = "{{ old('ss_selection_mode') }}";
+        if (oldSSMode) setSSSelection(oldSSMode);
+
+        // Handle K Selection Mode restoration
+        const oldKMode = "{{ old('k_selection_mode') }}";
+        if (oldKMode) setKSelection(oldKMode);
+
+        // Handle K options and selection if SS was selected
+        if (document.getElementById('ss_id_select').value) {
+            updateKOptions();
+            const oldKSelection = document.getElementById('old_k_selection').value;
+            if (oldKSelection) {
+                document.getElementById('k_id_select').value = oldKSelection;
+            }
+        }
+
+        // Handle IO Entries restoration
+        const oldIoEntries = @json(old('io_entries', []));
+        if (oldIoEntries && oldIoEntries.length > 0) {
+            const container = document.getElementById('io_container');
+            container.innerHTML = ''; // Clear initial row if any
+            ioCount = 0;
+            
+            oldIoEntries.forEach((entry, index) => {
+                addIoRow();
+                const rows = container.querySelectorAll('.io-row');
+                const lastRow = rows[rows.length - 1];
+                
+                if (lastRow) {
+                    // Populate fields manually because INDEX was replaced in addIoRow
+                    lastRow.querySelector(`[name="io_entries[${index}][rincian_kegiatan]"]`).value = entry.rincian_kegiatan || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][nomor]"]`).value = entry.nomor || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][pelaksana]"]`).value = entry.pelaksana || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][koordinator]"]`).value = entry.koordinator || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][indikator_output]"]`).value = entry.indikator_output || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][target_output]"]`).value = entry.target_output || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][anggaran]"]`).value = entry.anggaran || '';
+                    lastRow.querySelector(`[name="io_entries[${index}][data_dukung]"]`).value = entry.data_dukung || '';
+                    
+                    // Handle checkboxes for waktu_pelaksanaan
+                    if (entry.waktu_pelaksanaan && Array.isArray(entry.waktu_pelaksanaan)) {
+                        entry.waktu_pelaksanaan.forEach(val => {
+                            const cb = lastRow.querySelector(`input[value="${val}"]`);
+                            if (cb) cb.checked = true;
+                        });
+                    }
+                }
+            });
+        }
+
+        // --- LOCAL STORAGE PERSISTENCE ---
+        const form = document.getElementById('hierarchyForm');
+        const storageKey = 'zi_monitoring_create_v2';
+        const indicator = document.getElementById('save-indicator');
+
+        function saveToLocal() {
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key.includes('[]')) {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+            data['_ioCount'] = ioCount;
+            data['_timestamp'] = new Date().getTime();
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            
+            // Show indicator
+            indicator.style.opacity = '1';
+            setTimeout(() => { indicator.style.opacity = '0'; }, 2000);
+        }
+
+        // Load from Local Storage if no old() data from server
+        const hasOldData = @json(old('tipe') !== null);
+        if (!hasOldData) {
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                const data = JSON.parse(saved);
+                // Simple fields
+                Object.keys(data).forEach(key => {
+                    const input = form.querySelector(`[name="${key}"]`);
+                    if (input && input.type !== 'file' && !key.startsWith('_')) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            // Handled later if needed
+                        } else {
+                            input.value = data[key];
+                        }
+                    }
+                });
+
+                // Trigger UI updates
+                if (data.tipe) updateView();
+                if (data.ss_selection_mode) setSSSelection(data.ss_selection_mode);
+                if (data.k_selection_mode) setKSelection(data.k_selection_mode);
+                if (data.ss_selection) {
+                    updateKOptions();
+                    if (data.k_selection) document.getElementById('k_id_select').value = data.k_selection;
+                }
+
+                // Restore IO rows
+                if (data.tipe === 'IO' && data._ioCount > 0) {
+                    const container = document.getElementById('io_container');
+                    container.innerHTML = '';
+                    ioCount = 0;
+                    for (let i = 0; i < data._ioCount; i++) {
+                        addIoRow();
+                        const row = container.querySelectorAll('.io-row')[i];
+                        if (row) {
+                            // Populate IO fields from data object
+                            // Example: io_entries[0][nomor]
+                            Object.keys(data).forEach(key => {
+                                if (key.startsWith(`io_entries[${i}]`)) {
+                                    const ioInput = row.querySelector(`[name="${key}"]`);
+                                    if (ioInput) {
+                                        if (ioInput.type === 'checkbox') {
+                                            if (Array.isArray(data[key]) && data[key].includes(ioInput.value)) {
+                                                ioInput.checked = true;
+                                            }
+                                        } else {
+                                            ioInput.value = data[key];
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        // Attach listeners for auto-save
+        let saveTimeout;
+        form.addEventListener('input', () => {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveToLocal, 1000);
+        });
+        form.addEventListener('change', saveToLocal);
+
+        // Clear on submit
+        form.addEventListener('submit', () => {
+            localStorage.removeItem(storageKey);
+        });
+    });
 </script>
 @endsection

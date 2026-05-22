@@ -318,7 +318,7 @@
                 @php
                     $tahananItems = [];
                     if(auth()->user()?->hasPermission('tahanan_penilaian')) $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
-                    if(auth()->user()?->hasPermission('tahanan_management')) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Tahanan Management'];
+                    if(auth()->user()?->hasPermission('tahanan_management') && auth()->user()->cabang_id) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Tahanan Management'];
                 @endphp
 
                 @if(count($tahananItems) > 1)

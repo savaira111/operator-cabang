@@ -9,7 +9,15 @@ class PenilaianTahananController extends Controller
 {
     public function index()
     {
-        $tahanans = Tahanan::with('cabang')->latest()->get();
+        $userCabangId = auth()->user()->cabang_id;
+        
+        $query = Tahanan::with('cabang')->latest();
+        
+        if ($userCabangId) {
+            $query->where('cabang_id', $userCabangId);
+        }
+        
+        $tahanans = $query->get();
         return view('penilaian_tahanans.index', compact('tahanans'));
     }
 

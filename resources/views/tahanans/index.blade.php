@@ -6,6 +6,7 @@
 @section('content')
 <!-- Header Section -->
 <div class="max-w-6xl mx-auto space-y-10">
+    @if(auth()->user()->cabang_id)
     <!-- Form Section -->
     <div class="w-full bg-[#031121]/50 backdrop-blur-xl border border-[#D2A039]/20 rounded-3xl md:rounded-[2.5rem] p-4 md:p-10 shadow-2xl overflow-hidden relative group">
         <!-- Decorative Background Gradient -->
@@ -81,6 +82,7 @@
             </div>
         </form>
     </div>
+    @endif
 
     <!-- Data Section -->
     <div class="space-y-6">

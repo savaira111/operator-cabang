@@ -10,13 +10,19 @@
             <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Update Rencana Aksi ZI</h3>
             <p class="text-slate-500 text-sm mt-2 tracking-tight">Perbarui data monitoring atau unggah dokumen bukti pendukung baru.</p>
         </div>
-        <a href="{{ route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
-            <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
-        </a>
+        <div class="flex flex-col items-end">
+            <a href="{{ route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
+            </a>
+            <div id="save-indicator" class="mt-2 flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500 opacity-0 transition-all">
+                <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+                <span>Perubahan Tersimpan</span>
+            </div>
+        </div>
     </div>
 
-    <form action="{{ route('zi-monitoring.update', $ziMonitoring->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('zi-monitoring.update', $ziMonitoring->id) }}" method="POST" enctype="multipart/form-data" id="editForm">
         @csrf
         @method('PUT')
         <div class="space-y-10">
@@ -32,9 +38,9 @@
                         <input type="hidden" name="cabang_id" value="{{ auth()->user()->cabang_id }}">
                     @else
                         <select name="cabang_id" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
-                            <option value="" {{ is_null($ziMonitoring->cabang_id) ? 'selected' : '' }}>Semua Cabang (Global)</option>
+                            <option value="" {{ old('cabang_id', $ziMonitoring->cabang_id) == '' ? 'selected' : '' }}>Semua Cabang (Global)</option>
                             @foreach($cabangs as $c)
-                                <option value="{{ $c->id }}" {{ $ziMonitoring->cabang_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                <option value="{{ $c->id }}" {{ old('cabang_id', $ziMonitoring->cabang_id) == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                             @endforeach
                         </select>
                     @endif
@@ -42,9 +48,9 @@
                 <div>
                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Tipe Level</label>
                     <select name="tipe" id="tipe_select" required class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" onchange="updateView()">
-                        <option value="SS2" {{ $ziMonitoring->tipe == 'SS2' ? 'selected' : '' }}>Sasaran Indikatif (SS2)</option>
-                        <option value="K" {{ $ziMonitoring->tipe == 'K' ? 'selected' : '' }}>Kegiatan Utama (K)</option>
-                        <option value="IO" {{ $ziMonitoring->tipe == 'IO' ? 'selected' : '' }}>Indikator Output (IO)</option>
+                        <option value="SS2" {{ old('tipe', $ziMonitoring->tipe) == 'SS2' ? 'selected' : '' }}>Sasaran Indikatif (SS2)</option>
+                        <option value="K" {{ old('tipe', $ziMonitoring->tipe) == 'K' ? 'selected' : '' }}>Kegiatan Utama (K)</option>
+                        <option value="IO" {{ old('tipe', $ziMonitoring->tipe) == 'IO' ? 'selected' : '' }}>Indikator Output (IO)</option>
                     </select>
                 </div>
             </div>
@@ -58,8 +64,9 @@
                     </label>
                     <select name="ss_selection" id="ss_id_select" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none" onchange="updateKOptions()">
                         <option value="">-- Pilih Sasaran Indikatif (SS2) --</option>
+                        @php $currentSSId = ($ziMonitoring->parent?->tipe == 'K' ? $ziMonitoring->parent->parent_id : $ziMonitoring->parent_id); @endphp
                         @foreach($ss_parents as $ss)
-                            <option value="{{ $ss->id }}" {{ ($ziMonitoring->parent?->tipe == 'K' ? $ziMonitoring->parent->parent_id : $ziMonitoring->parent_id) == $ss->id ? 'selected' : '' }}>{{ $ss->nomor }} - {{ $ss->sasaran_kegiatan }}</option>
+                            <option value="{{ $ss->id }}" {{ old('ss_selection', $currentSSId) == $ss->id ? 'selected' : '' }}>{{ $ss->nomor }} - {{ $ss->sasaran_kegiatan }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -72,9 +79,10 @@
                     <select name="k_selection" id="k_id_select" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none">
                         <option value="">-- Pilih Kegiatan Utama --</option>
                         @foreach($k_parents as $k)
-                            <option value="{{ $k->id }}" {{ $ziMonitoring->parent_id == $k->id ? 'selected' : '' }}>{{ $k->nomor }} - {{ $k->sasaran_kegiatan }}</option>
+                            <option value="{{ $k->id }}" {{ old('k_selection', $ziMonitoring->parent_id) == $k->id ? 'selected' : '' }}>{{ $k->nomor }} - {{ $k->sasaran_kegiatan }}</option>
                         @endforeach
                     </select>
+                    <input type="hidden" id="old_k_selection" value="{{ old('k_selection', $ziMonitoring->parent_id) }}">
                 </div>
             </div>
 
@@ -84,11 +92,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <div class="md:col-span-1">
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Nomor (No)</label>
-                            <input type="text" name="nomor" value="{{ $ziMonitoring->nomor }}" required class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none" placeholder="Contoh: SS.1, K.2, IO.2.2">
+                            <input type="text" name="nomor" value="{{ old('nomor', $ziMonitoring->nomor) }}" required class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none" placeholder="Contoh: SS.1, K.2, IO.2.2">
                         </div>
                         <div class="md:col-span-3">
                             <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Sasaran / Kegiatan Utama</label>
-                            <textarea name="sasaran_kegiatan" rows="2" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white outline-none resize-none shadow-inner">{{ $ziMonitoring->sasaran_kegiatan }}</textarea>
+                            <textarea name="sasaran_kegiatan" rows="2" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white outline-none resize-none shadow-inner">{{ old('sasaran_kegiatan', $ziMonitoring->sasaran_kegiatan) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -96,15 +104,15 @@
                 <div id="k_fields" class="{{ $ziMonitoring->tipe == 'K' ? '' : 'hidden' }} grid grid-cols-1 md:grid-cols-3 gap-8 animate-in slide-in-from-top-4 duration-500">
                     <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Indikator</label>
-                        <textarea name="indikator" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ $ziMonitoring->indikator }}</textarea>
+                        <textarea name="indikator" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ old('indikator', $ziMonitoring->indikator) }}</textarea>
                     </div>
                     <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Target</label>
-                        <textarea name="target" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ $ziMonitoring->target }}</textarea>
+                        <textarea name="target" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ old('target', $ziMonitoring->target) }}</textarea>
                     </div>
                     <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                         <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Outcome</label>
-                        <textarea name="outcome" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ $ziMonitoring->outcome }}</textarea>
+                        <textarea name="outcome" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white outline-none resize-none">{{ old('outcome', $ziMonitoring->outcome) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -118,21 +126,21 @@
                                 <i data-lucide="target" class="w-4 h-4 mr-2"></i>
                                 Rencana Aksi / Kegiatan
                             </label>
-                            <textarea name="rincian_kegiatan" rows="6" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none resize-none shadow-inner">{{ $ziMonitoring->rincian_kegiatan }}</textarea>
+                            <textarea name="rincian_kegiatan" rows="6" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none resize-none shadow-inner">{{ old('rincian_kegiatan', $ziMonitoring->rincian_kegiatan) }}</textarea>
                         </div>
                         <div class="p-8 bg-slate-900/50 rounded-r-[2.5rem] space-y-6 border-l border-emerald-500/10">
                             <div>
                                 <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Indikator Output (IO)</label>
-                                <input type="text" name="indikator_output" value="{{ $ziMonitoring->indikator_output }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none shadow-sm">
+                                <input type="text" name="indikator_output" value="{{ old('indikator_output', $ziMonitoring->indikator_output) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none shadow-sm">
                             </div>
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Target Output</label>
-                                    <input type="text" name="target_output" value="{{ $ziMonitoring->target_output }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none shadow-sm">
+                                    <input type="text" name="target_output" value="{{ old('target_output', $ziMonitoring->target_output) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none shadow-sm">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Anggaran (Rp)</label>
-                                    <input type="text" name="anggaran" value="{{ $ziMonitoring->anggaran }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none shadow-sm" placeholder="Contoh: 15.000.000">
+                                    <input type="text" name="anggaran" value="{{ old('anggaran', $ziMonitoring->anggaran) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all outline-none shadow-sm" placeholder="Contoh: 15.000.000">
                                 </div>
                             </div>
                         </div>
@@ -148,7 +156,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach(['B03', 'B06', 'B09', 'B12'] as $b)
                                 <label class="flex-1 flex items-center justify-center p-3 rounded-xl bg-[#0f172a] border border-slate-700 cursor-pointer group hover:border-blue-500 transition-all">
-                                    <input type="checkbox" name="waktu_pelaksanaan[]" value="{{ $b }}" {{ in_array($b, $selectedWaktu) ? 'checked' : '' }} class="hidden peer">
+                                    <input type="checkbox" name="waktu_pelaksanaan[]" value="{{ $b }}" {{ in_array($b, old('waktu_pelaksanaan', $selectedWaktu)) ? 'checked' : '' }} class="hidden peer">
                                     <span class="text-[10px] font-black text-slate-500 peer-checked:text-blue-400 group-hover:text-slate-300 transition-colors uppercase tracking-widest">{{ $b }}</span>
                                 </label>
                             @endforeach
@@ -159,14 +167,14 @@
                             <i data-lucide="user" class="w-4 h-4 mr-2"></i>
                             Pelaksana
                         </label>
-                        <input type="text" name="pelaksana" value="{{ $ziMonitoring->pelaksana }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
+                        <input type="text" name="pelaksana" value="{{ old('pelaksana', $ziMonitoring->pelaksana) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
                     </div>
                     <div class="bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50">
                         <label class="flex items-center text-[11px] font-black text-slate-500 uppercase tracking-widest mb-5 ml-1">
                             <i data-lucide="users" class="w-4 h-4 mr-2"></i>
                             Koordinator
                         </label>
-                        <input type="text" name="koordinator" value="{{ $ziMonitoring->koordinator }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
+                        <input type="text" name="koordinator" value="{{ old('koordinator', $ziMonitoring->koordinator) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
                     </div>
                 </div>
 
@@ -176,7 +184,7 @@
                             <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
                             Keterangan Data Dukung
                         </label>
-                        <textarea name="data_dukung" rows="4" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none shadow-inner">{{ $ziMonitoring->data_dukung }}</textarea>
+                        <textarea name="data_dukung" rows="4" class="w-full px-6 py-5 bg-[#0f172a] rounded-[2rem] border border-slate-700 text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none resize-none shadow-inner">{{ old('data_dukung', $ziMonitoring->data_dukung) }}</textarea>
                         <p class="text-[10px] text-slate-500 mt-4 ml-1 italic leading-relaxed">Jelaskan jenis dokumen atau bukti dukung yang harus diunggah oleh pelaksana pada bagian pengisian data.</p>
                     </div>
                     <div class="bg-amber-500/5 p-8 rounded-[2.5rem] border border-amber-500/10 group hover:bg-amber-500/10 transition-all">
@@ -186,13 +194,13 @@
                         </label>
                         <div class="grid grid-cols-2 gap-4">
                             <select id="status_data_dukung" name="status_data_dukung" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none" onchange="updateProsentase()">
-                                <option value="belum_ada" {{ $ziMonitoring->status_data_dukung == 'belum_ada' ? 'selected' : '' }}>Belum Ada Data</option>
-                                <option value="menunggu" {{ $ziMonitoring->status_data_dukung == 'menunggu' ? 'selected' : '' }}>Menunggu Evaluasi</option>
-                                <option value="sesuai" {{ $ziMonitoring->status_data_dukung == 'sesuai' ? 'selected' : '' }}>Sesuai (Diterima)</option>
-                                <option value="tidak_sesuai" {{ $ziMonitoring->status_data_dukung == 'tidak_sesuai' ? 'selected' : '' }}>Tidak Sesuai</option>
+                                <option value="belum_ada" {{ old('status_data_dukung', $ziMonitoring->status_data_dukung) == 'belum_ada' ? 'selected' : '' }}>Belum Ada Data</option>
+                                <option value="menunggu" {{ old('status_data_dukung', $ziMonitoring->status_data_dukung) == 'menunggu' ? 'selected' : '' }}>Menunggu Evaluasi</option>
+                                <option value="sesuai" {{ old('status_data_dukung', $ziMonitoring->status_data_dukung) == 'sesuai' ? 'selected' : '' }}>Sesuai (Diterima)</option>
+                                <option value="tidak_sesuai" {{ old('status_data_dukung', $ziMonitoring->status_data_dukung) == 'tidak_sesuai' ? 'selected' : '' }}>Tidak Sesuai</option>
                             </select>
                             <div class="relative">
-                                <input type="number" id="prosentase" name="prosentase" min="0" max="100" value="{{ $ziMonitoring->prosentase }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none pl-14 font-black">
+                                <input type="number" id="prosentase" name="prosentase" min="0" max="100" value="{{ old('prosentase', $ziMonitoring->prosentase) }}" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none pl-14 font-black">
                                 <span class="absolute left-6 top-5 text-slate-500 font-black text-sm">%</span>
                             </div>
                         </div>
@@ -204,7 +212,7 @@
                         <i data-lucide="message-square" class="w-4 h-4 mr-2"></i>
                         Catatan Hasil Evaluasi (Opsional)
                     </label>
-                    <textarea name="catatan" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none shadow-inner">{{ $ziMonitoring->catatan }}</textarea>
+                    <textarea name="catatan" rows="3" class="w-full px-6 py-5 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none shadow-inner">{{ old('catatan', $ziMonitoring->catatan) }}</textarea>
                 </div>
             </div>
 
@@ -272,6 +280,69 @@
     document.addEventListener('DOMContentLoaded', () => {
         updateView();
         updateKOptions();
+
+        // Handle old K selection if validation failed
+        const oldKSelection = document.getElementById('old_k_selection').value;
+        if (oldKSelection) {
+            document.getElementById('k_id_select').value = oldKSelection;
+        }
+
+        // --- LOCAL STORAGE PERSISTENCE ---
+        const form = document.getElementById('editForm');
+        const storageKey = `zi_monitoring_edit_{{ $ziMonitoring->id }}`;
+        const indicator = document.getElementById('save-indicator');
+
+        function saveToLocal() {
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key.includes('[]')) {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+            data['_timestamp'] = new Date().getTime();
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            
+            // Show indicator
+            indicator.style.opacity = '1';
+            setTimeout(() => { indicator.style.opacity = '0'; }, 2000);
+        }
+
+        // Load from Local Storage if no old() data from server
+        const hasOldData = @json(old('tipe') !== null);
+        if (!hasOldData) {
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(key => {
+                    const input = form.querySelector(`[name="${key}"]`);
+                    if (input && input.type !== 'file' && !key.startsWith('_')) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            // Logic for checkboxes if needed
+                        } else {
+                            input.value = data[key];
+                        }
+                    }
+                });
+                if (data.tipe) updateView();
+            }
+        }
+
+        // Attach listeners for auto-save
+        let saveTimeout;
+        form.addEventListener('input', () => {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveToLocal, 1000);
+        });
+        form.addEventListener('change', saveToLocal);
+
+        // Clear on submit
+        form.addEventListener('submit', () => {
+            localStorage.removeItem(storageKey);
+        });
     });
 </script>
 @endsection
