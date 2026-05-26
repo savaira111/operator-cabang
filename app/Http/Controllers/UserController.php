@@ -118,4 +118,33 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil dihapus');
     }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*#?&]/',
+            ],
+        ]);
+
+        $user = auth()->user();
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password saat ini tidak sesuai.']);
+        }
+
+        $user->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password berhasil diperbarui.');
+    }
 }

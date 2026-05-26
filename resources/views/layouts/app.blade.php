@@ -272,44 +272,7 @@
                 </a>
                 @endif
 
-                <!-- Kelola LPI -->
-                @php
-                    $lpiItems = [];
-                    if(auth()->user()?->hasPermission('lpi_rekap_pengendalian')) $lpiItems[] = ['route' => 'laporan.index', 'label' => 'Rekap Pengendalian'];
-                    if(auth()->user()?->hasPermission('lpi_laporan_internal')) $lpiItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
-                    if(auth()->user()?->hasPermission('lpi_laporan_internal')) $lpiItems[] = ['route' => 'laporan-internal-excel.index', 'label' => 'Laporan Internal Excel'];
-                    if(auth()->user()?->hasPermission('lpi_penilaian_lpi')) $lpiItems[] = ['route' => 'penilaian-lpi.index', 'label' => 'Penilaian LPI'];
-                    if(auth()->user()?->hasPermission('lpi_master_resiko')) $lpiItems[] = ['route' => 'master-resiko.index', 'label' => 'Master Resiko'];
-                @endphp
 
-                @if(count($lpiItems) > 1)
-                <div class="sidebar-dropdown">
-                    <button onclick="toggleLpiMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('master-resiko.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') ? 'bg-white/5' : '' }}">
-                        <div class="flex items-center gap-3">
-                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                                <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                            </span>
-                            <span class="text-[13px] font-semibold tracking-wide">Kelola LPI</span>
-                        </div>
-                        <i data-lucide="chevron-down" id="lpiChevron" class="w-3 h-3 transition-transform duration-300 {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('master-resiko.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') ? 'rotate-180' : '' }}"></i>
-                    </button>
-                    
-                    <div id="lpiMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('laporan.*') || request()->routeIs('penilaian-lpi.*') || request()->routeIs('master-resiko.*') || request()->routeIs('laporan-pengendalian.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('resikos.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') ? 'show' : '' }}">
-                        @foreach($lpiItems as $item)
-                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center px-3 py-2 rounded-lg text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) || (request()->routeIs('identifikasi-risiko.*') && $item['route'] == 'identifikasi-risiko.index') ? 'bg-[#D2A039]/10 text-[#D2A039] font-black' : '' }}">
-                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
-                        </a>
-                        @endforeach
-                    </div>
-                </div>
-                @elseif(count($lpiItems) == 1)
-                <a href="{{ route($lpiItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($lpiItems[0]['route']) || (request()->routeIs('identifikasi-risiko.*') && $lpiItems[0]['route'] == 'identifikasi-risiko.index') ? 'active' : '' }}">
-                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
-                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                    </span>
-                    <span class="text-[13px] font-semibold tracking-wide">{{ $lpiItems[0]['label'] }}</span>
-                </a>
-                @endif
 
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
@@ -318,7 +281,7 @@
                 @php
                     $tahananItems = [];
                     if(auth()->user()?->hasPermission('tahanan_penilaian')) $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
-                    if(auth()->user()?->hasPermission('tahanan_management') && auth()->user()->cabang_id) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Tahanan Management'];
+                    if(auth()->user()?->hasPermission('tahanan_management') && auth()->user()->cabang_id) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Data Tahanan'];
                 @endphp
 
                 @if(count($tahananItems) > 1)
@@ -355,7 +318,7 @@
                     $ziItems = [];
                     if(auth()->user()?->hasPermission('zi_penilaian')) $ziItems[] = ['route' => 'zi-monitoring.index', 'label' => 'Penilaian ZI'];
                     if(auth()->user()?->hasPermission('zi_manajemen_data')) $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => 'Manajemen Data'];
-                    if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => 'Input Data ZI'];
+                    if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => 'Data Zona Integritas'];
                 @endphp
 
                 @if(count($ziItems) > 1)
@@ -385,6 +348,37 @@
                     </span>
                     <span class="text-[13px] font-semibold tracking-wide">{{ $ziItems[0]['label'] }}</span>
                 </a>
+                @endif
+
+                <!-- Pengendalian Manajemen Resiko (LPI) -->
+                @php
+                    $lpiInputItems = [];
+                    if(auth()->user()?->hasPermission('lpi_laporan_internal')) {
+                        $lpiInputItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
+                        $lpiInputItems[] = ['route' => 'laporan-internal-excel.index', 'label' => 'Impor Excel'];
+                    }
+                @endphp
+
+                @if(count($lpiInputItems) > 1)
+                <div class="sidebar-dropdown">
+                    <button onclick="toggleLpiInputMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            </span>
+                            <span class="text-[13px] font-semibold tracking-wide" style="line-height: 1.2;">Pengendalian Manajemen Resiko (LPI)</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="lpiInputChevron" class="w-3 h-3 transition-transform duration-300 flex-shrink-0 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
+                    </button>
+                    
+                    <div id="lpiInputMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
+                        @foreach($lpiInputItems as $item)
+                        <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) || (request()->routeIs('identifikasi-risiko.*') && $item['route'] == 'identifikasi-risiko.index') || (in_array(request()->route()->getName(), ['analisis-risiko.index', 'daftar-prioritas.index', 'rencana-tindak.index', 'pemantauan-kegiatan.index', 'pemantauan-peristiwa.index', 'pemantauan-level.index', 'reviu-usulan.index', 'rencana-belum-terealisasi.index', 'evaluasi-risiko.index']) && $item['route'] == 'identifikasi-risiko.index') ? 'text-[#D2A039] font-bold' : '' }}">
+                            <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
                 @endif
 
                 <!-- Belanja Satker -->
@@ -583,10 +577,12 @@
             }
         }
 
-        // Toggle Lpi Dropdown Menu
-        function toggleLpiMenu() {
-            const menu = document.getElementById('lpiMenu');
-            const chevron = document.getElementById('lpiChevron');
+
+
+        // Toggle Lpi Input Dropdown Menu
+        function toggleLpiInputMenu() {
+            const menu = document.getElementById('lpiInputMenu');
+            const chevron = document.getElementById('lpiInputChevron');
             
             if (!menu.classList.contains('show')) {
                 menu.classList.add('show');

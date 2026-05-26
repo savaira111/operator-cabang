@@ -32,8 +32,8 @@
     <div class="w-full max-w-[440px] animate-in fade-in zoom-in duration-700">
         <!-- Logo & Title -->
         <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-tr from-[#D2A039] to-[#f9d77e] rounded-[2rem] shadow-2xl shadow-[#D2A039]/20 mb-6 group transition-transform hover:scale-105 duration-500">
-                <i data-lucide="shield-check" class="w-10 h-10 text-[#061B30]"></i>
+            <div class="inline-flex items-center justify-center w-24 h-24 mb-6 group transition-transform hover:scale-105 duration-500">
+                <img src="{{ asset('Logo.png') }}" alt="Logo SIPINTER" class="w-full h-full object-contain drop-shadow-2xl">
             </div>
             <h1 class="text-3xl font-black text-white tracking-tighter uppercase mb-2">Sipinter Jabar</h1>
             <p class="text-slate-500 text-sm font-medium tracking-wide">Sistem Pengendalian Internal Terpadu</p>

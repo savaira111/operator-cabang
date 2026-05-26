@@ -47,20 +47,43 @@ class LaporanInternalExcelController extends Controller
         $validated = $request->validate($rules);
         $validated['cabang_id'] = $userCabangId ?? $request->cabang_id;
 
-        // Auto generation logic for No Input
-        $month = date('m');
-        $year = date('Y');
-        $cabangId = str_pad($validated['cabang_id'], 2, '0', STR_PAD_LEFT);
+        // Validation: Cannot input in the same month and year for the same category
+        $exists = LaporanInternalExcel::where('cabang_id', $validated['cabang_id'])
+            ->where('category_id', $validated['category_id'])
+            ->where('periode_bulan', $validated['periode_bulan'])
+            ->where('periode_tahun', $validated['periode_tahun'])
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['excel_file' => 'Data untuk bulan dan tahun ini sudah ada. Jika ingin perbaikan, gunakan fitur Edit.'])->withInput();
+        }
+
+        // Check if there is already a report for THIS period to reuse its no_input
+        $existingReport = LaporanInternalExcel::where('cabang_id', $validated['cabang_id'])
+            ->where('periode_bulan', $validated['periode_bulan'])
+            ->where('periode_tahun', $validated['periode_tahun'])
+            ->first();
+
+        if ($existingReport) {
+            $validated['no_input'] = $existingReport->no_input;
+        } else {
+            // Auto generation logic for No Input
+            $month = date('m');
+            $year = date('Y');
+            $cabangId = str_pad($validated['cabang_id'], 2, '0', STR_PAD_LEFT);
+            
+            $lastRecord = LaporanInternalExcel::whereYear('created_at', $year)
+                            ->whereMonth('created_at', $month)
+                            ->where('cabang_id', $validated['cabang_id'])
+                            ->orderBy('id', 'desc')
+                            ->first();
+            
+            $count = $lastRecord ? (int)explode('/', $lastRecord->no_input)[0] + 1 : 1;
+            $noUrut = str_pad($count, 3, '0', STR_PAD_LEFT);
+            
+            $validated['no_input'] = "{$noUrut}/EXC-LPI/{$month}-{$year}/{$cabangId}";
+        }
         
-        $lastRecord = LaporanInternalExcel::whereYear('created_at', $year)
-                        ->whereMonth('created_at', $month)
-                        ->orderBy('id', 'desc')
-                        ->first();
-        
-        $count = $lastRecord ? (int)explode('/', $lastRecord->no_input)[0] + 1 : 1;
-        $noUrut = str_pad($count, 3, '0', STR_PAD_LEFT);
-        
-        $validated['no_input'] = "{$noUrut}/EXC-LPI/{$month}-{$year}/{$cabangId}";
         $validated['tanggal_input'] = now();
 
         // Handle File Upload

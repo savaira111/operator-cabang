@@ -170,6 +170,19 @@ class ZiDataFillController extends Controller
             ['file_path' => $path, 'status' => 'menunggu']
         );
 
+        // Perhitungan persentase data disesuaikan dengan jumlah file yang harus dikirim dalam 1x pengiriman
+        $item->refresh();
+        $periods = array_filter(explode(',', $item->waktu_pelaksanaan));
+        $totalPeriods = count($periods) > 0 ? count($periods) : 1;
+
+        $sesuaiFiles = $item->files->where('status', 'sesuai')->count();
+        $menungguFiles = $item->files->where('status', 'menunggu')->count();
+        $tidakSesuaiFiles = $item->files->where('status', 'tidak_sesuai')->count();
+
+        // Calculate a simple percentage for the entire IO
+        $prosentase = (($sesuaiFiles * 100) + ($menungguFiles * 75) + ($tidakSesuaiFiles * 25)) / $totalPeriods;
+        $item->update(['prosentase' => round($prosentase)]);
+
         return back()->with('success', 'Data dukung untuk periode ' . $request->period . ' berhasil diunggah.');
     }
 }

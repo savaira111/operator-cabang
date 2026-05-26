@@ -70,11 +70,38 @@
             <div class="bg-[#061B30]/20 p-6 md:p-8 rounded-3xl border border-[#D2A039]/20 flex flex-col justify-between">
                 <div>
                     <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-6">Security Settings</h4>
-                    <p class="text-sm text-slate-400 mb-8 italic italic italic italic italic italic italic italic">Secure your account by enabling multi-factor authentication and updating your security keys.</p>
+                    <p class="text-sm text-slate-400 mb-8 italic">Secure your account by enabling multi-factor authentication and updating your security keys.</p>
                 </div>
-                <button class="w-full py-4 bg-[#D2A039] hover:bg-[#b88a2e] text-[#061B30] font-black rounded-2xl transition-all shadow-xl shadow-[#D2A039]/20 active:scale-95 text-xs uppercase tracking-widest">
-                    Perbarui Security
-                </button>
+                
+                @if ($errors->any())
+                    <div class="mb-4 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs">
+                        <ul class="list-disc pl-4 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('profile.password') }}" method="POST" class="space-y-4" id="passwordForm">
+                    @csrf
+                    <div>
+                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Password Saat Ini</label>
+                        <input type="password" name="current_password" required class="w-full bg-[#031121] border border-[#D2A039]/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D2A039] focus:ring-1 focus:ring-[#D2A039] transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Password Baru</label>
+                        <input type="password" name="password" required class="w-full bg-[#031121] border border-[#D2A039]/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D2A039] focus:ring-1 focus:ring-[#D2A039] transition-all">
+                        <p class="text-[10px] text-slate-500 mt-1">Min 8 karakter, kombinasi huruf besar, kecil, angka, dan simbol.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Konfirmasi Password</label>
+                        <input type="password" name="password_confirmation" required class="w-full bg-[#031121] border border-[#D2A039]/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D2A039] focus:ring-1 focus:ring-[#D2A039] transition-all">
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 bg-[#D2A039] hover:bg-[#b88a2e] text-[#061B30] font-black rounded-2xl transition-all shadow-xl shadow-[#D2A039]/20 active:scale-95 text-xs uppercase tracking-widest">Perbarui Security</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

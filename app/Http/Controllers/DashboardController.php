@@ -16,12 +16,8 @@ class DashboardController extends Controller
         $tahananCount = \App\Models\Tahanan::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
         $ziCount = \App\Models\ZiMonitoring::where('tipe', 'IO')
             ->where('tahun', $tahun)
-            ->where(function($q) use ($cabangId) {
-                $q->whereNull('cabang_id');
-                if ($cabangId) {
-                    $q->orWhere('cabang_id', $cabangId);
-                }
-            })->count();
+            ->when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+            ->count();
         $anggaranEvaluatedTotal = \App\Models\BelanjaSatker::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
             ->where('status_evaluasi', 'sesuai')
             ->sum('total');
@@ -46,12 +42,7 @@ class DashboardController extends Controller
             $ziAvg = \App\Models\ZiMonitoring::where('tipe', 'IO')
                 ->where('tahun', $tahun)
                 ->where('waktu_pelaksanaan', 'like', '%' . $periodKey . '%')
-                ->where(function($q) use ($cabangId) {
-                    $q->whereNull('cabang_id');
-                    if ($cabangId) {
-                        $q->orWhere('cabang_id', $cabangId);
-                    }
-                })
+                ->when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
                 ->avg('prosentase') ?? 0;
 
             // LPI Progress

@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('laporan-internal-excel', \App\Http\Controllers\LaporanInternalExcelController::class);
     
+    Route::post('/profile/password', [\App\Http\Controllers\UserController::class, 'updatePassword'])->name('profile.password');
     Route::get('/profile', function() {
         return view('profile');
     })->name('profile');
