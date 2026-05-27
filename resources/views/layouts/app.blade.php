@@ -280,7 +280,7 @@
                 <!-- Data Tahanan -->
                 @php
                     $tahananItems = [];
-                    if(auth()->user()?->hasPermission('tahanan_penilaian')) $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
+                    if(auth()->user()?->hasPermission('tahanan_penilaian') && auth()->user()?->role !== 'operator kanwil') $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
                     if(auth()->user()?->hasPermission('tahanan_management') && auth()->user()->cabang_id) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Data Tahanan'];
                 @endphp
 
@@ -353,7 +353,10 @@
                 <!-- Pengendalian Manajemen Resiko (LPI) -->
                 @php
                     $lpiInputItems = [];
-                    if(auth()->user()?->hasPermission('lpi_laporan_internal')) {
+                    if(auth()->user()?->hasPermission('lpi_penilaian_lpi')) {
+                        $lpiInputItems[] = ['route' => 'penilaian-lpi.index', 'label' => 'Penilaian LPI'];
+                    }
+                    if(auth()->user()?->hasPermission('lpi_laporan_internal') && auth()->user()?->role !== 'operator kanwil') {
                         $lpiInputItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
                         $lpiInputItems[] = ['route' => 'laporan-internal-excel.index', 'label' => 'Impor Excel'];
                     }
@@ -361,17 +364,17 @@
 
                 @if(count($lpiInputItems) > 1)
                 <div class="sidebar-dropdown">
-                    <button onclick="toggleLpiInputMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
+                    <button onclick="toggleLpiInputMenu()" class="sidebar-link w-full flex items-center justify-between px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('penilaian-lpi.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'bg-white/5' : '' }}">
                         <div class="flex items-center gap-3">
                             <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
                                 <i data-lucide="shield-check" class="w-4 h-4"></i>
                             </span>
                             <span class="text-[13px] font-semibold tracking-wide" style="line-height: 1.2;">Pengendalian Manajemen Resiko (LPI)</span>
                         </div>
-                        <i data-lucide="chevron-down" id="lpiInputChevron" class="w-3 h-3 transition-transform duration-300 flex-shrink-0 {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
+                        <i data-lucide="chevron-down" id="lpiInputChevron" class="w-3 h-3 transition-transform duration-300 flex-shrink-0 {{ request()->routeIs('penilaian-lpi.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'rotate-180' : '' }}"></i>
                     </button>
                     
-                    <div id="lpiInputMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
+                    <div id="lpiInputMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('penilaian-lpi.*') || request()->routeIs('identifikasi-risiko.*') || request()->routeIs('laporan-internal-excel.*') || request()->routeIs('analisis-risiko.*') || request()->routeIs('daftar-prioritas.*') || request()->routeIs('rencana-tindak.*') || request()->routeIs('pemantauan-kegiatan.*') || request()->routeIs('pemantauan-peristiwa.*') || request()->routeIs('pemantauan-level.*') || request()->routeIs('reviu-usulan.*') || request()->routeIs('rencana-belum-terealisasi.*') || request()->routeIs('evaluasi-risiko.*') ? 'show' : '' }}">
                         @foreach($lpiInputItems as $item)
                         <a href="{{ route($item['route']) }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs($item['route']) || (request()->routeIs('identifikasi-risiko.*') && $item['route'] == 'identifikasi-risiko.index') || (in_array(request()->route()->getName(), ['analisis-risiko.index', 'daftar-prioritas.index', 'rencana-tindak.index', 'pemantauan-kegiatan.index', 'pemantauan-peristiwa.index', 'pemantauan-level.index', 'reviu-usulan.index', 'rencana-belum-terealisasi.index', 'evaluasi-risiko.index']) && $item['route'] == 'identifikasi-risiko.index') ? 'text-[#D2A039] font-bold' : '' }}">
                             <span class="text-[12px] tracking-wide">{{ $item['label'] }}</span>
@@ -379,12 +382,19 @@
                         @endforeach
                     </div>
                 </div>
+                @elseif(count($lpiInputItems) == 1)
+                <a href="{{ route($lpiInputItems[0]['route']) }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs($lpiInputItems[0]['route']) || (request()->routeIs('penilaian-lpi.*') && $lpiInputItems[0]['route'] == 'penilaian-lpi.index') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">{{ $lpiInputItems[0]['label'] }}</span>
+                </a>
                 @endif
 
                 <!-- Belanja Satker -->
                 @php
                     $anggaranItems = [];
-                    if(auth()->user()?->hasPermission('belanja_penilaian')) $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Belanja'];
+                    if(auth()->user()?->hasPermission('belanja_penilaian') && auth()->user()?->role !== 'operator kanwil') $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Belanja'];
                     if(auth()->user()?->hasPermission('belanja_management')) {
                         $label = auth()->user()->role === 'operator cabang' ? 'Penyerapan Anggaran' : 'Belanja Satker Management';
                         $anggaranItems[] = ['route' => 'belanja-satker.index', 'label' => $label];

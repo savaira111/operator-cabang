@@ -26,14 +26,6 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('users', UserController::class);
     Route::resource('cabangs', CabangController::class);
-    Route::resource('resikos', ResikoController::class);
-    Route::resource('rencana-tindak', \App\Http\Controllers\RencanaTindakPengendalianController::class);
-    Route::resource('pemantauan-kegiatan', \App\Http\Controllers\PemantauanKegiatanController::class);
-    Route::resource('pemantauan-peristiwa', \App\Http\Controllers\PemantauanPeristiwaController::class);
-    Route::resource('pemantauan-level', \App\Http\Controllers\PemantauanLevelRisikoController::class);
-    Route::resource('reviu-usulan', \App\Http\Controllers\ReviuUsulanRisikoController::class);
-    Route::resource('rencana-belum-terealisasi', \App\Http\Controllers\RencanaBelumTerealisasiController::class);
-    Route::resource('evaluasi-risiko', \App\Http\Controllers\EvaluasiRisikoController::class);
     Route::resource('zi-monitoring', \App\Http\Controllers\ZiMonitoringController::class);
     
     Route::get('zi-data-manage', [\App\Http\Controllers\ZiDataManageController::class, 'index'])->name('zi-data-manage.index');
@@ -44,15 +36,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('zi-data-fill/{id}/edit', [\App\Http\Controllers\ZiDataFillController::class, 'edit'])->name('zi-data-fill.edit');
     Route::post('zi-data-fill/{id}/upload', [\App\Http\Controllers\ZiDataFillController::class, 'upload'])->name('zi-data-fill.upload');
     
-    Route::resource('identifikasi-risiko', \App\Http\Controllers\IdentifikasiRisikoController::class);
-    Route::resource('analisis-risiko', \App\Http\Controllers\AnalisisRisikoController::class);
-    Route::get('daftar-prioritas', [\App\Http\Controllers\DaftarPrioritasController::class, 'index'])->name('daftar-prioritas.index');
+    Route::middleware(['restrict-kanwil'])->group(function () {
+        Route::resource('resikos', ResikoController::class);
+        Route::resource('rencana-tindak', \App\Http\Controllers\RencanaTindakPengendalianController::class);
+        Route::resource('pemantauan-kegiatan', \App\Http\Controllers\PemantauanKegiatanController::class);
+        Route::resource('pemantauan-peristiwa', \App\Http\Controllers\PemantauanPeristiwaController::class);
+        Route::resource('pemantauan-level', \App\Http\Controllers\PemantauanLevelRisikoController::class);
+        Route::resource('reviu-usulan', \App\Http\Controllers\ReviuUsulanRisikoController::class);
+        Route::resource('rencana-belum-terealisasi', \App\Http\Controllers\RencanaBelumTerealisasiController::class);
+        Route::resource('evaluasi-risiko', \App\Http\Controllers\EvaluasiRisikoController::class);
+        Route::resource('identifikasi-risiko', \App\Http\Controllers\IdentifikasiRisikoController::class);
+        Route::resource('analisis-risiko', \App\Http\Controllers\AnalisisRisikoController::class);
+        Route::get('daftar-prioritas', [\App\Http\Controllers\DaftarPrioritasController::class, 'index'])->name('daftar-prioritas.index');
+        Route::resource('laporan-internal-excel', \App\Http\Controllers\LaporanInternalExcelController::class);
+        Route::resource('penilaian-tahanan', \App\Http\Controllers\PenilaianTahananController::class);
+        Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaController::class);
+    });
+
     Route::resource('tahanans', TahananController::class);
-    Route::resource('penilaian-tahanan', \App\Http\Controllers\PenilaianTahananController::class);
     Route::resource('zis', ZiController::class);
     
     Route::resource('belanja-satker', BelanjaSatkerController::class);
-    Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaController::class);
     
     Route::resource('laporan-pengendalian', \App\Http\Controllers\LaporanPengendalianController::class);
     Route::resource('penilaian-lpi', \App\Http\Controllers\PenilaianLpiController::class);
@@ -64,8 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('master-resiko/cause', [\App\Http\Controllers\MasterResikoController::class, 'storeCause'])->name('master-resiko.store-cause');
     Route::put('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'updateCause'])->name('master-resiko.update-cause');
     Route::delete('master-resiko/cause/{cause}', [\App\Http\Controllers\MasterResikoController::class, 'destroyCause'])->name('master-resiko.destroy-cause');
-    
-    Route::resource('laporan-internal-excel', \App\Http\Controllers\LaporanInternalExcelController::class);
     
     Route::post('/profile/password', [\App\Http\Controllers\UserController::class, 'updatePassword'])->name('profile.password');
     Route::get('/profile', function() {

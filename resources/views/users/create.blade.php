@@ -207,11 +207,20 @@
                     symbol: { regex: /[@$!%*#?&]/, el: document.getElementById('rule-symbol') }
                 };
 
-                // Auto-select permissions for Operator Cabang
+                // Auto-select permissions based on role
                 roleSelect.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
+                    checkboxes.forEach(cb => cb.checked = false); // Reset first
+
                     if (this.value === 'operator cabang') {
                         const targetPermissions = ['lpi_laporan_internal', 'lpi_laporan_internal_excel', 'tahanan_management', 'tahanan_penilaian', 'zi_input_data', 'belanja_management'];
-                        const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
+                        checkboxes.forEach(cb => {
+                            if (targetPermissions.includes(cb.value)) {
+                                cb.checked = true;
+                            }
+                        });
+                    } else if (this.value === 'operator kanwil') {
+                        const targetPermissions = ['lpi_penilaian_lpi', 'tahanan_management', 'tahanan_penilaian', 'zi_input_data', 'zi_penilaian', 'belanja_management', 'belanja_penilaian', 'manajemen_cabang', 'manajemen_pengguna'];
                         checkboxes.forEach(cb => {
                             if (targetPermissions.includes(cb.value)) {
                                 cb.checked = true;
