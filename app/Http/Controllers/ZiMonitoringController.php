@@ -161,7 +161,8 @@ class ZiMonitoringController extends Controller
 
         ZiMonitoring::create($validated);
 
-        return redirect()->route('zi-monitoring.index')->with('success', 'Data Monitoring Zi berhasil ditambahkan.');
+        $redirectRoute = auth()->user()->cabang_id ? 'zi-data-fill.index' : 'zi-monitoring.index';
+        return redirect()->route($redirectRoute)->with('success', 'Data Monitoring Zi berhasil ditambahkan.');
     }
 
     protected function storeBulk(Request $request)
@@ -231,7 +232,8 @@ class ZiMonitoringController extends Controller
             }
         }
 
-        return redirect()->route('zi-monitoring.index')->with('success', 'Data Monitoring Zi berhasil ditambahkan secara kolektif.');
+        $redirectRoute = auth()->user()->cabang_id ? 'zi-data-fill.index' : 'zi-monitoring.index';
+        return redirect()->route($redirectRoute)->with('success', 'Data Monitoring Zi berhasil ditambahkan secara kolektif.');
     }
 
     public function show(ZiMonitoring $ziMonitoring)

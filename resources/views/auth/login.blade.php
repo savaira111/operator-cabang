@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-image: linear-gradient(rgba(6, 27, 48, 0.9), rgba(6, 27, 48, 0.95)), url('{{ asset('Background.png') }}');
+            background-image: linear-gradient(rgba(6, 27, 48, 0.88), rgba(6, 27, 48, 0.95)), url('{{ asset('Background.png') }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -33,7 +33,7 @@
         <!-- Logo & Title -->
         <div class="text-center mb-10">
             <div class="inline-flex items-center justify-center w-24 h-24 mb-6 group transition-transform hover:scale-105 duration-500">
-                <img src="{{ asset('Logo.png') }}" alt="Logo SIPINTER" class="w-full h-full object-contain drop-shadow-2xl">
+                <img src="{{ asset('Logo_transparent.png') }}" alt="Logo SIPINTER" class="w-full h-full object-contain drop-shadow-2xl">
             </div>
             <h1 class="text-3xl font-black text-white tracking-tighter uppercase mb-2">Sipinter Jabar</h1>
             <p class="text-slate-500 text-sm font-medium tracking-wide">Sistem Pengendalian Internal Terpadu</p>
@@ -89,22 +89,17 @@
                     </div>
                 </div>
 
-                <!-- Remember Me -->
-                <div class="flex items-center px-1">
-                    <label class="flex items-center cursor-pointer group">
-                        <div class="relative">
-                            <input type="checkbox" name="remember" class="sr-only">
-                            <div class="w-4 h-4 border-2 border-slate-700 rounded-md group-hover:border-[#D2A039]/50 transition-colors"></div>
-                            <i data-lucide="check" class="w-3 h-3 text-[#D2A039] absolute top-0.5 left-0.5 opacity-0 transition-opacity"></i>
-                        </div>
-                        <span class="ml-3 text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-300 transition-colors">Ingat Saya</span>
-                    </label>
-                </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="w-full py-4 bg-gradient-to-r from-[#D2A039] to-[#f9d77e] text-[#061B30] font-black text-xs uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-[#D2A039]/20 hover:shadow-[#D2A039]/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300">
-                    Masuk Ke Sistem
-                </button>
+                <!-- Submit Button & Back Link -->
+                <div class="flex flex-col gap-3 mt-2">
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-[#D2A039] to-[#f9d77e] text-[#061B30] font-black text-xs uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-[#D2A039]/20 hover:shadow-[#D2A039]/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300">
+                        Masuk Ke Sistem
+                    </button>
+                    <a href="{{ url('/') }}" class="w-full flex items-center justify-center py-3.5 bg-slate-800/40 hover:bg-slate-800/80 text-slate-400 hover:text-[#D2A039] border border-slate-700/50 hover:border-[#D2A039]/30 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 group">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5 mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                        Kembali Ke Halaman Utama
+                    </a>
+                </div>
             </form>
         </div>
 
@@ -153,19 +148,6 @@
             lucide.createIcons();
         }
         
-        // Custom checkbox logic
-        const checkbox = document.querySelector('input[type="checkbox"]');
-        const checkIcon = document.querySelector('[data-lucide="check"]');
-        
-        checkbox.addEventListener('change', function() {
-            if(this.checked) {
-                checkIcon.style.opacity = '1';
-                this.nextElementSibling.classList.add('bg-[#D2A039]/10', 'border-[#D2A039]');
-            } else {
-                checkIcon.style.opacity = '0';
-                this.nextElementSibling.classList.remove('bg-[#D2A039]/10', 'border-[#D2A039]');
-            }
-        });
     </script>
 </body>
 </html>

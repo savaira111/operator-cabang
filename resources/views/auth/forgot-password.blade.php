@@ -27,15 +27,14 @@
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
     <div class="w-full max-w-[440px] animate-in fade-in zoom-in duration-700">
-        <!-- Back Button -->
-        <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-slate-500 hover:text-[#D2A039] font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group">
-            <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-            Kembali Ke Login
-        </a>
-
-        <!-- Header -->
+        <!-- Header with Back Button -->
         <div class="mb-10">
-            <h1 class="text-3xl font-black text-white tracking-tighter uppercase mb-2">Lupa Sandi?</h1>
+            <div class="flex items-center gap-3 mb-2">
+                <a href="{{ route('login') }}" class="inline-flex items-center text-slate-500 hover:text-[#D2A039] transition-colors group mt-0.5" title="Kembali Ke Login">
+                    <i data-lucide="arrow-left" class="w-7 h-7 group-hover:-translate-x-1 transition-transform"></i>
+                </a>
+                <h1 class="text-3xl font-black text-white tracking-tighter uppercase">Lupa Sandi?</h1>
+            </div>
             <p class="text-slate-500 text-sm font-medium tracking-wide leading-relaxed">Masukkan alamat email Anda untuk menerima instruksi pemulihan kata sandi.</p>
         </div>
 

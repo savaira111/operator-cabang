@@ -36,6 +36,15 @@
                 </select>
             </div>
         </div>
+
+        @if(auth()->user()->cabang_id)
+        <div class="flex items-center space-x-3 w-full lg:w-auto mt-4 lg:mt-0">
+            <a href="{{ route('zi-monitoring.create') }}" class="flex-1 sm:flex-none px-6 py-4 bg-emerald-500 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-all duration-300 shadow-xl shadow-emerald-500/20 active:scale-95 group">
+                <i data-lucide="plus-circle" class="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform"></i>
+                Tambah Data ZI
+            </a>
+        </div>
+        @endif
     </form>
 
 <div class="bg-[#111827] border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl relative">

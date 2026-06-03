@@ -82,7 +82,7 @@ class CabangSeeder extends Seeder
             \App\Models\Cabang::create([
                 'kode_cabang' => $generateKode(),
                 'name' => $lapas,
-                'kepala_cabang' => 'sachan',
+                'kepala_cabang' => 'Kanwil Ditjen Pemasyarakatan Jawa Barat',
                 'location' => 'Jawa Barat',
                 'alamat' => $getCity($lapas),
                 'description' => 'Sudah meraih WBBM',
@@ -93,7 +93,7 @@ class CabangSeeder extends Seeder
             \App\Models\Cabang::create([
                 'kode_cabang' => $generateKode(),
                 'name' => $lapas,
-                'kepala_cabang' => 'sachan',
+                'kepala_cabang' => 'Kanwil Ditjen Pemasyarakatan Jawa Barat',
                 'location' => 'Jawa Barat',
                 'alamat' => $getCity($lapas),
                 'description' => 'Sudah meraih WBK',
@@ -104,7 +104,7 @@ class CabangSeeder extends Seeder
             \App\Models\Cabang::create([
                 'kode_cabang' => $generateKode(),
                 'name' => $lapas,
-                'kepala_cabang' => 'sachan',
+                'kepala_cabang' => 'Kanwil Ditjen Pemasyarakatan Jawa Barat',
                 'location' => 'Jawa Barat',
                 'alamat' => $getCity($lapas),
                 'description' => 'Belum Meraih WBK',

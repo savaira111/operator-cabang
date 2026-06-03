@@ -11,7 +11,7 @@
             <p class="text-slate-500 text-sm mt-2 tracking-tight">Bangun struktur monitoring mulai dari Sasaran, Kegiatan, hingga Indikator Output.</p>
         </div>
         <div class="flex flex-col items-end">
-            <a href="{{ route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
+            <a href="{{ auth()->user()->cabang_id ? route('zi-data-fill.index') : route('zi-monitoring.index') }}" class="flex items-center px-6 py-4 bg-slate-800/50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 font-bold rounded-2xl border border-slate-700/50 transition-all active:scale-95 group shadow-lg">
                 <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
                 <span class="text-[10px] uppercase tracking-[0.2em]">Kembali</span>
             </a>
