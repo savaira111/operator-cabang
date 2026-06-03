@@ -23,8 +23,8 @@ class DashboardController extends Controller
             ->sum('total');
 
         // New LPI Statistics
-        $totalLpiCount = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
-        $lpiApprovedCount = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+        $totalLpiCount = \App\Models\LaporanPengendalian::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))->count();
+        $lpiApprovedCount = \App\Models\LaporanPengendalian::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
             ->where('status_evaluasi', 'sesuai')
             ->count();
 
@@ -46,9 +46,9 @@ class DashboardController extends Controller
                 ->avg('prosentase') ?? 0;
 
             // LPI Progress
-            $lpiAvg = \App\Models\IdentifikasiRisiko::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
-                ->where('tahun', $tahun)
-                ->whereIn('bulan', $months)
+            $lpiAvg = \App\Models\LaporanPengendalian::when($cabangId, fn($q) => $q->where('cabang_id', $cabangId))
+                ->where('periode_tahun', $tahun)
+                ->whereIn('periode_bulan', $months)
                 ->avg('prosentase') ?? 0;
 
             $chartData[$periodKey] = [

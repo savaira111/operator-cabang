@@ -21,7 +21,7 @@
 
         <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
             <select name="bulan" onchange="this.form.submit()" class="px-5 py-4 bg-[#111827] rounded-2xl border border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-widest outline-none focus:border-blue-500 transition-all cursor-pointer min-w-[140px]">
-                <option value="">Semua Bulan</option>
+                <option value="">Semua Periode</option>
                 @foreach(['B03', 'B06', 'B09', 'B12'] as $m)
                     <option value="{{ $m }}" {{ request('bulan') == $m ? 'selected' : '' }}>{{ $m }}</option>
                 @endforeach

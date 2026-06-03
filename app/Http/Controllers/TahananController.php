@@ -18,8 +18,17 @@ class TahananController extends Controller
         if ($userCabangId) {
             $query->where('cabang_id', $userCabangId);
         }
+        if (request()->has('cabang_id') && request('cabang_id') != '') {
+            $query->where('cabang_id', request('cabang_id'));
+        }
+        if (request()->has('bulan') && request('bulan') != '') {
+            $query->where('periode_bulan', request('bulan'));
+        }
+        if (request()->has('tahun') && request('tahun') != '') {
+            $query->where('periode_tahun', request('tahun'));
+        }
 
-        $tahanans = $query->get();
+        $tahanans = $query->orderBy('id', 'desc')->get();
         $cabangs = \App\Models\Cabang::all();
         return view('tahanans.index', compact('tahanans', 'cabangs'));
     }

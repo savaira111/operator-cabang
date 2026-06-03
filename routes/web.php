@@ -49,9 +49,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('analisis-risiko', \App\Http\Controllers\AnalisisRisikoController::class);
         Route::get('daftar-prioritas', [\App\Http\Controllers\DaftarPrioritasController::class, 'index'])->name('daftar-prioritas.index');
         Route::resource('laporan-internal-excel', \App\Http\Controllers\LaporanInternalExcelController::class);
-        Route::resource('penilaian-tahanan', \App\Http\Controllers\PenilaianTahananController::class);
-        Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaController::class);
     });
+
+    Route::resource('penilaian-belanja', \App\Http\Controllers\PenilaianBelanjaController::class);
+    Route::resource('penilaian-tahanan', \App\Http\Controllers\PenilaianTahananController::class);
 
     Route::resource('tahanans', TahananController::class);
     Route::resource('zis', ZiController::class);

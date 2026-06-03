@@ -21,7 +21,7 @@
 
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <select name="period" onchange="this.form.submit()" class="bg-[#111827] border border-slate-800 text-white text-sm rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block p-4 transition-all w-full sm:w-40 appearance-none cursor-pointer">
-                    <option value="">Pilih Bulan</option>
+                    <option value="">Pilih Periode</option>
                     @foreach(['B03', 'B06', 'B09', 'B12'] as $p)
                         <option value="{{ $p }}" {{ ($selectedPeriod ?? '') == $p ? 'selected' : '' }}>{{ $p }}</option>
                     @endforeach
@@ -226,7 +226,7 @@
                                 </div>
                                 <div class="text-center">
                                     <h4 class="text-lg font-bold text-slate-400 uppercase tracking-widest italic">Data periode tersebut tidak ada</h4>
-                                    <p class="text-slate-500 text-sm mt-1">Silakan sesuaikan filter bulan dan tahun Anda.</p>
+                                    <p class="text-slate-500 text-sm mt-1">Silakan sesuaikan filter periode dan tahun Anda.</p>
                                 </div>
                             </div>
                         </td>

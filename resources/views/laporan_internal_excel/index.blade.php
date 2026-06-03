@@ -54,9 +54,9 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2 md:space-y-3">
-                        <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Bulan</label>
+                        <label class="block text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Periode</label>
                         <select name="periode_bulan" required class="w-full px-4 py-3 bg-slate-900/60 rounded-xl border border-slate-800 text-white text-xs">
-                            @foreach(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $m)
+                            @foreach(['B03', 'B06', 'B09', 'B12'] as $m)
                                 <option value="{{ $m }}">{{ $m }}</option>
                             @endforeach
                         </select>

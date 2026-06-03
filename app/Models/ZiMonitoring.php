@@ -13,6 +13,7 @@ class ZiMonitoring extends Model
         'cabang_id',
         'parent_id',
         'tahun',
+        'periode',
         'tipe',
         'nomor',
         'sasaran_kegiatan',

@@ -271,9 +271,15 @@
                     <span class="text-[13px] font-semibold tracking-wide">Manajemen UPT</span>
                 </a>
                 @endif
-
-
-
+                
+                @if(auth()->user()?->role === 'operator kanwil')
+                <a href="{{ route('laporan.index') }}" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-xl transition-all duration-200 {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+                    <span class="nav-icon w-8 h-8 rounded-lg flex items-center justify-center bg-transparent transition-all duration-200">
+                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                    </span>
+                    <span class="text-[13px] font-semibold tracking-wide">Rekap Pengendalian</span>
+                </a>
+                @endif
                 <!-- Section Label -->
                 <p class="px-3 pt-4 mb-2 text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Data Input</p>
 
@@ -281,7 +287,7 @@
                 @php
                     $tahananItems = [];
                     if(auth()->user()?->hasPermission('tahanan_penilaian') && auth()->user()?->role !== 'operator kanwil') $tahananItems[] = ['route' => 'penilaian-tahanan.index', 'label' => 'Penilaian Tahanan'];
-                    if(auth()->user()?->hasPermission('tahanan_management') && auth()->user()->cabang_id) $tahananItems[] = ['route' => 'tahanans.index', 'label' => 'Data Tahanan'];
+                    if(auth()->user()?->hasPermission('tahanan_management') && (auth()->user()->cabang_id || auth()->user()?->role === 'operator kanwil')) $tahananItems[] = ['route' => 'tahanans.index', 'label' => auth()->user()?->role === 'operator kanwil' ? 'Penilaian Data Tahanan' : 'Data Tahanan'];
                 @endphp
 
                 @if(count($tahananItems) > 1)
@@ -317,8 +323,8 @@
                 @php
                     $ziItems = [];
                     if(auth()->user()?->hasPermission('zi_penilaian')) $ziItems[] = ['route' => 'zi-monitoring.index', 'label' => 'Penilaian ZI'];
-                    if(auth()->user()?->hasPermission('zi_manajemen_data')) $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => 'Manajemen Data'];
-                    if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => 'Data Zona Integritas'];
+                    if(auth()->user()?->hasPermission('zi_manajemen_data')) $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => auth()->user()?->role === 'operator kanwil' ? 'Input Data ZI' : 'Manajemen Data'];
+                    if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => auth()->user()?->role === 'operator kanwil' ? 'View Data ZI' : 'Data Zona Integritas'];
                 @endphp
 
                 @if(count($ziItems) > 1)
@@ -357,8 +363,10 @@
                         $lpiInputItems[] = ['route' => 'penilaian-lpi.index', 'label' => 'Penilaian LPI'];
                     }
                     if(auth()->user()?->hasPermission('lpi_laporan_internal') && auth()->user()?->role !== 'operator kanwil') {
-                        $lpiInputItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
-                        $lpiInputItems[] = ['route' => 'laporan-internal-excel.index', 'label' => 'Impor Excel'];
+                        if (auth()->user()?->role !== 'operator cabang') {
+                            $lpiInputItems[] = ['route' => 'identifikasi-risiko.index', 'label' => 'Laporan Internal'];
+                        }
+                        $lpiInputItems[] = ['route' => 'laporan-internal-excel.index', 'label' => 'Import Excel LPI'];
                     }
                 @endphp
 
@@ -394,9 +402,9 @@
                 <!-- Belanja Satker -->
                 @php
                     $anggaranItems = [];
-                    if(auth()->user()?->hasPermission('belanja_penilaian') && auth()->user()?->role !== 'operator kanwil') $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Belanja'];
+                    if(auth()->user()?->hasPermission('belanja_penilaian')) $anggaranItems[] = ['route' => 'penilaian-belanja.index', 'label' => 'Penilaian Data Penyerapan Anggaran'];
                     if(auth()->user()?->hasPermission('belanja_management')) {
-                        $label = auth()->user()->role === 'operator cabang' ? 'Penyerapan Anggaran' : 'Belanja Satker Management';
+                        $label = (auth()->user()->role === 'operator cabang' || auth()->user()->role === 'operator kanwil') ? 'Penyerapan Anggaran' : 'Belanja Satker Management';
                         $anggaranItems[] = ['route' => 'belanja-satker.index', 'label' => $label];
                     }
                 @endphp
@@ -414,12 +422,16 @@
                     </button>
                     
                     <div id="anggaranMenu" class="pl-11 space-y-0.5 mt-1 dropdown-container {{ request()->routeIs('belanja-satker.*') || request()->routeIs('penilaian-belanja.*') ? 'show' : '' }}">
+                        @if(auth()->user()?->hasPermission('belanja_penilaian'))
                         <a href="{{ route('penilaian-belanja.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('penilaian-belanja.*') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">Penilaian Belanja Satker</span>
+                            <span class="text-[12px] tracking-wide">Penilaian Data Penyerapan Anggaran</span>
                         </a>
+                        @endif
+                        @if(auth()->user()?->hasPermission('belanja_management'))
                         <a href="{{ route('belanja-satker.index') }}" class="dropdown-item flex items-center gap-3 py-2 text-slate-500 hover:text-[#D2A039] transition-all {{ request()->routeIs('belanja-satker.index') ? 'text-[#D2A039] font-bold' : '' }}">
-                            <span class="text-[12px] tracking-wide">{{ auth()->user()->role === 'operator cabang' ? 'Penyerapan Anggaran' : 'Belanja Satker Management' }}</span>
+                            <span class="text-[12px] tracking-wide">{{ (auth()->user()->role === 'operator cabang' || auth()->user()->role === 'operator kanwil') ? 'Penyerapan Anggaran' : 'Belanja Satker Management' }}</span>
                         </a>
+                        @endif
                     </div>
                 </div>
                 @elseif(count($anggaranItems) == 1)

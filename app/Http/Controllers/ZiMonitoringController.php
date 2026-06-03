@@ -108,9 +108,12 @@ class ZiMonitoringController extends Controller
             'prosentase' => 'nullable|integer|min:0|max:100',
             'catatan' => 'nullable|string',
             'data_dukung' => 'nullable|string',
+            'periode' => 'nullable|string',
+            'tahun' => 'nullable|integer',
         ]);
 
         $validated['status_data_dukung'] = $validated['status_data_dukung'] ?? 'belum_ada';
+        if (!isset($validated['tahun'])) $validated['tahun'] = date('Y');
 
         // Auto-fill cabang_id if user has one
         if (auth()->user()->cabang_id) {
@@ -170,6 +173,8 @@ class ZiMonitoringController extends Controller
         $cabang_id = $request->cabang_id;
         $tipe = $request->tipe;
         $parent_id = null;
+        $periode = $request->periode;
+        $tahun = $request->tahun ?? date('Y');
 
         // 1. Handle SS creation/selection
         if ($request->ss_selection_mode === 'new' && $request->new_ss_name) {
@@ -178,7 +183,9 @@ class ZiMonitoringController extends Controller
                 'tipe' => 'SS2',
                 'nomor' => $request->new_ss_nomor ?? 'SS.NEW',
                 'sasaran_kegiatan' => $request->new_ss_name,
-                'status_data_dukung' => 'belum_ada'
+                'status_data_dukung' => 'belum_ada',
+                'periode' => $periode,
+                'tahun' => $tahun,
             ]);
             $parent_id = $ss->id;
         } elseif ($request->ss_selection) {
@@ -197,7 +204,9 @@ class ZiMonitoringController extends Controller
                     'indikator' => $request->new_k_indikator,
                     'target' => $request->new_k_target,
                     'outcome' => $request->new_k_outcome,
-                    'status_data_dukung' => 'belum_ada'
+                    'status_data_dukung' => 'belum_ada',
+                    'periode' => $periode,
+                    'tahun' => $tahun,
                 ]);
                 $parent_id = $k->id;
             } elseif ($request->k_selection) {
@@ -213,6 +222,8 @@ class ZiMonitoringController extends Controller
                     'parent_id' => $parent_id,
                     'tipe' => 'IO',
                     'status_data_dukung' => $entry['status_data_dukung'] ?? 'belum_ada',
+                    'periode' => $periode,
+                    'tahun' => $tahun,
                 ]);
 
                 if (isset($data['waktu_pelaksanaan'])) {

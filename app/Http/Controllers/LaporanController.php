@@ -38,6 +38,9 @@ class LaporanController extends Controller
         $filteredCabangs = $query->get();
 
         foreach ($filteredCabangs as $cabang) {
+            // General Period Target
+            $periodTarget = ($selectedPeriode && $selectedPeriode !== 'all') ? 1 : 4;
+
             // 1. Zona Integritas Logic
             $ziMonitorings = ZiMonitoring::withCount('files')
                 ->where('cabang_id', $cabang->id)
@@ -51,13 +54,15 @@ class LaporanController extends Controller
             
             // Presentase Data Masuk ZI
             $ziCurrentInput = $ziWithFiles;
-            $ziInputDenominator = ($ziWithFiles == 0) ? 0 : $ziTotal;
+            $ziInputDenominator = $periodTarget;
             $ziInputPct = $ziInputDenominator > 0 ? round(($ziCurrentInput / $ziInputDenominator) * 100) : 0;
+            if ($ziInputPct > 100) $ziInputPct = 100;
 
             // Progress Evaluasi ZI
             $ziCurrentEval = $ziVerified;
-            $ziEvalDenominator = $ziWithFiles;
+            $ziEvalDenominator = $periodTarget;
             $ziEvalPct = $ziEvalDenominator > 0 ? round(($ziCurrentEval / $ziEvalDenominator) * 100) : 0;
+            if ($ziEvalPct > 100) $ziEvalPct = 100;
 
             // 2. Manajemen Resiko (LPI) Logic
             // Correct filtering logic for all 11 LPI modules
@@ -82,31 +87,52 @@ class LaporanController extends Controller
             $riskCount = $lpiCounts['identifikasi'];
             
             $lpiCurrentInput = $lpiTotalActual;
-            $lpiInputDenominator = $lpiCurrentInput; // Denominator matches numerator for 100% as requested
-            $lpiInputPct = $lpiInputDenominator > 0 ? 100 : 0;
+            $lpiInputDenominator = $periodTarget;
+            $lpiInputPct = $lpiInputDenominator > 0 ? round(($lpiCurrentInput / $lpiInputDenominator) * 100) : 0;
+            if ($lpiInputPct > 100) $lpiInputPct = 100;
 
             $lpiCurrentEvalRisks = IdentifikasiRisiko::where($idRisikoFilter)->where('status_evaluasi', 'sesuai')->count();
-            $lpiEvalDenominator = $lpiCurrentInput; // Denominator matches total records (121)
-            // Scale evaluation progress: if all risks are Acc'd, then all 121 records are Acc'd
+            $lpiEvalDenominator = $periodTarget;
+            // Scale evaluation progress: if all risks are Acc'd, then all records are Acc'd
             $lpiCurrentEval = ($riskCount > 0) ? round(($lpiCurrentEvalRisks / $riskCount) * $lpiEvalDenominator) : 0;
             $lpiEvalPct = $lpiEvalDenominator > 0 ? round(($lpiCurrentEval / $lpiEvalDenominator) * 100) : 0;
-
-            // General Period Target
-            $periodTarget = ($selectedPeriode && $selectedPeriode !== 'all') ? 1 : 4;
+            if ($lpiEvalPct > 100) $lpiEvalPct = 100;
 
             // 3. Data Tahanan Logic
+            $tahananTarget = ($selectedPeriode && $selectedPeriode !== 'all') ? 3 : 12;
+            
+            $tahananMonths = [];
+            if ($selectedPeriode === 'B03') $tahananMonths = ['Januari', 'Februari', 'Maret'];
+            elseif ($selectedPeriode === 'B06') $tahananMonths = ['April', 'Mei', 'Juni'];
+            elseif ($selectedPeriode === 'B09') $tahananMonths = ['Juli', 'Agustus', 'September'];
+            elseif ($selectedPeriode === 'B12') $tahananMonths = ['Oktober', 'November', 'Desember'];
+
             $tahananQuery = Tahanan::where('cabang_id', $cabang->id)
-                ->where('periode_tahun', $selectedTahun)
-                ->when($selectedPeriode && $selectedPeriode !== 'all', fn($q) => $q->where('periode_bulan', $selectedPeriode));
+                ->where('periode_tahun', $selectedTahun);
+                
+            if ($selectedPeriode && $selectedPeriode !== 'all') {
+                if (!empty($tahananMonths)) {
+                    $tahananQuery->whereIn('periode_bulan', $tahananMonths);
+                } else {
+                    $tahananQuery->where('periode_bulan', $selectedPeriode);
+                }
+            }
             
             $tahananRecords = $tahananQuery->get();
             $tahananCurrentInput = $tahananRecords->count();
-            $tahananInputDenominator = ($tahananCurrentInput == 0) ? 0 : max($periodTarget, $tahananCurrentInput);
+            $tahananInputDenominator = $tahananTarget;
             $tahananInputPct = $tahananInputDenominator > 0 ? round(($tahananCurrentInput / $tahananInputDenominator) * 100) : 0;
+            if ($tahananInputPct > 100) $tahananInputPct = 100;
 
-            $tahananCurrentEval = $tahananRecords->where('status_evaluasi', 'sesuai')->count();
-            $tahananEvalDenominator = $tahananCurrentInput;
-            $tahananEvalPct = $tahananEvalDenominator > 0 ? round(($tahananCurrentEval / $tahananEvalDenominator) * 100) : 0;
+            // Count how many records have been evaluated
+            $tahananCurrentEval = $tahananRecords->whereNotNull('status_evaluasi')
+                                                 ->where('status_evaluasi', '!=', 'belum_dievaluasi')
+                                                 ->count();
+            // Using the same fixed denominator for evaluation progress
+            $tahananEvalDenominator = $tahananTarget;
+            // The percentage remains based on the score (prosentase)
+            $tahananEvalPct = $tahananEvalDenominator > 0 ? round(($tahananRecords->sum('prosentase')) / $tahananEvalDenominator) : 0;
+            if ($tahananEvalPct > 100) $tahananEvalPct = 100;
 
             // 4. Penyerapan Anggaran (Belanja Satker) Logic
             $belanjaQuery = BelanjaSatker::where('cabang_id', $cabang->id)
@@ -115,12 +141,14 @@ class LaporanController extends Controller
                 
             $belanjaRecords = $belanjaQuery->get();
             $belanjaCurrentInput = $belanjaRecords->count();
-            $belanjaInputDenominator = ($belanjaCurrentInput == 0) ? 0 : max($periodTarget, $belanjaCurrentInput);
+            $belanjaInputDenominator = $periodTarget;
             $belanjaInputPct = $belanjaInputDenominator > 0 ? round(($belanjaCurrentInput / $belanjaInputDenominator) * 100) : 0;
+            if ($belanjaInputPct > 100) $belanjaInputPct = 100;
 
-            $belanjaCurrentEval = $belanjaRecords->where('status_evaluasi', 'sesuai')->count();
-            $belanjaEvalDenominator = $belanjaCurrentInput;
-            $belanjaEvalPct = $belanjaEvalDenominator > 0 ? round(($belanjaCurrentEval / $belanjaEvalDenominator) * 100) : 0;
+            $belanjaCurrentEval = $belanjaRecords->whereNotNull('status_evaluasi')->where('status_evaluasi', '!=', 'belum_dievaluasi')->count();
+            $belanjaEvalDenominator = $periodTarget;
+            $belanjaEvalPct = $belanjaEvalDenominator > 0 ? round(($belanjaRecords->sum('prosentase')) / $belanjaEvalDenominator) : 0;
+            if ($belanjaEvalPct > 100) $belanjaEvalPct = 100;
 
             // 5. LPI Tambahan Logic
             $lpiTambahQuery = \App\Models\LaporanPengendalian::where('cabang_id', $cabang->id)
@@ -129,12 +157,14 @@ class LaporanController extends Controller
                 
             $lpiTambahRecords = $lpiTambahQuery->get();
             $lpiTambahCurrentInput = $lpiTambahRecords->count();
-            $lpiTambahInputDenominator = ($lpiTambahCurrentInput == 0) ? 0 : max($periodTarget, $lpiTambahCurrentInput);
+            $lpiTambahInputDenominator = $periodTarget;
             $lpiTambahInputPct = $lpiTambahInputDenominator > 0 ? round(($lpiTambahCurrentInput / $lpiTambahInputDenominator) * 100) : 0;
+            if ($lpiTambahInputPct > 100) $lpiTambahInputPct = 100;
 
             $lpiTambahCurrentEval = $lpiTambahRecords->where('status_evaluasi', 'sesuai')->count();
-            $lpiTambahEvalDenominator = $lpiTambahCurrentInput;
+            $lpiTambahEvalDenominator = $periodTarget;
             $lpiTambahEvalPct = $lpiTambahEvalDenominator > 0 ? round(($lpiTambahCurrentEval / $lpiTambahEvalDenominator) * 100) : 0;
+            if ($lpiTambahEvalPct > 100) $lpiTambahEvalPct = 100;
 
             // Catatan Evaluasi (From Tahanan as standard)
             $tahananCatatans = $tahananRecords->whereNotNull('catatan_evaluasi')

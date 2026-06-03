@@ -17,19 +17,13 @@ class UserSeeder extends Seeder
         // Update to Operator Kanwil (Previously Admin)
         \App\Models\User::updateOrCreate(
             ['username' => 'admin'],
-            ['name' => 'Administrator', 'role' => 'operator kanwil', 'email' => 'admin@example.com', 'password' => bcrypt('Sipinter@2026')]
+            ['name' => 'Administrator', 'role' => 'operator kanwil', 'email' => 'admin@example.com', 'password' => 'Sipinter@2026']
         );
 
         // Operator Kanwil
         \App\Models\User::updateOrCreate(
             ['username' => 'kanwil'],
-            ['name' => 'Staff Kanwil', 'role' => 'operator kanwil', 'email' => 'staff@example.com', 'password' => bcrypt('Sipinter@2026')]
-        );
-
-        // Operator Cabang
-        \App\Models\User::updateOrCreate(
-            ['username' => 'cabang'],
-            ['name' => 'Operator Cabang', 'role' => 'operator cabang', 'cabang_id' => $cabang->id ?? null, 'email' => 'manager@example.com', 'password' => bcrypt('Sipinter@2026')]
+            ['name' => 'Staff Kanwil', 'role' => 'operator kanwil', 'email' => 'staff@example.com', 'password' => 'Sipinter@2026']
         );
 
         // Operator Cabang Banceuy
@@ -39,7 +33,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Lapas kelas IIA Banceuy',
                 'email' => 'lapas.banceuy@sipinter.id',
-                'password' => bcrypt('Sipinter@2026'),
+                'password' => 'Sipinter@2026',
                 'role' => 'operator cabang',
                 'cabang_id' => $cabangBanceuy->id ?? null,
                 'permissions' => [

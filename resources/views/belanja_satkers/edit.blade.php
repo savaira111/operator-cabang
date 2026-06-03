@@ -38,9 +38,9 @@
             <!-- Periode Bulan & Tahun -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="bulan" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Bulan <span class="text-rose-500">*</span></label>
+                    <label for="bulan" class="block text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">Periode <span class="text-rose-500">*</span></label>
                     <select name="bulan" id="bulan" required class="w-full bg-[#111827] border border-slate-700 text-white rounded-xl focus:ring-[#D2A039]/20 focus:border-[#D2A039] p-3 transition-all">
-                        @foreach(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $b)
+                        @foreach(['B03', 'B06', 'B09', 'B12'] as $b)
                             <option value="{{ $b }}" {{ old('bulan', $belanjaSatker->bulan) == $b ? 'selected' : '' }}>{{ $b }}</option>
                         @endforeach
                     </select>

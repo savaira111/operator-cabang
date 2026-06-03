@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Laporan Monitoring Pengendalian')
 @section('page_title', 'Laporan Monitoring Pengendalian')
@@ -367,6 +367,18 @@
 
 <script>
     function openPrintModal() {
+        const isSearched = {{ request()->has('cabang_id') ? 'true' : 'false' }};
+        
+        if (!isSearched) {
+            swalDark.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Silakan cari data terlebih dahulu sebelum melakukan download.',
+                confirmButtonText: 'Tutup'
+            });
+            return;
+        }
+
         const modal = document.getElementById('printModal');
         const content = document.getElementById('modalContent');
         modal.classList.remove('opacity-0', 'pointer-events-none');

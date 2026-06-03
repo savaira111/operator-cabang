@@ -48,7 +48,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'role' => $validated['role'],
             'cabang_id' => $validated['cabang_id'],
-            'password' => bcrypt($validated['password']),
+            'password' => $validated['password'],
             'permissions' => $request->permissions ?? [],
         ]);
         return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil ditambahkan');
@@ -103,7 +103,7 @@ class UserController extends Controller
         ];
 
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($validated['password']);
+            $data['password'] = $validated['password'];
         }
 
         $user->update($data);
@@ -142,7 +142,7 @@ class UserController extends Controller
         }
 
         $user->update([
-            'password' => bcrypt($request->password)
+            'password' => $request->password
         ]);
 
         return redirect()->back()->with('success', 'Password berhasil diperbarui.');

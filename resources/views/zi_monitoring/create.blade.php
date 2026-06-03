@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Create Monitoring ZI')
-@section('page_title', 'Tambah Data LKE RB')
+@section('title', 'Input Data ZI')
+@section('page_title', 'Input Data ZI')
 
 @section('content')
 <div class="w-full bg-[#111827] border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl">
     <div class="mb-10 flex items-start justify-between">
         <div>
-            <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Hierarchy Builder ZI</h3>
+            <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Input Data ZI</h3>
             <p class="text-slate-500 text-sm mt-2 tracking-tight">Bangun struktur monitoring mulai dari Sasaran, Kegiatan, hingga Indikator Output.</p>
         </div>
         <div class="flex flex-col items-end">
@@ -50,6 +50,30 @@
                         <option value="SS2" {{ old('tipe') == 'SS2' ? 'selected' : '' }}>Sasaran Indikatif (SS2)</option>
                         <option value="K" {{ old('tipe') == 'K' ? 'selected' : '' }}>Kegiatan Utama (K)</option>
                         <option value="IO" {{ old('tipe', 'SS2') == 'IO' ? 'selected' : '' }}>Indikator Output (IO) - Kolektif</option>
+                    </select>
+                </div>
+            </div>
+
+            {{-- PERIODE & TAHUN --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-800/30 p-8 rounded-[2rem] border border-slate-700/50 mt-8">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Periode</label>
+                    <select name="periode" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
+                        <option value="">Pilih Periode</option>
+                        @foreach(['B03', 'B06', 'B09', 'B12'] as $p)
+                            <option value="{{ $p }}" {{ old('periode') == $p ? 'selected' : '' }}>{{ $p }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1">Tahun</label>
+                    <select name="tahun" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none">
+                        @php
+                            $currentYear = date('Y');
+                        @endphp
+                        @for($i = $currentYear - 2; $i <= $currentYear + 2; $i++)
+                            <option value="{{ $i }}" {{ old('tahun', $currentYear) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
                     </select>
                 </div>
             </div>

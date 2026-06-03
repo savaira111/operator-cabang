@@ -52,9 +52,9 @@
                     <label class="block text-[11px] font-black text-amber-500/70 uppercase tracking-widest mb-3 ml-1">Status Evaluasi</label>
                     <div class="relative group">
                         <select name="status_evaluasi" id="status_evaluasi" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none appearance-none cursor-pointer" onchange="updateProsentase()">
-                            <option value="belum_dievaluasi" {{ $tahanan->status_evaluasi == 'belum_dievaluasi' ? 'selected' : '' }}>Belum Dievaluasi</option>
-                            <option value="menunggu" {{ $tahanan->status_evaluasi == 'menunggu' ? 'selected' : '' }}>Menunggu Evaluasi</option>
-                            <option value="sesuai" {{ $tahanan->status_evaluasi == 'sesuai' ? 'selected' : '' }}>Sesuai (Diterima)</option>
+                            <option value="" disabled {{ !$tahanan->status_evaluasi ? 'selected' : '' }}>-- Pilih Penilaian --</option>
+                            <option value="sesuai" {{ $tahanan->status_evaluasi == 'sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="belum_sesuai" {{ $tahanan->status_evaluasi == 'belum_sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
                             <option value="tidak_sesuai" {{ $tahanan->status_evaluasi == 'tidak_sesuai' ? 'selected' : '' }}>Tidak Sesuai</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-slate-500 group-hover:text-amber-500 transition-colors">
@@ -67,7 +67,7 @@
                 <div class="md:col-span-1">
                     <label class="block text-[11px] font-black text-amber-500/70 uppercase tracking-widest mb-3 ml-1">Progres Capaian (%)</label>
                     <div class="relative">
-                        <input type="number" name="prosentase" id="prosentase" min="0" max="100" value="{{ $tahanan->prosentase ?? 0 }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-white focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none pl-14 font-black">
+                        <input type="number" name="prosentase" id="prosentase" min="0" max="100" value="{{ $tahanan->prosentase ?? 0 }}" class="w-full px-5 py-4 bg-[#0f172a] rounded-2xl border border-slate-700 text-slate-500 focus:ring-0 focus:border-slate-700 transition-all outline-none pl-14 font-black cursor-not-allowed" readonly>
                         <span class="absolute left-6 top-[1.1rem] text-slate-500 font-black text-sm">%</span>
                     </div>
                 </div>
@@ -95,10 +95,9 @@ function updateProsentase() {
     const prosentaseInput = document.getElementById('prosentase');
     
     const map = {
-        'belum_dievaluasi': 0,
-        'menunggu': 50,
         'sesuai': 100,
-        'tidak_sesuai': 25
+        'belum_sesuai': 50,
+        'tidak_sesuai': 0
     };
     
     if (map.hasOwnProperty(status)) {
