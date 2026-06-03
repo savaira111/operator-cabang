@@ -10,7 +10,15 @@ return new class extends Migration
     {
         Schema::create('rencana_belum_terealisasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rencana_tindak_pengendalian_id')->constrained('rencana_tindak_pengendalians')->cascadeOnDelete();
+
+            $table->unsignedBigInteger('rencana_tindak_pengendalian_id');
+            $table->foreign(
+                'rencana_tindak_pengendalian_id',
+                'rbt_rtp_fk'
+            )->references('id')
+             ->on('rencana_tindak_pengendalians')
+             ->onDelete('cascade');
+
             $table->text('keterangan');
             $table->timestamps();
         });
