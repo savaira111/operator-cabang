@@ -75,8 +75,11 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Waktu</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Anggaran</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Penanggung Jawab</th>
-                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Cabang</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Nama UPT</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Periode Pengiriman</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Tahun Penilaian</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Dokumen</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Aksi</th>
                 </tr>
@@ -87,7 +90,7 @@
                     @if($item->tipe == 'SS2')
                         <tr class="bg-blue-500/10 hover:bg-blue-500/15 transition-colors group">
                             <td class="px-4 py-4 text-xs font-black text-blue-400 text-center border-r border-slate-800/60">{{ $item->nomor }}</td>
-                            <td colspan="12" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
+                            <td colspan="10" class="px-6 py-4 text-xs font-black text-blue-300 tracking-tight">{{ $item->sasaran_kegiatan }}</td>
                             <td class="px-6 py-4 border-r border-slate-800/60 text-center">
                                 <div class="flex justify-center">
                                     <span class="px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-xl text-[10px] font-black text-blue-300 uppercase tracking-tighter shadow-lg shadow-blue-500/5 min-w-[120px]">
@@ -96,6 +99,14 @@
                                     </span>
                                 </div>
                             </td>
+                            <td class="px-6 py-4 border-r border-slate-800/60 text-center font-black text-blue-300 text-xs">
+                                {{ $item->periode ?: '-' }}
+                            </td>
+                            <td class="px-6 py-4 border-r border-slate-800/60 text-center font-black text-blue-300 text-xs">
+                                {{ $item->tahun ?: '-' }}
+                            </td>
+                            <td class="px-6 py-4 border-r border-slate-800/60"></td>
+                            <td class="px-6 py-4 border-r border-slate-800/60"></td>
                             <td class="px-6 py-4 border-r border-slate-800/60 text-center">
                                 @if($item->files->count() > 0)
                                     <div class="flex flex-wrap justify-center gap-1">
@@ -164,6 +175,12 @@
                                                 </span>
                                             </div>
                                         </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
+                                            {{ $firstRk->periode ?: '-' }}
+                                        </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
+                                            {{ $firstRk->tahun ?: '-' }}
+                                        </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center">
@@ -188,7 +205,7 @@
                                             </div>
                                         </td>
                                     @else
-                                        <td colspan="10" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada indikator output</td>
+                                        <td colspan="13" class="px-6 py-6 border-r border-slate-800/60 text-slate-700 italic text-center">Belum ada indikator output</td>
                                     @endif
                                 </tr>
                                 
@@ -233,6 +250,12 @@
                                                 </span>
                                             </div>
                                         </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
+                                            {{ $rk->periode ?: '-' }}
+                                        </td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
+                                            {{ $rk->tahun ?: '-' }}
+                                        </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center">
@@ -263,7 +286,7 @@
                     @endforeach
                 @empty
                 <tr>
-                    <td colspan="15" class="px-6 py-32 text-center">
+                    <td colspan="18" class="px-6 py-32 text-center">
                         <div class="flex flex-col items-center justify-center space-y-4">
                             <div class="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center border border-slate-700 shadow-2xl">
                                 <i data-lucide="database-zap" class="w-12 h-12 text-slate-600"></i>
