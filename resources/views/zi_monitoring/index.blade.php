@@ -77,7 +77,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Penanggung Jawab</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Nama UPT</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Periode Pengiriman</th>
-                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Tahun Penilaian</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Tanggal Input</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Dokumen</th>
@@ -103,7 +103,7 @@
                                 {{ $item->periode ?: '-' }}
                             </td>
                             <td class="px-6 py-4 border-r border-slate-800/60 text-center font-black text-blue-300 text-xs">
-                                {{ $item->tahun ?: '-' }}
+                                {{ $item->created_at ? $item->created_at->format('d M Y') : ($item->tahun ?: '-') }}
                             </td>
                             <td class="px-6 py-4 border-r border-slate-800/60"></td>
                             <td class="px-6 py-4 border-r border-slate-800/60"></td>
@@ -179,7 +179,7 @@
                                             {{ $firstRk->periode ?: '-' }}
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
-                                            {{ $firstRk->tahun ?: '-' }}
+                                            {{ $firstRk->created_at ? $firstRk->created_at->format('d M Y') : ($firstRk->tahun ?: '-') }}
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
@@ -254,7 +254,7 @@
                                             {{ $rk->periode ?: '-' }}
                                         </td>
                                         <td class="px-6 py-6 border-r border-slate-800/60 text-center font-black text-white text-xs">
-                                            {{ $rk->tahun ?: '-' }}
+                                            {{ $rk->created_at ? $rk->created_at->format('d M Y') : ($rk->tahun ?: '-') }}
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>

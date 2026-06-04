@@ -10,7 +10,11 @@ class ZiController extends Controller
 {
     public function index()
     {
-        $zis = ZonaIntegritas::with('cabang')->latest()->get();
+        $zis = ZonaIntegritas::with('cabang')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->latest()
+            ->get();
         return view('zis.index', compact('zis'));
     }
 

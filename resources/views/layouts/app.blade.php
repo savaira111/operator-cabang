@@ -323,7 +323,7 @@
                 @php
                     $ziItems = [];
                     if(auth()->user()?->hasPermission('zi_penilaian')) $ziItems[] = ['route' => 'zi-monitoring.index', 'label' => 'Penilaian ZI'];
-                    if(auth()->user()?->hasPermission('zi_manajemen_data')) $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => auth()->user()?->role === 'operator kanwil' ? 'Input Data ZI' : 'Manajemen Data'];
+                    if(auth()->user()?->hasPermission('zi_manajemen_data') && auth()->user()?->role !== 'operator kanwil') $ziItems[] = ['route' => 'zi-data-manage.index', 'label' => 'Manajemen Data'];
                     if(auth()->user()?->hasPermission('zi_input_data')) $ziItems[] = ['route' => 'zi-data-fill.index', 'label' => auth()->user()?->role === 'operator kanwil' ? 'View Data ZI' : 'Data Zona Integritas'];
                 @endphp
 

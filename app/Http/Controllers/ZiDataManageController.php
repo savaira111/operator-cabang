@@ -61,7 +61,10 @@ class ZiDataManageController extends Controller
             });
         }
 
-        $monitorings = $query->orderBy('nomor')->get();
+        $monitorings = $query->orderBy('tahun', 'desc')
+                             ->orderBy('periode', 'desc')
+                             ->orderBy('created_at', 'desc')
+                             ->get();
 
         return view('zi_data_manage.index', compact('monitorings', 'selectedPeriod', 'selectedYear'));
     }

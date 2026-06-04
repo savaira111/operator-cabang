@@ -69,7 +69,10 @@ class ZiDataFillController extends Controller
             });
         }
 
-        $roots = $query->orderBy('nomor')->get();
+        $roots = $query->orderBy('tahun', 'desc')
+                       ->orderBy('periode', 'desc')
+                       ->orderBy('created_at', 'desc')
+                       ->get();
 
         // If we have both a global template and a branch copy for the same nomor, prioritize the branch copy
         if ($branchId) {

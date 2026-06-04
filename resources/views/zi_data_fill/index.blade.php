@@ -67,6 +67,7 @@
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">File Terupload</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">%</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60">Catatan</th>
+                    <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] border-r border-slate-800/60 text-center">Tanggal Input</th>
                     <th class="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center sticky right-0 bg-[#0f172a] z-20 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">Aksi</th>
                 </tr>
             </thead>
@@ -138,6 +139,14 @@
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $firstRk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $firstRk->catatan ?: '-' }}</td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center">
+                                            @if($firstRk->prosentase > 0 && $firstRk->updated_at && $firstRk->cabang_id == auth()->user()->cabang_id)
+                                                <div class="flex flex-col items-center gap-0.5">
+                                                    <span class="text-[10px] font-black text-emerald-400">{{ $firstRk->updated_at->format('d M Y') }}</span>
+                                                    <span class="text-[9px] text-slate-600">{{ $firstRk->updated_at->format('H:i') }}</span>
+                                                </div>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-6 text-center sticky right-0 bg-[#111827]/90 backdrop-blur-md z-10 border-l border-slate-800/60 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">
                                             <div class="flex justify-center">
                                                 <a href="{{ route('zi-data-fill.edit', $firstRk->id) }}" 
@@ -202,6 +211,14 @@
                                         </td>
                                         <td class="px-6 py-6 text-center border-r border-slate-800/60 font-black text-white text-lg">{{ $rk->prosentase }}%</td>
                                         <td class="px-6 py-6 text-slate-500 border-r border-slate-800/60 w-64 italic">{{ $rk->catatan ?: '-' }}</td>
+                                        <td class="px-6 py-6 border-r border-slate-800/60 text-center">
+                                            @if($rk->prosentase > 0 && $rk->updated_at && $rk->cabang_id == auth()->user()->cabang_id)
+                                                <div class="flex flex-col items-center gap-0.5">
+                                                    <span class="text-[10px] font-black text-emerald-400">{{ $rk->updated_at->format('d M Y') }}</span>
+                                                    <span class="text-[9px] text-slate-600">{{ $rk->updated_at->format('H:i') }}</span>
+                                                </div>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-6 text-center sticky right-0 bg-[#111827]/90 backdrop-blur-md z-10 border-l border-slate-800/60 shadow-[-10px_0_15px_rgba(0,0,0,0.2)]">
                                             <div class="flex justify-center">
                                                 <a href="{{ route('zi-data-fill.edit', $rk->id) }}" 
@@ -219,7 +236,7 @@
                     @endforeach
                 @empty
                     <tr>
-                        <td colspan="16" class="px-6 py-20 text-center">
+                        <td colspan="17" class="px-6 py-20 text-center">
                             <div class="flex flex-col items-center justify-center space-y-4">
                                 <div class="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center border border-slate-700/50">
                                     <i data-lucide="clipboard-x" class="w-8 h-8 text-slate-600"></i>
